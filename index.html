@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Prisma Agency - Catálogo de Destinos</title>
+    <style>
+        :root {
+            --bg-color: #0b1121;
+            --card-bg: #151e32;
+            --gold: #d4af37;
+            --gold-light: #fbe58f;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --whatsapp: #25d366;
+            --border-color: #2a3441;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(180deg, #000000 0%, var(--bg-color) 100%);
+            border-bottom: 1px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header h1 {
+            color: var(--gold);
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        header h1 strong {
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .description {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .destination-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .destination-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .destination-card:hover {
+            border-color: var(--gold);
+        }
+
+        .card-info h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .card-info .price {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .card-arrow {
+            color: var(--gold);
+            font-size: 24px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .modal-header {
+            padding: 60px 20px 20px;
+            background: linear-gradient(180deg, #1a2333 0%, var(--bg-color) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .modal-header .modal-price {
+            color: var(--gold);
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .modal-header .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .info-boxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-box {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-box .box-title {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .info-box .box-value {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            color: var(--gold);
+            font-size: 18px;
+            margin: 25px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul.feature-list {
+            list-style: none;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        ul.feature-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        ul.feature-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        ul.feature-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 18px;
+            top: -2px;
+        }
+
+        .note-box {
+            background-color: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--gold-light);
+        }
+
+        .whatsapp-btn {
+            display: block;
+            background-color: var(--whatsapp);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .whatsapp-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Prisma <strong>Agency</strong></h1>
+    </header>
+
+    <div class="container">
+        <p class="description">Selecciona un destino para ver los detalles del paquete, requisitos y precios.</p>
+        
+        <div class="destination-grid" id="grid">
+        </div>
+    </div>
+
+    <!-- Modal Base -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            
+            <div class="modal-header">
+                <h2 id="m-title">Destino</h2>
+                <div class="modal-price" id="m-price">USD 0</div>
+                <div class="subtitle" id="m-subtitle">ℹ️ Detalles</div>
+            </div>
+
+            <div class="modal-body">
+                <div class="info-boxes">
+                    <div class="info-box">
+                        <div class="box-title">Estructura de Pago</div>
+                        <div class="box-value" id="m-payment">Pago</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="box-title">Tiempo Estimado</div>
+                        <div class="box-value" id="m-time">Tiempo</div>
+                    </div>
+                </div>
+
+                <div class="section-title">✓ Qué incluye</div>
+                <ul class="feature-list" id="m-includes"></ul>
+
+                <div id="req-section" style="display:none;">
+                    <div class="section-title">✓ Requisitos</div>
+                    <ul class="feature-list" id="m-requirements"></ul>
+                </div>
+
+                <div class="note-box" id="m-note" style="display:none;">
+                    <strong>Nota:</strong> <span id="m-note-text"></span>
+                </div>
+
+                <a href="#" class="whatsapp-btn" id="m-whatsapp" target="_blank">
+                    💬 Consultar por WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const destinations = [
+            {
+                id: 'nicaragua',
+                title: 'Nicaragua',
+                price: 'USD 1,350',
+                subtitle: 'Visado · Una semana',
+                payment: 'Pago íntegro al iniciar',
+                time: 'Una semana',
+                includes: ['Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Gestión de visado'],
+                requirements: ['Fotografías tipo pasaporte', 'Carnet de identidad', 'Foto de la primera hoja del pasaporte', 'Fotos de páginas con cuños de entrada/salida (si ha viajado)', 'Dirección actual', 'Estado civil', 'Ocupación', 'Teléfono', 'Correo electrónico'],
+                note: null
+            },
+            {
+                id: 'guyana',
+                title: 'Guyana',
+                price: 'USD 1,400',
+                subtitle: 'Emisión de boleto aéreo · 12 horas',
+                payment: 'Pago íntegro',
+                time: '12 horas',
+                includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Documentación correspondiente'],
+                requirements: [],
+                note: 'Entrega aproximada: 12 horas después de confirmado el pago.'
+            },
+            {
+                id: 'surinam',
+                title: 'Surinam',
+                price: 'USD 1,250',
+                subtitle: 'Emisión de boleto aéreo · 12 horas',
+                payment: 'Pago íntegro',
+                time: '12 horas',
+                includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
+                requirements: [],
+                note: 'Entrega posterior a la confirmación del pago.'
+            },
+            {
+                id: 'mexico',
+                title: 'México',
+                price: 'USD 3,700',
+                subtitle: 'Paquete contrato laboral · 15 días',
+                payment: 'Pago íntegro',
+                time: '15 días',
+                includes: ['Contrato laboral', 'Visa por contrato laboral', 'Reservación de hotel', 'Reservación de vuelo', 'Seguro médico internacional'],
+                requirements: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Currículum (si no posee, la empresa lo elabora)', 'Foto del pasaporte'],
+                note: null
+            },
+            {
+                id: 'repdom',
+                title: 'Rep. Dominicana',
+                price: 'USD 1,100',
+                subtitle: 'Boleto aéreo + asistencia de entrada · 12 horas',
+                payment: 'Pago íntegro',
+                time: '12 horas',
+                includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Asistencia de entrada (permiso de entrada, no visa)'],
+                requirements: [],
+                note: null
+            },
+            {
+                id: 'panama',
+                title: 'Panamá',
+                price: 'USD 2,600',
+                subtitle: 'Visa de turismo · Dos meses',
+                payment: '50% inicial · 50% al finalizar',
+                time: 'Dos meses',
+                includes: ['Gestión de visa', 'Reservación de hotel', 'Reservación de vuelo', 'Seguro médico internacional'],
+                requirements: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Foto del pasaporte'],
+                note: null
+            },
+            {
+                id: 'brasil',
+                title: 'Brasil',
+                price: 'Variable',
+                subtitle: 'Traslado terrestre desde Guyana · 3 días',
+                payment: 'Pago íntegro',
+                time: '3 días',
+                includes: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM para llamadas e internet'],
+                requirements: [],
+                note: 'No incluye gestión de visa.'
+            }
+        ];
+
+        // Numero de WhatsApp de la agencia con el formato correcto para la API
+        const waNumber = '13144013488';
+
+        const grid = document.getElementById('grid');
+        destinations.forEach((dest, index) => {
+            const card = document.createElement('div');
+            card.className = 'destination-card';
+            card.onclick = () => openModal(index);
+            card.innerHTML = `
+                <div class="card-info">
+                    <h2>${dest.title}</h2>
+                    <div class="price">${dest.price}</div>
+                </div>
+                <div class="card-arrow">→</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        function openModal(index) {
+            const dest = destinations[index];
+            
+            document.getElementById('m-title').innerText = dest.title;
+            document.getElementById('m-price').innerText = dest.price;
+            document.getElementById('m-subtitle').innerHTML = `ℹ️ ${dest.subtitle}`;
+            document.getElementById('m-payment').innerText = dest.payment;
+            document.getElementById('m-time').innerText = dest.time;
+
+            const incList = document.getElementById('m-includes');
+            incList.innerHTML = '';
+            dest.includes.forEach(item => {
+                let li = document.createElement('li');
+                li.innerText = item;
+                incList.appendChild(li);
+            });
+
+            const reqSection = document.getElementById('req-section');
+            const reqList = document.getElementById('m-requirements');
+            if (dest.requirements.length > 0) {
+                reqSection.style.display = 'block';
+                reqList.innerHTML = '';
+                dest.requirements.forEach(item => {
+                    let li = document.createElement('li');
+                    li.innerText = item;
+                    reqList.appendChild(li);
+                });
+            } else {
+                reqSection.style.display = 'none';
+            }
+
+            const noteBox = document.getElementById('m-note');
+            if (dest.note) {
+                noteBox.style.display = 'block';
+                document.getElementById('m-note-text').innerText = dest.note;
+            } else {
+                noteBox.style.display = 'none';
+            }
+
+            const message = encodeURIComponent(`Hola Prisma Agency, deseo información sobre el trámite para ${dest.title} (${dest.price}).`);
+            document.getElementById('m-whatsapp').href = `https://wa.me/${waNumber}?text=${message}`;
+
+            document.getElementById('modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
