@@ -29,6 +29,85 @@
             padding-bottom: 40px;
         }
 
+        /* Pantalla de Inicio / Portada con Logo Grande */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-logo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold);
+            margin-bottom: 30px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .welcome-title {
+            color: var(--gold);
+            font-size: 32px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .welcome-title strong {
+            font-weight: 700;
+        }
+
+        .welcome-subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Botón Emergente / Llamativo de Ofertas */
+        .ofertas-btn {
+            background: linear-gradient(135deg, var(--gold) 0%, #aa8c2c 100%);
+            color: #000000;
+            border: none;
+            padding: 16px 45px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+            transition: transform 0.2s;
+        }
+
+        .ofertas-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* Contenido Principal (Oculto al inicio hasta presionar el botón) */
+        main {
+            display: none;
+        }
+
         header {
             text-align: center;
             padding: 25px 20px;
@@ -106,7 +185,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            z-index: 100;
+            z-index: 300;
             overflow-y: auto;
             backdrop-filter: blur(5px);
         }
@@ -139,19 +218,28 @@
         }
 
         .modal-header {
-            padding: 60px 20px 20px;
+            padding: 50px 20px 20px;
             background: linear-gradient(180deg, #1a2333 0%, var(--bg-color) 100%);
             border-bottom: 1px solid var(--border-color);
         }
 
+        .modal-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
         .modal-header h2 {
-            font-size: 32px;
+            font-size: 28px;
             margin-bottom: 10px;
         }
 
         .modal-header .modal-price {
             color: var(--gold);
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
         }
 
@@ -266,16 +354,28 @@
 </head>
 <body>
 
-    <header>
-        <h1>Prisma <strong>Agency</strong></h1>
-    </header>
-
-    <div class="container">
-        <p class="description">Selecciona un destino para ver los detalles del paquete, requisitos y precios.</p>
-        
-        <div class="destination-grid" id="grid">
-        </div>
+    <!-- Pantalla de bienvenida con logo grande y botón de ofertas -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <!-- Reemplaza 'logo.png' con el nombre de tu archivo de logo -->
+        <img src="logo.png" alt="Prisma Agency Logo" class="welcome-logo" onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=300&q=80'">
+        <h1 class="welcome-title">Prisma <strong>Agency</strong></h1>
+        <p class="welcome-subtitle">Tu agencia de viajes y trámites de confianza</p>
+        <button class="ofertas-btn" onclick="enterCatalog()">🔥 Ofertas</button>
     </div>
+
+    <!-- Contenido Principal -->
+    <main id="mainContent">
+        <header>
+            <h1>Prisma <strong>Agency</strong></h1>
+        </header>
+
+        <div class="container">
+            <p class="description">Selecciona un destino para ver los detalles del paquete, requisitos y precios.</p>
+            
+            <div class="destination-grid" id="grid">
+            </div>
+        </div>
+    </main>
 
     <!-- Modal Base -->
     <div class="modal-overlay" id="modal">
@@ -283,6 +383,7 @@
             <button class="close-btn" onclick="closeModal()">×</button>
             
             <div class="modal-header">
+                <img id="m-img" src="" alt="Destino" class="modal-img">
                 <h2 id="m-title">Destino</h2>
                 <div class="modal-price" id="m-price">USD 0</div>
                 <div class="subtitle" id="m-subtitle">ℹ️ Detalles</div>
@@ -328,8 +429,9 @@
                 subtitle: 'Visado · Una semana',
                 payment: 'Pago íntegro al iniciar',
                 time: 'Una semana',
+                image: 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=600&q=80',
                 includes: ['Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Gestión de visado'],
-                requirements: ['Fotografías tipo pasaporte', 'Carnet de identidad', 'Foto de la primera hoja del pasaporte', 'Fotos de páginas con cuños de entrada/salida (si ha viajado)', 'Dirección actual', 'Estado civil', 'Ocupación', 'Teléfono', 'Correo electrónico'],
+                requirements: ['Fotografías tipo pasaporte', 'Carnet de identidad', 'Foto de la primera hoja del pasaporte', 'Fotos de páginas con cuños de entrada/salida', 'Dirección actual', 'Estado civil', 'Ocupación', 'Teléfono', 'Correo electrónico'],
                 note: null
             },
             {
@@ -339,6 +441,7 @@
                 subtitle: 'Emisión de boleto aéreo · 12 horas',
                 payment: 'Pago íntegro',
                 time: '12 horas',
+                image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
                 includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Documentación correspondiente'],
                 requirements: [],
                 note: 'Entrega aproximada: 12 horas después de confirmado el pago.'
@@ -350,6 +453,7 @@
                 subtitle: 'Emisión de boleto aéreo · 12 horas',
                 payment: 'Pago íntegro',
                 time: '12 horas',
+                image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80',
                 includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
                 requirements: [],
                 note: 'Entrega posterior a la confirmación del pago.'
@@ -361,8 +465,9 @@
                 subtitle: 'Paquete contrato laboral · 15 días',
                 payment: 'Pago íntegro',
                 time: '15 días',
+                image: 'https://images.unsplash.com/photo-1512813266105-8f64e22302a6?auto=format&fit=crop&w=600&q=80',
                 includes: ['Contrato laboral', 'Visa por contrato laboral', 'Reservación de hotel', 'Reservación de vuelo', 'Seguro médico internacional'],
-                requirements: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Currículum (si no posee, la empresa lo elabora)', 'Foto del pasaporte'],
+                requirements: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Currículum', 'Foto del pasaporte'],
                 note: null
             },
             {
@@ -372,7 +477,8 @@
                 subtitle: 'Boleto aéreo + asistencia de entrada · 12 horas',
                 payment: 'Pago íntegro',
                 time: '12 horas',
-                includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Asistencia de entrada (permiso de entrada, no visa)'],
+                image: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=600&q=80',
+                includes: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Asistencia de entrada'],
                 requirements: [],
                 note: null
             },
@@ -383,6 +489,7 @@
                 subtitle: 'Visa de turismo · Dos meses',
                 payment: '50% inicial · 50% al finalizar',
                 time: 'Dos meses',
+                image: 'https://images.unsplash.com/photo-1508873696983-2df5c920ac1c?auto=format&fit=crop&w=600&q=80',
                 includes: ['Gestión de visa', 'Reservación de hotel', 'Reservación de vuelo', 'Seguro médico internacional'],
                 requirements: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Foto del pasaporte'],
                 note: null
@@ -394,14 +501,23 @@
                 subtitle: 'Traslado terrestre desde Guyana · 3 días',
                 payment: 'Pago íntegro',
                 time: '3 días',
-                includes: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM para llamadas e internet'],
+                image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=600&q=80',
+                includes: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Alimentación completa', 'SIM para llamadas e internet'],
                 requirements: [],
                 note: 'No incluye gestión de visa.'
             }
         ];
 
-        // Numero de WhatsApp de la agencia con el formato correcto para la API
         const waNumber = '13144013488';
+
+        function enterCatalog() {
+            const screen = document.getElementById('welcomeScreen');
+            screen.style.opacity = '0';
+            setTimeout(() => {
+                screen.style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            }, 500);
+        }
 
         const grid = document.getElementById('grid');
         destinations.forEach((dest, index) => {
@@ -426,6 +542,7 @@
             document.getElementById('m-subtitle').innerHTML = `ℹ️ ${dest.subtitle}`;
             document.getElementById('m-payment').innerText = dest.payment;
             document.getElementById('m-time').innerText = dest.time;
+            document.getElementById('m-img').src = dest.image;
 
             const incList = document.getElementById('m-includes');
             incList.innerHTML = '';
@@ -440,6 +557,7 @@
             if (dest.requirements.length > 0) {
                 reqSection.style.display = 'block';
                 reqList.innerHTML = '';
+                dest.requirements.include ? '' : null;
                 dest.requirements.forEach(item => {
                     let li = document.createElement('li');
                     li.innerText = item;
