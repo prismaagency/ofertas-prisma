@@ -244,7 +244,6 @@
         
         .wa-btn { background-color: #25D366; }
 
-        /* --- VENTANA EMERGENTE ESTILO APP --- */
         .modal {
             display: none; 
             position: fixed; 
@@ -482,7 +481,6 @@
         </div>
 
         <div class="grid-destinos">
-            <!-- 10 Países Nuevos -->
             <div class="card" onclick="abrirModal('Argentina')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ar.png');"></div>
                 <div class="card-info"><h3>Argentina</h3><p>USD 2,200</p></div>
@@ -523,10 +521,9 @@
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/uy.png');"></div>
                 <div class="card-info"><h3>Uruguay</h3><p>Variable</p></div>
             </div>
-            <!-- Países Restantes -->
             <div class="card" onclick="abrirModal('Nicaragua')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png');"></div>
-                <div class="card-info"><h3>Nicaragua</h3><p>USD 1,500</p></div>
+                <div class="card-info"><h3>Nicaragua</h3><p>USD 1,350</p></div>
             </div>
             <div class="card" onclick="abrirModal('México')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png');"></div>
@@ -698,12 +695,27 @@
                 flag: 'https://flagcdn.com/w640/uy.png'
             },
             'Nicaragua': {
-                precio: 'USD 1,500',
-                subtitulo: 'Gestión de viajes y boletería',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
+                precio: 'USD 1,350',
+                subtitulo: 'Visado · Una semana',
+                pago: 'Pago íntegro al iniciar',
+                tiempo: 'Una semana',
+                incluye: [
+                    'Reservación de vuelo',
+                    'Reservación de hotel',
+                    'Seguro médico internacional',
+                    'Gestión de visado'
+                ],
+                requisitos: [
+                    'Fotografías tipo pasaporte',
+                    'Carnet de identidad',
+                    'Foto de la primera hoja del pasaporte',
+                    'Fotos de páginas con cuños de entrada/salida (si ha viajado)',
+                    'Dirección actual',
+                    'Estado civil',
+                    'Ocupación',
+                    'Teléfono',
+                    'Correo electrónico'
+                ],
                 nota: null,
                 flag: 'https://flagcdn.com/w640/ni.png'
             },
