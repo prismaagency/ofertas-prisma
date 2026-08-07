@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisma Agency | Viajes Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #08080a; 
             --gold: #d4af37; 
+            --gold-bright: #ffc107; /* Para el precio estilo captura */
             --gold-hover: #b5952f;
             --text-light: #ffffff;
-            --text-muted: #a0a0a5;
+            --text-muted: #9ca3af;
             --card-bg: #121216;
+            
+            /* Colores específicos del nuevo modal */
+            --modal-bg: #0d121c; 
+            --modal-card-bg: #19202e;
         }
 
         * {
@@ -156,25 +161,6 @@
             border-color: var(--gold);
         }
 
-        .stats {
-            display: flex;
-            gap: 60px;
-            padding: 40px 10%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(8, 8, 10, 0.8);
-        }
-
-        .stat-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: var(--text-light);
-        }
-
-        .stat-item p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
         .destinos-section {
             padding: 80px 10%;
             background-color: var(--bg-color);
@@ -193,35 +179,10 @@
             line-height: 1.5;
         }
 
-        .filtros {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .filtro-btn {
-            background-color: transparent;
-            color: var(--text-muted);
-            border: 1px solid #333;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .filtro-btn.active, .filtro-btn:hover {
-            background-color: var(--gold);
-            color: var(--bg-color);
-            border-color: var(--gold);
-            font-weight: 600;
-        }
-
         .grid-destinos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
         }
 
         .card {
@@ -238,39 +199,217 @@
             border-color: var(--gold);
         }
 
-        .card-img {
-            height: 160px;
-            background-color: #1a1a24;
-            position: relative;
-        }
-
-        .card-etiqueta {
-            position: absolute;
-            top: 15px;
-            right: 0;
-            background-color: var(--gold);
-            color: var(--bg-color);
-            padding: 4px 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 4px 0 0 4px;
-        }
-
         .card-info {
             padding: 20px;
+            text-align: center;
         }
 
         .card-info h3 {
-            font-size: 1.25rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
             margin-bottom: 5px;
         }
 
         .card-info p {
-            color: var(--gold);
+            color: var(--gold-bright);
             font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* --- NUEVO DISEÑO DEL MODAL (Basado en tus fotos) --- */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--modal-bg);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            animation: modalFadeIn 0.3s;
+            padding-bottom: 30px;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #2a3441;
+            border-radius: 4px;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close {
+            color: rgba(255,255,255,0.5);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        .modal-header-top {
+            padding: 40px 30px 20px 30px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            color: #ffffff;
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .modal-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-bright);
+        }
+
+        .modal-body {
+            padding: 25px 30px;
+        }
+
+        .modal-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .info-card {
+            background-color: var(--modal-card-bg);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info-card h4 {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .info-card p {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .section-title span {
+            color: var(--gold-bright);
+            font-weight: bold;
+        }
+
+        .modal-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .modal-list li {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
             font-size: 0.95rem;
         }
-        
+
+        .modal-list li::before {
+            content: "•";
+            color: var(--gold-bright);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+            top: 0px;
+        }
+
+        .nota-especial {
+            background-color: rgba(255, 193, 7, 0.05);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none; /* Oculto por defecto */
+        }
+
+        .nota-especial span {
+            color: var(--gold-bright);
+            font-weight: bold;
+        }
+
+        .nota-especial p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: inline;
+        }
+
+        .btn-whatsapp-modal {
+            display: block;
+            text-align: center;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn-whatsapp-modal:hover {
+            background-color: #1ebd5c;
+        }
+
         .floating-social {
             position: fixed;
             bottom: 30px;
@@ -295,121 +434,7 @@
         }
         
         .wa-btn { background-color: #25D366; }
-        .tg-btn { background-color: #0088cc; }
 
-        /* --- ESTILOS DE LA VENTANA EMERGENTE (MODAL) --- */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0,0,0,0.85); 
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border: 1px solid var(--gold);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            animation: modalFadeIn 0.3s;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .close {
-            color: var(--text-muted);
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close:hover {
-            color: var(--gold);
-        }
-
-        .modal-title {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold);
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-
-        .modal-servicio {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-
-        .modal-price {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: var(--text-light);
-        }
-
-        .modal-req-title {
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .modal-req-list {
-            list-style: none;
-            margin-bottom: 30px;
-            color: var(--text-muted);
-            padding-left: 0;
-        }
-
-        .modal-req-list li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .modal-req-list li::before {
-            content: "•";
-            color: var(--gold);
-            position: absolute;
-            left: 0;
-            font-size: 1.2rem;
-            line-height: 1;
-        }
-
-        .modal-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background-color: var(--gold);
-            color: var(--bg-color);
-            padding: 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .modal-btn:hover {
-            background-color: var(--gold-hover);
-        }
     </style>
 </head>
 <body>
@@ -422,9 +447,6 @@
             <nav>
                 <ul>
                     <li><a href="#destinos">Destinos</a></li>
-                    <li><a href="#">Por qué nosotros</a></li>
-                    <li><a href="#">Evaluación</a></li>
-                    <li><a href="#">FAQ</a></li>
                 </ul>
             </nav>
             <a href="https://wa.me/13144013488" class="btn-contact">Contactar</a>
@@ -433,138 +455,183 @@
         <section class="hero">
             <div class="badge">• Atención 24/7 Disponible</div>
             <h1>Tu puerta al<br><span>mundo</span></h1>
-            <p>Agencia de viajes premium. Gestionamos boletos aéreos y servicios de viaje con acompañamiento personalizado de inicio a fin.</p>
+            <p>Agencia de viajes premium. Gestionamos visados, boletos aéreos y servicios de viaje con acompañamiento personalizado.</p>
             <div class="cta-buttons">
                 <a href="https://wa.me/13144013488" class="btn-primary">Consultar disponibilidad</a>
                 <a href="#destinos" class="btn-secondary">Ver Destinos</a>
             </div>
         </section>
-
-        <div class="stats">
-            <div class="stat-item">
-                <h3>17+</h3>
-                <p>Destinos activos</p>
-            </div>
-            <div class="stat-item">
-                <h3>100%</h3>
-                <p>Garantía de servicio</p>
-            </div>
-            <div class="stat-item">
-                <h3>24/7</h3>
-                <p>Soporte continuo</p>
-            </div>
-        </div>
     </div>
 
     <section id="destinos" class="destinos-section">
         <div class="destinos-header">
-            <h2>Nuestros Destinos</h2>
-            <p>Ofrecemos trámites de visado, boletos aéreos y contratos de trabajo para los destinos más solicitados. Todos los servicios incluyen acompañamiento personalizado.</p>
+            <h2>Catálogo de Destinos</h2>
+            <p>Selecciona un destino para ver detalles de precios, tiempos estimados y requisitos.</p>
         </div>
 
-        <div class="filtros">
-            <button class="filtro-btn active">Todos</button>
-            <button class="filtro-btn">Visados</button>
-            <button class="filtro-btn">Boletos aéreos</button>
-            <button class="filtro-btn">Contratos laborales</button>
-            <button class="filtro-btn">Traslados</button>
-        </div>
-
-        <div class="grid-destinos">
-            <!-- Tarjeta 1 (Con función onclick para abrir modal) -->
-            <div class="card" onclick="abrirModal('Nicaragua', 'VISADO', 'USD 1,350', ['Pasaporte válido por 6 meses', 'Formulario de solicitud completado', '2 fotografías tamaño carnet', 'Solvencia económica'])">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png') center/cover;">
-                    <div class="card-etiqueta">VISADO</div>
-                </div>
-                <div class="card-info">
-                    <h3>Nicaragua</h3>
-                    <p>USD 1,350</p>
-                </div>
-            </div>
-
-            <!-- Tarjeta 2 -->
-            <div class="card" onclick="abrirModal('Guyana', 'EMISIÓN DE BOLETO AÉREO', 'USD 1,400', ['Pasaporte vigente', 'Fecha tentativa de viaje', 'Información de contacto actualizada'])">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/gy.png') center/cover;">
-                    <div class="card-etiqueta">EMISIÓN DE BOLETO AÉREO</div>
-                </div>
-                <div class="card-info">
-                    <h3>Guyana</h3>
-                    <p>USD 1,400</p>
-                </div>
-            </div>
-
-            <!-- Tarjeta 3 -->
-            <div class="card" onclick="abrirModal('Surinam', 'EMISIÓN DE BOLETO AÉREO', 'USD 1,250', ['Pasaporte vigente', 'Fecha tentativa de viaje', 'Certificado de fiebre amarilla (recomendado)'])">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/sr.png') center/cover;">
-                    <div class="card-etiqueta">EMISIÓN DE BOLETO AÉREO</div>
-                </div>
-                <div class="card-info">
-                    <h3>Surinam</h3>
-                    <p>USD 1,250</p>
-                </div>
-            </div>
-
-            <!-- Tarjeta 4 -->
-            <div class="card" onclick="abrirModal('México', 'PAQUETE CONTRATO LABORAL', 'USD 3,700', ['Pasaporte válido por 1 año', 'Currículum Vitae actualizado', 'Antecedentes penales apostillados', 'Certificado médico'])">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png') center/cover;">
-                    <div class="card-etiqueta">PAQUETE CONTRATO LABORAL</div>
-                </div>
-                <div class="card-info">
-                    <h3>México</h3>
-                    <p>USD 3,700</p>
-                </div>
-            </div>
+        <div class="grid-destinos" id="gridDestinos">
+            <!-- Las tarjetas se generan automáticamente con JavaScript -->
         </div>
     </section>
 
-    <!-- EL MODAL (VENTANA EMERGENTE) -->
+    <!-- EL NUEVO MODAL (Estilo Capturas) -->
     <div id="detalleModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="cerrarModal()">&times;</span>
-            <h2 id="modalTitle" class="modal-title">Destino</h2>
-            <div id="modalServicio" class="modal-servicio">Tipo de Servicio</div>
-            <div id="modalPrice" class="modal-price">USD 0,000</div>
+            <span class="close" onclick="cerrarModal()">✕</span>
             
-            <div class="modal-req-title">Requisitos:</div>
-            <ul id="modalReqs" class="modal-req-list">
-                <!-- Los requisitos se insertan aquí automáticamente -->
-            </ul>
-            
-            <a href="https://wa.me/13144013488" class="modal-btn">Iniciar trámite por WhatsApp</a>
+            <div class="modal-header-top">
+                <h2 id="modalTitle" class="modal-title">País</h2>
+                <div id="modalPrice" class="modal-price">USD 0,000</div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-subtitle">
+                    <span style="font-size: 1.2rem;">ⓘ</span>
+                    <span id="modalSub">Visa · Tiempo</span>
+                </div>
+
+                <div class="modal-info-grid">
+                    <div class="info-card">
+                        <h4>Estructura de pago</h4>
+                        <p id="modalPago">50% inicial · 50% al finalizar</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Tiempo estimado</h4>
+                        <p id="modalTiempo">1 mes</p>
+                    </div>
+                </div>
+
+                <div class="section-title"><span>✓</span> Qué incluye</div>
+                <ul id="modalIncluye" class="modal-list"></ul>
+
+                <div class="section-title"><span>✓</span> Requisitos</div>
+                <ul id="modalReqs" class="modal-list"></ul>
+
+                <div id="modalNota" class="nota-especial">
+                    <span>Nota:</span> <p id="modalNotaTexto">Texto de la nota</p>
+                </div>
+
+                <a href="https://wa.me/13144013488" class="btn-whatsapp-modal">Iniciar trámite por WhatsApp</a>
+            </div>
         </div>
     </div>
 
     <div class="floating-social">
-        <a href="#" class="floating-btn tg-btn">✈️</a>
         <a href="https://wa.me/13144013488" class="floating-btn wa-btn">📞</a>
     </div>
 
-    <!-- SCRIPT PARA CONTROLAR LA VENTANA EMERGENTE -->
+    <!-- BASE DE DATOS Y SCRIPT -->
     <script>
-        function abrirModal(destino, servicio, precio, requisitos) {
-            // Asignar los textos
-            document.getElementById('modalTitle').innerText = destino;
-            document.getElementById('modalServicio').innerText = servicio;
-            document.getElementById('modalPrice').innerText = precio;
+        // Los datos extraídos exactamente de tus capturas
+        const destinosData = {
+            "El Salvador": {
+                precio: "USD 1,900", sub: "Visa · 1 mes a 2 meses", pago: "50% inicial · 50% al finalizar", tiempo: "1 mes a 2 meses",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Emiratos Árabes": {
+                precio: "USD 2,600", sub: "Visa · 5 días", pago: "50% inicial · 50% al finalizar", tiempo: "5 días",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Rusia": {
+                precio: "USD 1,500", sub: "Visa · Una semana", pago: "50% inicial · 50% al finalizar", tiempo: "Una semana",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Turquía": {
+                precio: "USD 2,750", sub: "E-visa · Una semana", pago: "50% inicial · 50% al finalizar", tiempo: "Una semana",
+                incluye: ["E-visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Argentina": {
+                precio: "USD 2,200", sub: "Visa · 2 meses", pago: "50% inicial · 50% al finalizar", tiempo: "2 meses",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Colombia": {
+                precio: "USD 2,100", sub: "Visa · 2 meses a 2 meses y medio", pago: "50% inicial · 50% al finalizar", tiempo: "2 meses a 2 meses y medio",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Perú": {
+                precio: "USD 1,700", sub: "Visa · 1 mes", pago: "50% inicial · 50% al finalizar", tiempo: "1 mes",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "Chile": {
+                precio: "USD 2,000", sub: "Visa · 1 mes a 1 mes y medio", pago: "50% inicial · 50% al finalizar", tiempo: "1 mes a 1 mes y medio",
+                incluye: ["Visa", "Vuelo", "Hotel", "Seguro médico internacional"],
+                requisitos: ["Relleno de formulario", "Foto 4x4", "Foto del pasaporte"]
+            },
+            "España": {
+                precio: "USD 2,600", sub: "Visado Schengen · 2 meses a 2 meses y medio", pago: "50% inicial · 50% al finalizar", tiempo: "2 meses a 2 meses y medio",
+                incluye: ["Gestión de visado", "Reservación de vuelo", "Reservación de hotel", "Seguro médico internacional"],
+                requisitos: ["Foto 4x4", "Foto del pasaporte", "Relleno de formulario", "Documentación adicional solicitada por el consulado"]
+            },
+            "Uruguay": {
+                precio: "Variable", sub: "Traslado terrestre desde Brasil · 3 días a una semana", pago: "Pago íntegro", tiempo: "3 días a una semana",
+                incluye: ["Traslado terrestre", "Hotel", "Seguro médico internacional", "Desayuno, almuerzo y comida", "SIM con llamadas e internet"],
+                requisitos: ["Pasaporte vigente"], // En la foto no salen requisitos para Uruguay, puse uno genérico
+                nota: "No incluye gestión de visa."
+            }
+        };
+
+        // Generar las tarjetas en la página principal
+        const grid = document.getElementById('gridDestinos');
+        for (const [pais, info] of Object.entries(destinosData)) {
+            const cardHTML = `
+                <div class="card" onclick="abrirModal('${pais}')">
+                    <div class="card-info">
+                        <h3>${pais}</h3>
+                        <p>${info.precio}</p>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += cardHTML;
+        }
+
+        // Función para abrir el modal y llenar los datos
+        function abrirModal(pais) {
+            const info = destinosData[pais];
             
-            // Limpiar y llenar la lista de requisitos
-            const listaReqs = document.getElementById('modalReqs');
-            listaReqs.innerHTML = ''; // Limpia los anteriores
-            requisitos.forEach(function(req) {
-                let li = document.createElement('li');
-                li.innerText = req;
-                listaReqs.appendChild(li);
-            });
-            
-            // Mostrar la ventana
+            document.getElementById('modalTitle').innerText = pais;
+            document.getElementById('modalPrice').innerText = info.precio;
+            document.getElementById('modalSub').innerText = info.sub;
+            document.getElementById('modalPago').innerText = info.pago;
+            document.getElementById('modalTiempo').innerText = info.tiempo;
+
+            // Llenar listas
+            llenarLista('modalIncluye', info.incluye);
+            llenarLista('modalReqs', info.requisitos);
+
+            // Mostrar u ocultar la nota especial (Caso Uruguay)
+            const cajaNota = document.getElementById('modalNota');
+            if (info.nota) {
+                document.getElementById('modalNotaTexto').innerText = info.nota;
+                cajaNota.style.display = 'block';
+            } else {
+                cajaNota.style.display = 'none';
+            }
+
             document.getElementById('detalleModal').style.display = 'flex';
+        }
+
+        function llenarLista(idElemento, arrayDatos) {
+            const lista = document.getElementById(idElemento);
+            lista.innerHTML = '';
+            arrayDatos.forEach(item => {
+                let li = document.createElement('li');
+                li.innerText = item;
+                lista.appendChild(li);
+            });
         }
 
         function cerrarModal() {
             document.getElementById('detalleModal').style.display = 'none';
         }
 
-        // Cerrar el modal si el usuario hace clic afuera de la caja
+        // Cerrar al hacer clic fuera de la caja
         window.onclick = function(event) {
             let modal = document.getElementById('detalleModal');
             if (event.target == modal) {
@@ -572,6 +639,5 @@
             }
         }
     </script>
-
 </body>
 </html>
