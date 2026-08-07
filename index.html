@@ -12,6 +12,7 @@
             --gold-hover: #b5952f;
             --text-light: #ffffff;
             --text-muted: #a0a0a5;
+            --card-bg: #121216;
         }
 
         * {
@@ -24,12 +25,16 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-light);
-            /* Aquí está vinculada tu nueva imagen de portada */
-            background-image: linear-gradient(rgba(8, 8, 10, 0.75), rgba(8, 8, 10, 0.95)), url('image_f53400.jpg');
+            /* Fondo fijo para que al hacer scroll se vea el avión detrás */
+            background-image: linear-gradient(rgba(8, 8, 10, 0.85), rgba(8, 8, 10, 0.95)), url('image_f53400.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            height: 100vh;
+        }
+
+        /* Contenedor principal de la portada */
+        .portada-wrapper {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -41,6 +46,9 @@
             padding: 20px 5%;
             background: rgba(8, 8, 10, 0.5);
             backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo img {
@@ -84,7 +92,7 @@
             flex-direction: column;
             justify-content: center;
             padding: 0 10%;
-            max-width: 800px;
+            max-width: 900px;
         }
 
         .badge {
@@ -155,18 +163,119 @@
             gap: 60px;
             padding: 40px 10%;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(8, 8, 10, 0.8);
         }
 
         .stat-item h3 {
             font-size: 1.5rem;
             margin-bottom: 5px;
+            color: var(--text-light);
         }
 
         .stat-item p {
             color: var(--text-muted);
             font-size: 0.85rem;
         }
+
+        /* --- SECCIÓN DE DESTINOS Y PRECIOS --- */
+        .destinos-section {
+            padding: 80px 10%;
+            background-color: var(--bg-color);
+        }
+
+        .destinos-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .destinos-header p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+
+        .filtros {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid #333;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .filtro-btn.active, .filtro-btn:hover {
+            background-color: var(--gold);
+            color: var(--bg-color);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+
+        .grid-destinos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .card-img {
+            height: 160px;
+            background-color: #1a1a24;
+            position: relative;
+            /* Aquí irían las fotos de las banderas, por ahora usamos gradientes de ejemplo */
+            background-image: linear-gradient(45deg, #1a1a24, #2a2a35);
+        }
+
+        .card-etiqueta {
+            position: absolute;
+            top: 15px;
+            right: 0;
+            background-color: var(--gold);
+            color: var(--bg-color);
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .card-info {
+            padding: 20px;
+        }
+
+        .card-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+        }
+
+        .card-info p {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
         
+        /* Botones flotantes */
         .floating-social {
             position: fixed;
             bottom: 30px;
@@ -174,6 +283,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            z-index: 1000;
         }
         
         .floating-btn {
@@ -186,6 +296,7 @@
             text-decoration: none;
             color: white;
             font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
         .wa-btn { background-color: #25D366; }
@@ -194,46 +305,113 @@
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <img src="logo.png" alt="Prisma Agency">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Destinos</a></li>
-                <li><a href="#">Por qué nosotros</a></li>
-                <li><a href="#">Evaluación</a></li>
-                <li><a href="#">FAQ</a></li>
-            </ul>
-        </nav>
-        <a href="https://wa.me/13144013488" class="btn-contact">Contactar</a>
-    </header>
+    <!-- PORTADA -->
+    <div class="portada-wrapper">
+        <header>
+            <div class="logo">
+                <img src="logo.png" alt="Prisma Agency">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#destinos">Destinos</a></li>
+                    <li><a href="#">Por qué nosotros</a></li>
+                    <li><a href="#">Evaluación</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </nav>
+            <a href="https://wa.me/13144013488" class="btn-contact">Contactar</a>
+        </header>
 
-    <section class="hero">
-        <div class="badge">• Atención 24/7 Disponible</div>
-        <h1>Tu puerta al<br><span>mundo</span></h1>
-        <p>Agencia de viajes premium. Gestionamos boletos aéreos y servicios de viaje con acompañamiento personalizado de inicio a fin.</p>
-        <div class="cta-buttons">
-            <a href="https://wa.me/13144013488" class="btn-primary">Consultar disponibilidad</a>
-            <a href="#destinos" class="btn-secondary">Ver Destinos</a>
-        </div>
-    </section>
+        <section class="hero">
+            <div class="badge">• Atención 24/7 Disponible</div>
+            <h1>Tu puerta al<br><span>mundo</span></h1>
+            <p>Agencia de viajes premium. Gestionamos boletos aéreos y servicios de viaje con acompañamiento personalizado de inicio a fin.</p>
+            <div class="cta-buttons">
+                <a href="https://wa.me/13144013488" class="btn-primary">Consultar disponibilidad</a>
+                <!-- Este botón ahora te lleva directo a la sección de precios de abajo -->
+                <a href="#destinos" class="btn-secondary">Ver Destinos</a>
+            </div>
+        </section>
 
-    <div class="stats">
-        <div class="stat-item">
-            <h3>17+</h3>
-            <p>Destinos activos</p>
-        </div>
-        <div class="stat-item">
-            <h3>100%</h3>
-            <p>Garantía de servicio</p>
-        </div>
-        <div class="stat-item">
-            <h3>24/7</h3>
-            <p>Soporte continuo</p>
+        <div class="stats">
+            <div class="stat-item">
+                <h3>17+</h3>
+                <p>Destinos activos</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Garantía de servicio</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Soporte continuo</p>
+            </div>
         </div>
     </div>
 
+    <!-- SECCIÓN DE PRECIOS Y DESTINOS -->
+    <section id="destinos" class="destinos-section">
+        <div class="destinos-header">
+            <h2>Nuestros Destinos</h2>
+            <p>Ofrecemos trámites de visado, boletos aéreos y contratos de trabajo para los destinos más solicitados. Todos los servicios incluyen acompañamiento personalizado.</p>
+        </div>
+
+        <div class="filtros">
+            <button class="filtro-btn active">Todos</button>
+            <button class="filtro-btn">Visados</button>
+            <button class="filtro-btn">Boletos aéreos</button>
+            <button class="filtro-btn">Contratos laborales</button>
+            <button class="filtro-btn">Traslados</button>
+        </div>
+
+        <div class="grid-destinos">
+            <!-- Tarjeta 1 -->
+            <div class="card">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png') center/cover;">
+                    <div class="card-etiqueta">VISADO</div>
+                </div>
+                <div class="card-info">
+                    <h3>Nicaragua</h3>
+                    <p>USD 1,350</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="card">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/gy.png') center/cover;">
+                    <div class="card-etiqueta">EMISIÓN DE BOLETO AÉREO</div>
+                </div>
+                <div class="card-info">
+                    <h3>Guyana</h3>
+                    <p>USD 1,400</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3 -->
+            <div class="card">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/sr.png') center/cover;">
+                    <div class="card-etiqueta">EMISIÓN DE BOLETO AÉREO</div>
+                </div>
+                <div class="card-info">
+                    <h3>Surinam</h3>
+                    <p>USD 1,250</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 4 -->
+            <div class="card">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png') center/cover;">
+                    <div class="card-etiqueta">PAQUETE CONTRATO LABORAL</div>
+                </div>
+                <div class="card-info">
+                    <h3>México</h3>
+                    <p>USD 3,700</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOTONES FLOTANTES -->
     <div class="floating-social">
         <a href="#" class="floating-btn tg-btn">✈️</a>
         <a href="https://wa.me/13144013488" class="floating-btn wa-btn">📞</a>
