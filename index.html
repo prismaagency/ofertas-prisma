@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #08080a; /* Negro muy oscuro */
-            --gold: #d4af37; /* Dorado de lujo */
+            --bg-color: #08080a; 
+            --gold: #d4af37; 
             --gold-hover: #b5952f;
             --text-light: #ffffff;
             --text-muted: #a0a0a5;
@@ -24,8 +24,8 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-light);
-            /* Aquí puedes poner la ruta de la imagen de fondo del avión */
-            background-image: linear-gradient(rgba(8, 8, 10, 0.85), rgba(8, 8, 10, 0.95)), url('ruta-a-tu-imagen-de-fondo.jpg');
+            /* Aquí está vinculada tu nueva imagen de portada */
+            background-image: linear-gradient(rgba(8, 8, 10, 0.75), rgba(8, 8, 10, 0.95)), url('image_f53400.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -34,7 +34,6 @@
             flex-direction: column;
         }
 
-        /* Navegación */
         header {
             display: flex;
             justify-content: space-between;
@@ -45,7 +44,7 @@
         }
 
         .logo img {
-            height: 50px; /* Tamaño para tu logo.png */
+            height: 50px; 
         }
 
         nav ul {
@@ -79,7 +78,6 @@
             background-color: var(--gold-hover);
         }
 
-        /* Sección Principal (Hero) */
         .hero {
             flex-grow: 1;
             display: flex;
@@ -152,7 +150,6 @@
             border-color: var(--gold);
         }
 
-        /* Estadísticas inferiores */
         .stats {
             display: flex;
             gap: 60px;
@@ -170,7 +167,6 @@
             font-size: 0.85rem;
         }
         
-        /* Botones flotantes */
         .floating-social {
             position: fixed;
             bottom: 30px;
@@ -200,8 +196,7 @@
 
     <header>
         <div class="logo">
-            <!-- Asegúrate de tener tu archivo logo.png en la misma carpeta -->
-            <img src="logo.png" alt="Prisma Agency Logo">
+            <img src="logo.png" alt="Prisma Agency">
         </div>
         <nav>
             <ul>
