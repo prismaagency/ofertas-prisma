@@ -158,25 +158,6 @@
             border-color: var(--gold);
         }
 
-        .stats {
-            display: flex;
-            gap: 60px;
-            padding: 40px 10%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(8, 8, 10, 0.8);
-        }
-
-        .stat-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: var(--text-light);
-        }
-
-        .stat-item p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
         .destinos-section {
             padding: 80px 10%;
             background-color: var(--bg-color);
@@ -219,6 +200,8 @@
             height: 160px;
             background-color: #1a1a24;
             position: relative;
+            background-size: cover !important;
+            background-position: center !important;
         }
 
         .card-info {
@@ -261,7 +244,7 @@
         
         .wa-btn { background-color: #25D366; }
 
-        /* --- VENTANA EMERGENTE ESTILO APP (FOTOS) --- */
+        /* --- VENTANA EMERGENTE ESTILO APP --- */
         .modal {
             display: none; 
             position: fixed; 
@@ -495,37 +478,49 @@
     <section id="destinos" class="destinos-section">
         <div class="destinos-header">
             <h2>Nuestros Destinos</h2>
-            <p>Haz clic en cualquier destino para ver la información detallada.</p>
+            <p>Haz clic en cualquier destino para ver la información detallada de servicios, precios y requisitos.</p>
         </div>
 
         <div class="grid-destinos">
-            <div class="card" onclick="abrirModal('Nicaragua')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png') center/cover;"></div>
-                <div class="card-info"><h3>Nicaragua</h3><p>USD 1,350</p></div>
+            <div class="card" onclick="abrirModal('Argentina')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/ar.png');"></div>
+                <div class="card-info"><h3>Argentina</h3><p>USD 2,200</p></div>
             </div>
-            <div class="card" onclick="abrirModal('México')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png') center/cover;"></div>
-                <div class="card-info"><h3>México</h3><p>USD 3,700</p></div>
+            <div class="card" onclick="abrirModal('Chile')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/cl.png');"></div>
+                <div class="card-info"><h3>Chile</h3><p>USD 2,000</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Guyana')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/gy.png') center/cover;"></div>
-                <div class="card-info"><h3>Guyana</h3><p>USD 1,400</p></div>
+            <div class="card" onclick="abrirModal('Colombia')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/co.png');"></div>
+                <div class="card-info"><h3>Colombia</h3><p>USD 2,100</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Surinam')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/sr.png') center/cover;"></div>
-                <div class="card-info"><h3>Surinam</h3><p>USD 1,250</p></div>
+            <div class="card" onclick="abrirModal('El Salvador')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/sv.png');"></div>
+                <div class="card-info"><h3>El Salvador</h3><p>USD 1,900</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Rep. Dominicana')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/do.png') center/cover;"></div>
-                <div class="card-info"><h3>Rep. Dominicana</h3><p>USD 1,100</p></div>
+            <div class="card" onclick="abrirModal('Emiratos Árabes')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/ae.png');"></div>
+                <div class="card-info"><h3>Emiratos Árabes</h3><p>USD 2,600</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Panamá')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/pa.png') center/cover;"></div>
-                <div class="card-info"><h3>Panamá</h3><p>USD 2,600</p></div>
+            <div class="card" onclick="abrirModal('España')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/es.png');"></div>
+                <div class="card-info"><h3>España</h3><p>USD 2,600</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Brasil')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/br.png') center/cover;"></div>
-                <div class="card-info"><h3>Brasil</h3><p>Variable</p></div>
+            <div class="card" onclick="abrirModal('Perú')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/pe.png');"></div>
+                <div class="card-info"><h3>Perú</h3><p>USD 1,700</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Rusia')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/ru.png');"></div>
+                <div class="card-info"><h3>Rusia</h3><p>USD 1,500</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Turquía')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/tr.png');"></div>
+                <div class="card-info"><h3>Turquía</h3><p>USD 2,750</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Uruguay')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/uy.png');"></div>
+                <div class="card-info"><h3>Uruguay</h3><p>Variable</p></div>
             </div>
         </div>
     </section>
@@ -580,75 +575,105 @@
 
     <script>
         const destinosData = {
-            'Nicaragua': {
-                precio: 'USD 1,350',
-                subtitulo: 'Visado · Una semana',
-                pago: 'Pago íntegro al iniciar',
-                tiempo: 'Una semana',
-                incluye: ['Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Gestión de visado'],
-                requisitos: ['Fotografías tipo pasaporte', 'Carnet de identidad', 'Foto de la primera hoja del pasaporte', 'Fotos de páginas con cuños de entrada/salida (si ha viajado)', 'Dirección actual', 'Estado civil', 'Ocupación', 'Teléfono', 'Correo electrónico'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ni.png'
-            },
-            'México': {
-                precio: 'USD 3,700',
-                subtitulo: 'Paquete contrato laboral · 15 días',
-                pago: 'Pago íntegro',
-                tiempo: '15 días',
-                incluye: ['Contrato laboral', 'Visa por contrato laboral', 'Reservación de hotel', 'Reservación de vuelo', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Currículum (si no posee, la empresa lo elabora)', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/mx.png'
-            },
-            'Guyana': {
-                precio: 'USD 1,400',
-                subtitulo: 'Emisión de boleto aéreo · 12 horas',
-                pago: 'Pago íntegro',
-                tiempo: '12 horas',
-                incluye: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Documentación correspondiente'],
-                requisitos: [],
-                nota: '<strong>Nota:</strong> Entrega aproximada: 12 horas después de confirmado el pago.',
-                flag: 'https://flagcdn.com/w640/gy.png'
-            },
-            'Surinam': {
-                precio: 'USD 1,250',
-                subtitulo: 'Emisión de boleto aéreo · 12 horas',
-                pago: 'Pago íntegro',
-                tiempo: '12 horas',
-                incluye: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
-                requisitos: [],
-                nota: '<strong>Nota:</strong> Entrega posterior a la confirmación del pago.',
-                flag: 'https://flagcdn.com/w640/sr.png'
-            },
-            'Rep. Dominicana': {
-                precio: 'USD 1,100',
-                subtitulo: 'Boleto aéreo + asistencia de entrada · 12 horas',
-                pago: 'Pago íntegro',
-                tiempo: '12 horas',
-                incluye: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Asistencia de entrada (permiso de entrada, no visa)'],
-                requisitos: [],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/do.png'
-            },
-            'Panamá': {
-                precio: 'USD 2,600',
-                subtitulo: 'Visa de turismo · Dos meses',
+            'Argentina': {
+                precio: 'USD 2,200',
+                subtitulo: 'Visa · 2 meses',
                 pago: '50% inicial · 50% al finalizar',
-                tiempo: 'Dos meses',
-                incluye: ['Gestión de visa', 'Reservación de hotel', 'Reservación de vuelo', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4x4', 'Número telefónico', 'Foto del pasaporte'],
+                tiempo: '2 meses',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
                 nota: null,
-                flag: 'https://flagcdn.com/w640/pa.png'
+                flag: 'https://flagcdn.com/w640/ar.png'
             },
-            'Brasil': {
+            'Chile': {
+                precio: 'USD 2,000',
+                subtitulo: 'Visa · 1 mes a 1 mes y medio',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '1 mes a 1 mes y medio',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/cl.png'
+            },
+            'Colombia': {
+                precio: 'USD 2,100',
+                subtitulo: 'Visa · 2 meses a 2 meses y medio',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '2 meses a 2 meses y medio',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/co.png'
+            },
+            'El Salvador': {
+                precio: 'USD 1,900',
+                subtitulo: 'Visa · 1 mes a 2 meses',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '1 mes a 2 meses',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/sv.png'
+            },
+            'Emiratos Árabes': {
+                precio: 'USD 2,600',
+                subtitulo: 'Visa · 5 días',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '5 días',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ae.png'
+            },
+            'España': {
+                precio: 'USD 2,600',
+                subtitulo: 'Visado Schengen · 2 meses a 2 meses y medio',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '2 meses a 2 meses y medio',
+                incluye: ['Gestión de visado', 'Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
+                requisitos: ['Foto 4×4', 'Foto del pasaporte', 'Relleno de formulario', 'Documentación adicional solicitada por el consulado'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/es.png'
+            },
+            'Perú': {
+                precio: 'USD 1,700',
+                subtitulo: 'Visa · 1 mes',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '1 mes',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/pe.png'
+            },
+            'Rusia': {
+                precio: 'USD 1,500',
+                subtitulo: 'Visa · Una semana',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: 'Una semana',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ru.png'
+            },
+            'Turquía': {
+                precio: 'USD 2,750',
+                subtitulo: 'E-visa · Una semana',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: 'Una semana',
+                incluye: ['E-visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/tr.png'
+            },
+            'Uruguay': {
                 precio: 'Variable',
-                subtitulo: 'Traslado terrestre desde Guyana · 3 días',
+                subtitulo: 'Traslado terrestre desde Brasil · 3 días a una semana',
                 pago: 'Pago íntegro',
-                tiempo: '3 días',
-                incluye: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM para llamadas e internet'],
+                tiempo: '3 días a una semana',
+                incluye: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM con llamadas e internet'],
                 requisitos: [],
                 nota: '<strong>Nota:</strong> No incluye gestión de visa.',
-                flag: 'https://flagcdn.com/w640/br.png'
+                flag: 'https://flagcdn.com/w640/uy.png'
             }
         };
 
