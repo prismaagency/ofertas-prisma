@@ -297,74 +297,6 @@
             font-weight: 600;
             font-size: 0.95rem;
         }
-
-        /* SECCIÓN EVALUACIÓN / ENCUESTA */
-        .evaluacion-section {
-            padding: 90px 10%;
-            background: linear-gradient(180deg, #0d111a 0%, var(--bg-color) 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .evaluacion-container {
-            max-width: 650px;
-            margin: 0 auto;
-            background-color: var(--card-bg);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 14px 16px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: var(--gold);
-        }
-
-        select.form-control option {
-            background-color: #0f172a;
-            color: #fff;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background-color: var(--gold);
-            color: #000;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--gold-hover);
-        }
         
         .floating-social {
             position: fixed;
@@ -391,7 +323,7 @@
         
         .wa-btn { background-color: #25D366; }
 
-        /* MODAL */
+        /* MODAL GENERAL */
         .modal {
             display: none; 
             position: fixed; 
@@ -411,7 +343,7 @@
             background-color: var(--modal-bg);
             border-radius: 16px;
             width: 100%;
-            max-width: 450px;
+            max-width: 460px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -591,6 +523,122 @@
         .modal-btn:hover {
             background-color: var(--gold-hover);
         }
+
+        /* MODAL DE EVALUACIÓN DE PERFIL (ESTILO CAPTURA DE PANTALLA) */
+        .eval-header {
+            padding: 25px 25px 15px;
+        }
+
+        .eval-progress-bar {
+            height: 3px;
+            background-color: var(--gold);
+            width: 30%;
+            border-radius: 2px;
+            margin-bottom: 15px;
+            transition: width 0.3s ease;
+        }
+
+        .eval-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .eval-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .eval-body {
+            padding: 0 25px 25px;
+        }
+
+        .eval-question {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .eval-question-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .eval-option {
+            background-color: #1a2333;
+            border: 1px solid #2a364f;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .eval-option:hover {
+            border-color: var(--gold);
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .eval-radio {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .eval-form-group {
+            margin-bottom: 15px;
+        }
+
+        .eval-form-group label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .eval-input, .eval-select {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #1a2333;
+            border: 1px solid #2a364f;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .eval-input:focus, .eval-select:focus {
+            border-color: var(--gold);
+        }
+
+        .eval-step {
+            display: none;
+        }
+
+        .eval-step.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -602,9 +650,9 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#nosotros">Por qué nosotros</a></li>
                     <li><a href="#destinos">Destinos</a></li>
-                    <li><a href="#evaluacion">Evaluación</a></li>
+                    <li><a href="#nosotros">Por qué nosotros</a></li>
+                    <li><a href="javascript:void(0)" onclick="abrirEvaluacion()">Evaluación</a></li>
                 </ul>
             </nav>
             <a href="https://wa.me/13144013488" class="btn-contact">Contactar</a>
@@ -615,7 +663,7 @@
             <h1>Vuela ya hacia tus <span>sueños</span></h1>
             <p>Gestión de visados, reserva de hoteles y ayuda en el terreno. Te acompañamos en cada paso para que tu única preocupación sea disfrutar.</p>
             <div class="cta-buttons">
-                <a href="#evaluacion" class="btn-primary">Consultar disponibilidad</a>
+                <a href="javascript:void(0)" onclick="abrirEvaluacion()" class="btn-primary">Consultar disponibilidad</a>
                 <a href="#destinos" class="btn-secondary">Ver Destinos</a>
             </div>
         </section>
@@ -697,7 +745,7 @@
             </div>
             <div class="card" onclick="abrirModal('Nicaragua')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png');"></div>
-                <div class="card-info"><h3>Nicaragua</h3><p>USD 1,350</p></div>
+                <div class="card-info"><h3>Nicaragua</h3><p>USD 1,500</p></div>
             </div>
             <div class="card" onclick="abrirModal('México')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png');"></div>
@@ -718,72 +766,7 @@
         </div>
     </section>
 
-    <!-- SECCIÓN EVALUACIÓN Y ENCUESTA -->
-    <section id="evaluacion" class="evaluacion-section">
-        <div class="section-header">
-            <h2>Evaluación de <span>Perfil y Disponibilidad</span></h2>
-            <p>Completa este breve cuestionario para analizar tu caso y ponernos en contacto directo contigo inmediatamente.</p>
-        </div>
-
-        <div class="evaluacion-container">
-            <form id="encuestaForm" onsubmit="enviarEvaluacion(event)">
-                <div class="form-group">
-                    <label for="nombre">Nombre completo</label>
-                    <input type="text" id="nombre" class="form-control" placeholder="Ej. Juan Pérez" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="correo">Correo electrónico</label>
-                    <input type="email" id="correo" class="form-control" placeholder="tu-correo@ejemplo.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="destinoSelect">Destino de interés</label>
-                    <select id="destinoSelect" class="form-control" required>
-                        <option value="" disabled selected>Selecciona un país</option>
-                        <option value="Nicaragua">Nicaragua (USD 1,350)</option>
-                        <option value="Argentina">Argentina (USD 2,200)</option>
-                        <option value="Chile">Chile (USD 2,000)</option>
-                        <option value="Colombia">Colombia (USD 2,100)</option>
-                        <option value="El Salvador">El Salvador (USD 1,900)</option>
-                        <option value="Emiratos Árabes">Emiratos Árabes (USD 2,600)</option>
-                        <option value="España">España (USD 2,600)</option>
-                        <option value="Perú">Perú (USD 1,700)</option>
-                        <option value="Rusia">Rusia (USD 1,500)</option>
-                        <option value="Turquía">Turquía (USD 2,750)</option>
-                        <option value="Uruguay">Uruguay (Variable)</option>
-                        <option value="México">México</option>
-                        <option value="Panamá">Panamá</option>
-                        <option value="República Dominicana">República Dominicana</option>
-                        <option value="Costa Rica">Costa Rica</option>
-                        <option value="Otro">Otro destino</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="pasaporte">¿Posees pasaporte vigente?</label>
-                    <select id="pasaporte" class="form-control" required>
-                        <option value="Sí, listo">Sí, listo para viajar</option>
-                        <option value="En proceso de renovación">En proceso de renovación</option>
-                        <option value="No poseo aún">No poseo aún</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="urgencia">¿Cuándo tienes pensado viajar?</label>
-                    <select id="urgencia" class="form-control" required>
-                        <option value="Lo antes posible (Urgente)">Lo antes posible (Urgente)</option>
-                        <option value="En los próximos 30 días">En los próximos 30 días</option>
-                        <option value="En 2 a 3 meses">En 2 a 3 meses</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-submit">Consultar disponibilidad</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- VENTANA EMERGENTE -->
+    <!-- VENTANA EMERGENTE DE DETALLES DEL DESTINO -->
     <div id="detalleModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModal()">&times;</span>
@@ -823,6 +806,106 @@
                 <div id="modalNota" class="nota-box"></div>
                 
                 <a href="https://wa.me/13144013488" class="modal-btn">Iniciar trámite por WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- VENTANA EMERGENTE DE EVALUACIÓN DE PERFIL -->
+    <div id="evaluacionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarEvaluacion()">&times;</span>
+            
+            <div class="eval-header">
+                <div id="evalProgressBar" class="eval-progress-bar"></div>
+                <h3>Evaluación de perfil</h3>
+                <p>Responde unas preguntas para conocer si podemos atenderte.</p>
+            </div>
+            
+            <div class="eval-body">
+                <!-- PASO 1: PASAPORTE -->
+                <div id="evalStep1" class="eval-step active">
+                    <div class="eval-question">
+                        <span class="eval-question-icon">✓</span>
+                        ¿Tienes pasaporte vigente?
+                    </div>
+                    <div class="eval-option" onclick="seleccionarPasaporte('Sí, lo tengo vigente')">
+                        <span class="eval-radio"></span>
+                        Sí, lo tengo vigente
+                    </div>
+                    <div class="eval-option" onclick="seleccionarPasaporte('Estoy en trámite')">
+                        <span class="eval-radio"></span>
+                        Estoy en trámite
+                    </div>
+                    <div class="eval-option" onclick="seleccionarPasaporte('Aún no lo tengo')">
+                        <span class="eval-radio"></span>
+                        Aún no lo tengo
+                    </div>
+                </div>
+
+                <!-- PASO 2: DESTINO -->
+                <div id="evalStep2" class="eval-step">
+                    <div class="eval-question">
+                        <span class="eval-question-icon">✈</span>
+                        ¿A qué país deseas viajar?
+                    </div>
+                    <div class="eval-form-group">
+                        <select id="evalDestino" class="eval-select">
+                            <option value="Nicaragua (USD 1,500)">Nicaragua (USD 1,500)</option>
+                            <option value="Argentina (USD 2,200)">Argentina (USD 2,200)</option>
+                            <option value="Chile (USD 2,000)">Chile (USD 2,000)</option>
+                            <option value="Colombia (USD 2,100)">Colombia (USD 2,100)</option>
+                            <option value="El Salvador (USD 1,900)">El Salvador (USD 1,900)</option>
+                            <option value="Emiratos Árabes (USD 2,600)">Emiratos Árabes (USD 2,600)</option>
+                            <option value="España (USD 2,600)">España (USD 2,600)</option>
+                            <option value="Perú (USD 1,700)">Perú (USD 1,700)</option>
+                            <option value="Rusia (USD 1,500)">Rusia (USD 1,500)</option>
+                            <option value="Turquía (USD 2,750)">Turquía (USD 2,750)</option>
+                            <option value="Uruguay (Variable)">Uruguay (Variable)</option>
+                            <option value="México">México</option>
+                            <option value="Panamá">Panamá</option>
+                            <option value="República Dominicana">República Dominicana</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                        </select>
+                    </div>
+                    <button type="button" onclick="siguientePaso(3)" class="modal-btn">Continuar</button>
+                </div>
+
+                <!-- PASO 3: TIEMPO -->
+                <div id="evalStep3" class="eval-step">
+                    <div class="eval-question">
+                        <span class="eval-question-icon">⏱</span>
+                        ¿Cuándo tienes pensado viajar?
+                    </div>
+                    <div class="eval-option" onclick="seleccionarTiempo('Lo antes posible (Urgente)')">
+                        <span class="eval-radio"></span>
+                        Lo antes posible (Urgente)
+                    </div>
+                    <div class="eval-option" onclick="seleccionarTiempo('En los próximos 30 días')">
+                        <span class="eval-radio"></span>
+                        En los próximos 30 días
+                    </div>
+                    <div class="eval-option" onclick="seleccionarTiempo('En 2 a 3 meses')">
+                        <span class="eval-radio"></span>
+                        En 2 a 3 meses
+                    </div>
+                </div>
+
+                <!-- PASO 4: DATOS DE CONTACTO Y ENVÍO -->
+                <div id="evalStep4" class="eval-step">
+                    <div class="eval-question">
+                        <span class="eval-question-icon">✉</span>
+                        Tus datos para darte disponibilidad
+                    </div>
+                    <div class="eval-form-group">
+                        <label for="evalNombre">Nombre completo</label>
+                        <input type="text" id="evalNombre" class="eval-input" placeholder="Tu nombre">
+                    </div>
+                    <div class="eval-form-group">
+                        <label for="evalCorreo">Correo electrónico</label>
+                        <input type="email" id="evalCorreo" class="eval-input" placeholder="tu-correo@ejemplo.com">
+                    </div>
+                    <button type="button" onclick="finalizarEvaluacionWA()" class="modal-btn">Enviar evaluación por WhatsApp</button>
+                </div>
             </div>
         </div>
     </div>
@@ -934,7 +1017,7 @@
                 flag: 'https://flagcdn.com/w640/uy.png'
             },
             'Nicaragua': {
-                precio: 'USD 1,350',
+                precio: 'USD 1,500',
                 subtitulo: 'Visado · Una semana',
                 pago: 'Pago íntegro al iniciar',
                 tiempo: 'Una semana',
@@ -1048,27 +1131,69 @@
             document.getElementById('detalleModal').style.display = 'none';
         }
 
-        window.onclick = function(event) {
-            let modal = document.getElementById('detalleModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
+        /* LÓGICA DE LA EVALUACIÓN DE PERFIL */
+        let evaluacionRespuestas = {
+            pasaporte: '',
+            destino: '',
+            tiempo: '',
+            nombre: '',
+            correo: ''
+        };
+
+        function abrirEvaluacion() {
+            siguientePaso(1);
+            document.getElementById('evaluacionModal').style.display = 'flex';
         }
 
-        function enviarEvaluacion(e) {
-            e.preventDefault();
-            const nombre = document.getElementById('nombre').value;
-            const correo = document.getElementById('correo').value;
-            const destino = document.getElementById('destinoSelect').value;
-            const pasaporte = document.getElementById('pasaporte').value;
-            const urgencia = document.getElementById('urgencia').value;
+        function cerrarEvaluacion() {
+            document.getElementById('evaluacionModal').style.display = 'none';
+        }
 
-            const mensaje = `Hola Prisma Agency, realizamos una solicitud de evaluación:%0A%0A` +
-                            `👤 *Nombre:* ${encodeURIComponent(nombre)}%0A` +
-                            `📧 *Correo:* ${encodeURIComponent(correo)}%0A` +
-                            `✈️ *Destino de interés:* ${encodeURIComponent(destino)}%0A` +
+        function siguientePaso(paso) {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`evalStep${i}`).classList.remove('active');
+            }
+            document.getElementById(`evalStep${paso}`).classList.add('active');
+            
+            const progressBar = document.getElementById('evalProgressBar');
+            progressBar.style.width = (paso * 25) + '%';
+        }
+
+        function seleccionarPasaporte(valor) {
+            evaluacionRespuestas.pasaporte = valor;
+            siguientePaso(2);
+        }
+
+        function seleccionarTiempo(valor) {
+            evaluacionRespuestas.tiempo = valor;
+            siguientePaso(4);
+        }
+
+        function finalizarEvaluacionWA() {
+            evaluacionRespuestas.destino = document.getElementById('evalDestino').value;
+            evaluacionRespuestas.nombre = document.getElementById('evalNombre').value || 'No especificado';
+            evaluacionRespuestas.correo = document.getElementById('evalCorreo').value || 'No especificado';
+
+            const mensaje = `Hola Prisma Agency, completé la evaluación de perfil:%0A%0A` +
+                            `👤 *Nombre:* ${encodeURIComponent(evaluacionRespuestas.nombre)}%0A` +
+                            `📧 *Correo:* ${encodeURIComponent(evaluacionRespuestas.correo)}%0A` +
+                            `🛂 *Pasaporte vigente:* ${encodeURIComponent(evaluacionRespuestas.pasaporte)}%0A` +
+                            `✈️ *Destino deseado:* ${encodeURIComponent(evaluacionRespuestas.destino)}%0A` +
+                            `⏱️ *Tiempo para viajar:* ${encodeURIComponent(evaluacionRespuestas.tiempo)}`;
 
             window.open(`https://wa.me/13144013488?text=${mensaje}`, '_blank');
+            cerrarEvaluacion();
+        }
+
+        window.onclick = function(event) {
+            let modalDetalle = document.getElementById('detalleModal');
+            let modalEval = document.getElementById('evaluacionModal');
+            if (event.target == modalDetalle) {
+                modalDetalle.style.display = "none";
+            }
+            if (event.target == modalEval) {
+                modalEval.style.display = "none";
+            }
         }
     </script>
 
