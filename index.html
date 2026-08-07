@@ -482,6 +482,7 @@
         </div>
 
         <div class="grid-destinos">
+            <!-- 10 Países Nuevos -->
             <div class="card" onclick="abrirModal('Argentina')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ar.png');"></div>
                 <div class="card-info"><h3>Argentina</h3><p>USD 2,200</p></div>
@@ -521,6 +522,35 @@
             <div class="card" onclick="abrirModal('Uruguay')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/uy.png');"></div>
                 <div class="card-info"><h3>Uruguay</h3><p>Variable</p></div>
+            </div>
+            <!-- 7 Países Anteriores -->
+            <div class="card" onclick="abrirModal('Cuba')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/cu.png');"></div>
+                <div class="card-info"><h3>Cuba</h3><p>Consultar</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Nicaragua')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png');"></div>
+                <div class="card-info"><h3>Nicaragua</h3><p>Consultar</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('México')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png');"></div>
+                <div class="card-info"><h3>México</h3><p>Consultar</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Panamá')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/pa.png');"></div>
+                <div class="card-info"><h3>Panamá</h3><p>Consultar</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('República Dominicana')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/do.png');"></div>
+                <div class="card-info"><h3>República Dominicana</h3><p>Consultar</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Costa Rica')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/cr.png');"></div>
+                <div class="card-info"><h3>Costa Rica</h3><p>Consultar</p></div>
+            </div>
+            <div class="card" onclick="abrirModal('Estados Unidos')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/us.png');"></div>
+                <div class="card-info"><h3>Estados Unidos</h3><p>Consultar</p></div>
             </div>
         </div>
     </section>
@@ -674,6 +704,76 @@
                 requisitos: [],
                 nota: '<strong>Nota:</strong> No incluye gestión de visa.',
                 flag: 'https://flagcdn.com/w640/uy.png'
+            },
+            'Cuba': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y boletería',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/cu.png'
+            },
+            'Nicaragua': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y boletería',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ni.png'
+            },
+            'México': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y trámites',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente', 'Documentación consular'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/mx.png'
+            },
+            'Panamá': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y conexiones',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/pa.png'
+            },
+            'República Dominicana': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y turismo',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/do.png'
+            },
+            'Costa Rica': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y servicios',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/cr.png'
+            },
+            'Estados Unidos': {
+                precio: 'Consultar',
+                subtitulo: 'Asesoría de viajes y conexiones',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente', 'Visa correspondiente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/us.png'
             }
         };
 
