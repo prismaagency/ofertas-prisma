@@ -639,6 +639,95 @@
         .eval-step.active {
             display: block;
         }
+
+        /* =========================================
+           OPTIMIZACIÓN MÓVIL (RESPONSIVE)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Header */
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+                text-align: center;
+            }
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            /* Hero Section */
+            .hero {
+                padding: 0 5%;
+                text-align: center;
+                align-items: center;
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                gap: 10px;
+            }
+            .btn-primary, .btn-secondary {
+                text-align: center;
+                width: 100%;
+            }
+            .badge {
+                margin: 0 auto 20px auto;
+            }
+
+            /* Secciones Generales */
+            .nosotros-section, .destinos-section {
+                padding: 60px 5%;
+            }
+            .section-header h2, .destinos-header h2 {
+                font-size: 2.2rem;
+            }
+
+            /* Modales y Cajas */
+            .info-boxes {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .modal-header-bg {
+                height: 120px;
+            }
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            .modal-price {
+                font-size: 1.3rem;
+            }
+            
+            /* Botón Flotante */
+            .floating-social {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            .eval-question {
+                font-size: 0.95rem;
+            }
+            .eval-option {
+                padding: 12px 15px;
+            }
+        }
     </style>
 </head>
 <body>
