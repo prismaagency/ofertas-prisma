@@ -1,17 +1,11 @@
 {
-  "background_color": "#08080a",
+  "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "Prisma Agency",
+  "name": "prismaagency.github",
   "orientation": "any",
-  "scope": "/ofertas-prisma/",
-  "short_name": "Prisma",
-  "start_url": "/ofertas-prisma/",
-  "theme_color": "#f59e0b",
-  "id": "/ofertas-prisma/",
-  "description": "Gestión de visados, reserva de hoteles y ayuda en el terreno para tus viajes.",
-  "lang": "en",
-  "categories": [
-    "transportation",
-    "travel"
-  ]
+  "scope": "/",
+  "short_name": "prismaagency.github",
+  "start_url": "/",
+  "theme_color": "#ffffff"
+}
