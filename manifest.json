@@ -2,10 +2,10 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "prismaagency.github",
+  "name": "Prisma Agency",
   "orientation": "any",
   "scope": "/",
-  "short_name": "prismaagency.github",
+  "short_name": "prisma",
   "start_url": "/",
   "theme_color": "#ffffff"
 }
