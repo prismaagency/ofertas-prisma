@@ -524,7 +524,7 @@
             background-color: var(--gold-hover);
         }
 
-        /* MODAL DE EVALUACIÓN DE PERFIL (ESTILO CAPTURA DE PANTALLA) */
+        /* MODAL DE EVALUACIÓN DE PERFIL */
         .eval-header {
             padding: 25px 25px 15px;
         }
@@ -640,11 +640,8 @@
             display: block;
         }
 
-        /* =========================================
-           OPTIMIZACIÓN MÓVIL (RESPONSIVE)
-           ========================================= */
+        /* OPTIMIZACIÓN MÓVIL (RESPONSIVE) */
         @media (max-width: 768px) {
-            /* Header */
             header {
                 flex-direction: column;
                 gap: 15px;
@@ -656,8 +653,6 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
-            /* Hero Section */
             .hero {
                 padding: 0 5%;
                 text-align: center;
@@ -682,16 +677,12 @@
             .badge {
                 margin: 0 auto 20px auto;
             }
-
-            /* Secciones Generales */
             .nosotros-section, .destinos-section {
                 padding: 60px 5%;
             }
             .section-header h2, .destinos-header h2 {
                 font-size: 2.2rem;
             }
-
-            /* Modales y Cajas */
             .info-boxes {
                 flex-direction: column;
                 gap: 10px;
@@ -705,8 +696,6 @@
             .modal-price {
                 font-size: 1.3rem;
             }
-            
-            /* Botón Flotante */
             .floating-social {
                 bottom: 20px;
                 right: 20px;
@@ -731,6 +720,15 @@
     </style>
 </head>
 <body>
+
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <div class="floating-social">
+        <a href="https://wa.me/13144013488" class="floating-btn wa-btn" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a5.8 5.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+        </a>
+    </div>
 
     <div class="portada-wrapper">
         <header>
@@ -973,318 +971,13 @@
                         <span class="eval-radio"></span>
                         En los próximos 30 días
                     </div>
-                    <div class="eval-option" onclick="seleccionarTiempo('En 2 a 3 meses')">
+                    <div class="eval-option" onclick="seleccionarTiempo('Otro')">
                         <span class="eval-radio"></span>
-                        En 2 a 3 meses
+                        Otro
                     </div>
-                </div>
-
-                <!-- PASO 4: DATOS DE CONTACTO Y ENVÍO -->
-                <div id="evalStep4" class="eval-step">
-                    <div class="eval-question">
-                        <span class="eval-question-icon">✉</span>
-                        Tus datos para darte disponibilidad
-                    </div>
-                    <div class="eval-form-group">
-                        <label for="evalNombre">Nombre completo</label>
-                        <input type="text" id="evalNombre" class="eval-input" placeholder="Tu nombre">
-                    </div>
-                    <div class="eval-form-group">
-                        <label for="evalCorreo">Correo electrónico</label>
-                        <input type="email" id="evalCorreo" class="eval-input" placeholder="tu-correo@ejemplo.com">
-                    </div>
-                    <button type="button" onclick="finalizarEvaluacionWA()" class="modal-btn">Enviar evaluación por WhatsApp</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="floating-social">
-        <a href="https://wa.me/13144013488" class="floating-btn wa-btn">📞</a>
-    </div>
-
-    <script>
-        const destinosData = {
-            'Argentina': {
-                precio: 'USD 2,200',
-                subtitulo: 'Visa · 2 meses',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '2 meses',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ar.png'
-            },
-            'Chile': {
-                precio: 'USD 2,000',
-                subtitulo: 'Visa · 1 mes a 1 mes y medio',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '1 mes a 1 mes y medio',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/cl.png'
-            },
-            'Colombia': {
-                precio: 'USD 2,100',
-                subtitulo: 'Visa · 2 meses a 2 meses y medio',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '2 meses a 2 meses y medio',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/co.png'
-            },
-            'El Salvador': {
-                precio: 'USD 1,900',
-                subtitulo: 'Visa · 1 mes a 2 meses',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '1 mes a 2 meses',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/sv.png'
-            },
-            'Emiratos Árabes': {
-                precio: 'USD 2,600',
-                subtitulo: 'Visa · 5 días',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '5 días',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ae.png'
-            },
-            'España': {
-                precio: 'USD 2,600',
-                subtitulo: 'Visado Schengen · 2 meses a 2 meses y medio',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '2 meses a 2 meses y medio',
-                incluye: ['Gestión de visado', 'Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
-                requisitos: ['Foto 4×4', 'Foto del pasaporte', 'Relleno de formulario', 'Documentación adicional solicitada por el consulado'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/es.png'
-            },
-            'Perú': {
-                precio: 'USD 1,700',
-                subtitulo: 'Visa · 1 mes',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '1 mes',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/pe.png'
-            },
-            'Rusia': {
-                precio: 'USD 1,500',
-                subtitulo: 'Visa · Una semana',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: 'Una semana',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ru.png'
-            },
-            'Turquía': {
-                precio: 'USD 2,750',
-                subtitulo: 'E-visa · Una semana',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: 'Una semana',
-                incluye: ['E-visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/tr.png'
-            },
-            'Uruguay': {
-                precio: 'Variable',
-                subtitulo: 'Traslado terrestre desde Brasil · 3 días a una semana',
-                pago: 'Pago íntegro',
-                tiempo: '3 días a una semana',
-                incluye: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM con llamadas e internet'],
-                requisitos: [],
-                nota: '<strong>Nota:</strong> No incluye gestión de visa.',
-                flag: 'https://flagcdn.com/w640/uy.png'
-            },
-            'Nicaragua': {
-                precio: 'USD 1,500',
-                subtitulo: 'Visado · Una semana',
-                pago: 'Pago íntegro al iniciar',
-                tiempo: 'Una semana',
-                incluye: [
-                    'Reservación de vuelo',
-                    'Reservación de hotel',
-                    'Seguro médico internacional',
-                    'Gestión de visado'
-                ],
-                requisitos: [
-                    'Fotografías tipo pasaporte',
-                    'Carnet de identidad',
-                    'Foto de la primera hoja del pasaporte',
-                    'Fotos de páginas con cuños de entrada/salida (si ha viajado)',
-                    'Dirección actual',
-                    'Estado civil',
-                    'Ocupación',
-                    'Teléfono',
-                    'Correo electrónico'
-                ],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ni.png'
-            },
-            'México': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y trámites',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente', 'Documentación consular'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/mx.png'
-            },
-            'Panamá': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y conexiones',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/pa.png'
-            },
-            'República Dominicana': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y turismo',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/do.png'
-            },
-            'Costa Rica': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y servicios',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/cr.png'
-            }
-        };
-
-        function abrirModal(pais) {
-            const data = destinosData[pais];
-            if(!data) return;
-
-            document.getElementById('modalTitle').innerText = pais;
-            document.getElementById('modalPrice').innerText = data.precio;
-            document.getElementById('modalSubtitulo').innerText = data.subtitulo;
-            document.getElementById('modalPago').innerText = data.pago;
-            document.getElementById('modalTiempo').innerText = data.tiempo;
-            document.getElementById('modalHeaderBg').style.backgroundImage = `url('${data.flag}')`;
-
-            const listaIncluye = document.getElementById('modalIncluye');
-            listaIncluye.innerHTML = '';
-            data.incluye.forEach(item => {
-                let li = document.createElement('li');
-                li.innerText = item;
-                listaIncluye.appendChild(li);
-            });
-
-            const listaReqs = document.getElementById('modalReqs');
-            const contReqs = document.getElementById('contenedorRequisitos');
-            listaReqs.innerHTML = '';
-            if(data.requisitos.length > 0) {
-                contReqs.style.display = 'block';
-                data.requisitos.forEach(req => {
-                    let li = document.createElement('li');
-                    li.innerText = req;
-                    listaReqs.appendChild(li);
-                });
-            } else {
-                contReqs.style.display = 'none';
-            }
-
-            const cajaNota = document.getElementById('modalNota');
-            if(data.nota) {
-                cajaNota.innerHTML = data.nota;
-                cajaNota.style.display = 'block';
-            } else {
-                cajaNota.style.display = 'none';
-            }
-
-            document.getElementById('detalleModal').style.display = 'flex';
-        }
-
-        function cerrarModal() {
-            document.getElementById('detalleModal').style.display = 'none';
-        }
-
-        /* LÓGICA DE LA EVALUACIÓN DE PERFIL */
-        let evaluacionRespuestas = {
-            pasaporte: '',
-            destino: '',
-            tiempo: '',
-            nombre: '',
-            correo: ''
-        };
-
-        function abrirEvaluacion() {
-            siguientePaso(1);
-            document.getElementById('evaluacionModal').style.display = 'flex';
-        }
-
-        function cerrarEvaluacion() {
-            document.getElementById('evaluacionModal').style.display = 'none';
-        }
-
-        function siguientePaso(paso) {
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`evalStep${i}`).classList.remove('active');
-            }
-            document.getElementById(`evalStep${paso}`).classList.add('active');
-            
-            const progressBar = document.getElementById('evalProgressBar');
-            progressBar.style.width = (paso * 25) + '%';
-        }
-
-        function seleccionarPasaporte(valor) {
-            evaluacionRespuestas.pasaporte = valor;
-            siguientePaso(2);
-        }
-
-        function seleccionarTiempo(valor) {
-            evaluacionRespuestas.tiempo = valor;
-            siguientePaso(4);
-        }
-
-        function finalizarEvaluacionWA() {
-            evaluacionRespuestas.destino = document.getElementById('evalDestino').value;
-            evaluacionRespuestas.nombre = document.getElementById('evalNombre').value || 'No especificado';
-            evaluacionRespuestas.correo = document.getElementById('evalCorreo').value || 'No especificado';
-
-            const mensaje = `Hola Prisma Agency, completé la evaluación de perfil:%0A%0A` +
-                            `👤 *Nombre:* ${encodeURIComponent(evaluacionRespuestas.nombre)}%0A` +
-                            `📧 *Correo:* ${encodeURIComponent(evaluacionRespuestas.correo)}%0A` +
-                            `🛂 *Pasaporte vigente:* ${encodeURIComponent(evaluacionRespuestas.pasaporte)}%0A` +
-                            `✈️ *Destino deseado:* ${encodeURIComponent(evaluacionRespuestas.destino)}%0A` +
-                            `⏱️ *Tiempo para viajar:* ${encodeURIComponent(evaluacionRespuestas.tiempo)}`;
-
-            window.open(`https://wa.me/13144013488?text=${mensaje}`, '_blank');
-            cerrarEvaluacion();
-        }
-
-        window.onclick = function(event) {
-            let modalDetalle = document.getElementById('detalleModal');
-            let modalEval = document.getElementById('evaluacionModal');
-            if (event.target == modalDetalle) {
-                modalDetalle.style.display = "none";
-            }
-            if (event.target == modalEval) {
-                modalEval.style.display = "none";
-            }
-        }
-    </script>
-
 </body>
 </html>
