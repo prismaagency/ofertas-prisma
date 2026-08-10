@@ -532,7 +532,7 @@
         .eval-progress-bar {
             height: 3px;
             background-color: var(--gold);
-            width: 33%;
+            width: 30%;
             border-radius: 2px;
             margin-bottom: 15px;
             transition: width 0.3s ease;
@@ -720,15 +720,6 @@
     </style>
 </head>
 <body>
-
-    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
-    <div class="floating-social">
-        <a href="https://wa.me/13144013488" class="floating-btn wa-btn" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a5.8 5.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-        </a>
-    </div>
 
     <div class="portada-wrapper">
         <header>
@@ -937,21 +928,21 @@
                     </div>
                     <div class="eval-form-group">
                         <select id="evalDestino" class="eval-select">
-                            <option value="Argentina">Argentina (USD 2,200)</option>
-                            <option value="Chile">Chile (USD 2,000)</option>
-                            <option value="Colombia">Colombia (USD 2,100)</option>
-                            <option value="El Salvador">El Salvador (USD 1,900)</option>
-                            <option value="Emiratos Árabes">Emiratos Árabes (USD 2,600)</option>
-                            <option value="España">España (USD 2,600)</option>
-                            <option value="Perú">Perú (USD 1,700)</option>
-                            <option value="Rusia">Rusia (USD 1,500)</option>
-                            <option value="Turquía">Turquía (USD 2,750)</option>
-                            <option value="Uruguay">Uruguay (Variable)</option>
-                            <option value="Nicaragua">Nicaragua (USD 1,500)</option>
-                            <option value="México">México (Consultar)</option>
-                            <option value="Panamá">Panamá (Consultar)</option>
-                            <option value="República Dominicana">República Dominicana (Consultar)</option>
-                            <option value="Costa Rica">Costa Rica (Consultar)</option>
+                            <option value="Nicaragua (USD 1,500)">Nicaragua (USD 1,500)</option>
+                            <option value="Argentina (USD 2,200)">Argentina (USD 2,200)</option>
+                            <option value="Chile (USD 2,000)">Chile (USD 2,000)</option>
+                            <option value="Colombia (USD 2,100)">Colombia (USD 2,100)</option>
+                            <option value="El Salvador (USD 1,900)">El Salvador (USD 1,900)</option>
+                            <option value="Emiratos Árabes (USD 2,600)">Emiratos Árabes (USD 2,600)</option>
+                            <option value="España (USD 2,600)">España (USD 2,600)</option>
+                            <option value="Perú (USD 1,700)">Perú (USD 1,700)</option>
+                            <option value="Rusia (USD 1,500)">Rusia (USD 1,500)</option>
+                            <option value="Turquía (USD 2,750)">Turquía (USD 2,750)</option>
+                            <option value="Uruguay (Variable)">Uruguay (Variable)</option>
+                            <option value="México">México</option>
+                            <option value="Panamá">Panamá</option>
+                            <option value="República Dominicana">República Dominicana</option>
+                            <option value="Costa Rica">Costa Rica</option>
                         </select>
                     </div>
                     <button type="button" onclick="siguientePaso(3)" class="modal-btn">Continuar</button>
@@ -971,240 +962,318 @@
                         <span class="eval-radio"></span>
                         En los próximos 30 días
                     </div>
-                    <div class="eval-option" onclick="seleccionarTiempo('Otro')">
+                    <div class="eval-option" onclick="seleccionarTiempo('En 2 a 3 meses')">
                         <span class="eval-radio"></span>
-                        Otro
+                        En 2 a 3 meses
                     </div>
+                </div>
+
+                <!-- PASO 4: DATOS DE CONTACTO Y ENVÍO -->
+                <div id="evalStep4" class="eval-step">
+                    <div class="eval-question">
+                        <span class="eval-question-icon">✉</span>
+                        Tus datos para darte disponibilidad
+                    </div>
+                    <div class="eval-form-group">
+                        <label for="evalNombre">Nombre completo</label>
+                        <input type="text" id="evalNombre" class="eval-input" placeholder="Tu nombre">
+                    </div>
+                    <div class="eval-form-group">
+                        <label for="evalCorreo">Correo electrónico</label>
+                        <input type="email" id="evalCorreo" class="eval-input" placeholder="tu-correo@ejemplo.com">
+                    </div>
+                    <button type="button" onclick="finalizarEvaluacionWA()" class="modal-btn">Enviar evaluación por WhatsApp</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT DE FUNCIONALIDAD COMPLETO -->
+    <div class="floating-social">
+        <a href="https://wa.me/13144013488" class="floating-btn wa-btn">📞</a>
+    </div>
+
     <script>
         const destinosData = {
-            'Argentina': { 
-                precio: 'USD 2,200', 
-                sub: 'Turismo y Gestión de Visado', 
-                pago: '50% inicial, 50% al aprobar', 
-                tiempo: '15 días hábiles', 
-                incluye: ['Gestión de visa y documentación', 'Reserva de hotel confirmada', 'Seguro de viaje internacional'], 
-                reqs: ['Pasaporte vigente', 'Fotos actualizadas', 'Extractos bancarios'],
-                nota: 'Sujeto a disponibilidad consular.' 
+            'Argentina': {
+                precio: 'USD 2,200',
+                subtitulo: 'Visa · 2 meses',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '2 meses',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ar.png'
             },
-            'Chile': { 
-                precio: 'USD 2,000', 
-                sub: 'Turismo y Trámite Consular', 
-                pago: '50% reserva, 50% al finalizar', 
-                tiempo: '12 días hábiles', 
-                incluye: ['Trámites consulares', 'Guía de apoyo y asesoría', 'Reserva de alojamiento'], 
-                reqs: ['Pasaporte vigente', 'Extracto bancario reciente'],
-                nota: '' 
+            'Chile': {
+                precio: 'USD 2,000',
+                subtitulo: 'Visa · 1 mes a 1 mes y medio',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '1 mes a 1 mes y medio',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/cl.png'
             },
-            'Colombia': { 
-                precio: 'USD 2,100', 
-                sub: 'Paquete Turístico Completo', 
-                pago: '50% / 50%', 
-                tiempo: '10 días hábiles', 
-                incluye: ['Gestión de ingreso', 'Hotel categoría turística', 'Asistencia permanente'], 
-                reqs: ['Pasaporte vigente', 'Cédula de identidad'],
-                nota: '' 
+            'Colombia': {
+                precio: 'USD 2,100',
+                subtitulo: 'Visa · 2 meses a 2 meses y medio',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '2 meses a 2 meses y medio',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/co.png'
             },
-            'El Salvador': { 
-                precio: 'USD 1,900', 
-                sub: 'Paquete Express', 
-                pago: '50% / 50%', 
-                tiempo: '8 días hábiles', 
-                incluye: ['Gestión de documentación', 'Reserva de hotel'], 
-                reqs: ['Pasaporte vigente'],
-                nota: '' 
+            'El Salvador': {
+                precio: 'USD 1,900',
+                subtitulo: 'Visa · 1 mes a 2 meses',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '1 mes a 2 meses',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/sv.png'
             },
-            'Emiratos Árabes': { 
-                precio: 'USD 2,600', 
-                sub: 'Visa y Estancia Premium', 
-                pago: '50% / 50%', 
-                tiempo: '14 días hábiles', 
-                incluye: ['Visa electrónica de EAU', 'Hotel 4 estrellas', 'Seguro médico premium'], 
-                reqs: ['Pasaporte escaneado a color', 'Fotografía fondo blanco tamaño carnet'],
-                nota: 'Requiere validación anticipada de antecedentes.' 
+            'Emiratos Árabes': {
+                precio: 'USD 2,600',
+                subtitulo: 'Visa · 5 días',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '5 días',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ae.png'
             },
-            'España': { 
-                precio: 'USD 2,600', 
-                sub: 'Schengen / Turismo', 
-                pago: '50% inicio, 50% al aprobar', 
-                tiempo: '20 a 25 días hábiles', 
-                incluye: ['Gestión completa de cita Schengen', 'Reserva de vuelos y hotel', 'Seguro médico obligatorio'], 
-                reqs: ['Pasaporte con vigencia mínima de 6 meses', 'Pruebas de vínculos laborales o económicos', 'Extractos bancarios'],
-                nota: 'Es indispensable la presencia física para la toma de datos biométricos.' 
+            'España': {
+                precio: 'USD 2,600',
+                subtitulo: 'Visado Schengen · 2 meses a 2 meses y medio',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '2 meses a 2 meses y medio',
+                incluye: ['Gestión de visado', 'Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
+                requisitos: ['Foto 4×4', 'Foto del pasaporte', 'Relleno de formulario', 'Documentación adicional solicitada por el consulado'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/es.png'
             },
-            'Perú': { 
-                precio: 'USD 1,700', 
-                sub: 'Turismo y Alojamiento', 
-                pago: '50% / 50%', 
-                tiempo: '8 días hábiles', 
-                incluye: ['Alojamiento confirmado', 'Asesoría de viaje', 'Soporte en destino'], 
-                reqs: ['Pasaporte vigente'],
-                nota: '' 
+            'Perú': {
+                precio: 'USD 1,700',
+                subtitulo: 'Visa · 1 mes',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: '1 mes',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/pe.png'
             },
-            'Rusia': { 
-                precio: 'USD 1,500', 
-                sub: 'Visado y Alojamiento', 
-                pago: '50% / 50%', 
-                tiempo: '15 días hábiles', 
-                incluye: ['Carta invitación oficial', 'Gestión de visado consular', 'Reserva de hotel'], 
-                reqs: ['Pasaporte vigente', 'Formulario consular digital'],
-                nota: '' 
+            'Rusia': {
+                precio: 'USD 1,500',
+                subtitulo: 'Visa · Una semana',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: 'Una semana',
+                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ru.png'
             },
-            'Turquía': { 
-                precio: 'USD 2,750', 
-                sub: 'Circuito Completo', 
-                pago: '50% / 50%', 
-                tiempo: '12 días hábiles', 
-                incluye: ['Visa electrónica / Gestión', 'Hotel de categoría superior', 'Seguro de viaje internacional'], 
-                reqs: ['Pasaporte vigente', 'Correo electrónico activo'],
-                nota: '' 
+            'Turquía': {
+                precio: 'USD 2,750',
+                subtitulo: 'E-visa · Una semana',
+                pago: '50% inicial · 50% al finalizar',
+                tiempo: 'Una semana',
+                incluye: ['E-visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
+                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/tr.png'
             },
-            'Uruguay': { 
-                precio: 'Variable', 
-                sub: 'Asesoría a Medida', 
-                pago: 'A consultar', 
-                tiempo: 'Según requerimiento', 
-                incluye: ['Evaluación de perfil migratorio', 'Armado de expediente'], 
-                reqs: ['Pasaporte vigente', 'Cédula de identidad'],
-                nota: 'Los costos varían según el tipo de visado o permiso solicitado.' 
+            'Uruguay': {
+                precio: 'Variable',
+                subtitulo: 'Traslado terrestre desde Brasil · 3 días a una semana',
+                pago: 'Pago íntegro',
+                tiempo: '3 días a una semana',
+                incluye: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM con llamadas e internet'],
+                requisitos: [],
+                nota: '<strong>Nota:</strong> No incluye gestión de visa.',
+                flag: 'https://flagcdn.com/w640/uy.png'
             },
-            'Nicaragua': { 
-                precio: 'USD 1,500', 
-                sub: 'Trámite Rápido', 
-                pago: '50% / 50%', 
-                tiempo: '7 días hábiles', 
-                incluye: ['Gestión migratoria', 'Reserva de hotel', 'Asistencia'], 
-                reqs: ['Pasaporte vigente'],
-                nota: '' 
+            'Nicaragua': {
+                precio: 'USD 1,500',
+                subtitulo: 'Visado · Una semana',
+                pago: 'Pago íntegro al iniciar',
+                tiempo: 'Una semana',
+                incluye: [
+                    'Reservación de vuelo',
+                    'Reservación de hotel',
+                    'Seguro médico internacional',
+                    'Gestión de visado'
+                ],
+                requisitos: [
+                    'Fotografías tipo pasaporte',
+                    'Carnet de identidad',
+                    'Foto de la primera hoja del pasaporte',
+                    'Fotos de páginas con cuños de entrada/salida (si ha viajado)',
+                    'Dirección actual',
+                    'Estado civil',
+                    'Ocupación',
+                    'Teléfono',
+                    'Correo electrónico'
+                ],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ni.png'
             },
-            'México': { 
-                precio: 'Consultar', 
-                sub: 'Evaluación Consular', 
-                pago: 'A convenir', 
-                tiempo: 'Sujeto a cita consular', 
-                incluye: ['Llenado de formulario de visado', 'Asesoría para entrevista', 'Revisión de requisitos'], 
-                reqs: ['Pasaporte vigente', 'Historial laboral y financiero'],
-                nota: 'Sujeto a disponibilidad de citas en la embajada.' 
+            'México': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y trámites',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente', 'Documentación consular'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/mx.png'
             },
-            'Panamá': { 
-                precio: 'Consultar', 
-                sub: 'Turismo y Negocios', 
-                pago: 'A convenir', 
-                tiempo: '10 días hábiles', 
-                incluye: ['Gestión de requisitos de entrada', 'Reserva hotelera', 'Asesoría de solvencia'], 
-                reqs: ['Pasaporte vigente', 'Boleto aéreo de salida'],
-                nota: '' 
+            'Panamá': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y conexiones',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/pa.png'
             },
-            'República Dominicana': { 
-                precio: 'Consultar', 
-                sub: 'Turismo y Estancia', 
-                pago: 'A convenir', 
-                tiempo: '8 días hábiles', 
-                incluye: ['Asesoría de ingreso', 'Reserva de hotel', 'Soporte 24/7'], 
-                reqs: ['Pasaporte vigente'],
-                nota: '' 
+            'República Dominicana': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y turismo',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/do.png'
             },
-            'Costa Rica': { 
-                precio: 'Consultar', 
-                sub: 'Trámite Especializado', 
-                pago: 'A convenir', 
-                tiempo: '12 días hábiles', 
-                incluye: ['Revisión de documentos', 'Asesoría consular', 'Reserva'], 
-                reqs: ['Pasaporte vigente', 'Extractos financieros'],
-                nota: '' 
+            'Costa Rica': {
+                precio: 'Consultar',
+                subtitulo: 'Gestión de viajes y servicios',
+                pago: 'Personalizado',
+                tiempo: 'Consultar',
+                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
+                requisitos: ['Pasaporte vigente'],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/cr.png'
             }
         };
 
         function abrirModal(pais) {
-            const modal = document.getElementById('detalleModal');
-            const data = destinosData[pais] || { 
-                precio: 'Consultar', 
-                sub: 'Información general', 
-                pago: 'Contactar', 
-                tiempo: 'Consultar', 
-                incluye: ['Asesoría personalizada', 'Atención 24/7'], 
-                reqs: ['Pasaporte vigente', 'Documentación básica'],
-                nota: ''
-            };
-            
+            const data = destinosData[pais];
+            if(!data) return;
+
             document.getElementById('modalTitle').innerText = pais;
             document.getElementById('modalPrice').innerText = data.precio;
-            document.getElementById('modalSubtitulo').innerText = data.sub;
+            document.getElementById('modalSubtitulo').innerText = data.subtitulo;
             document.getElementById('modalPago').innerText = data.pago;
             document.getElementById('modalTiempo').innerText = data.tiempo;
-            
-            const listaIncluye = document.getElementById('modalIncluye');
-            listaIncluye.innerHTML = data.incluye.map(item => `<li>${item}</li>`).join('');
-            
-            const listaReqs = document.getElementById('modalReqs');
-            listaReqs.innerHTML = data.reqs.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('modalHeaderBg').style.backgroundImage = `url('${data.flag}')`;
 
-            const notaBox = document.getElementById('modalNota');
-            if (data.nota && data.nota.trim() !== '') {
-                notaBox.innerHTML = `<strong>Nota:</strong> ${data.nota}`;
-                notaBox.style.display = 'block';
+            const listaIncluye = document.getElementById('modalIncluye');
+            listaIncluye.innerHTML = '';
+            data.incluye.forEach(item => {
+                let li = document.createElement('li');
+                li.innerText = item;
+                listaIncluye.appendChild(li);
+            });
+
+            const listaReqs = document.getElementById('modalReqs');
+            const contReqs = document.getElementById('contenedorRequisitos');
+            listaReqs.innerHTML = '';
+            if(data.requisitos.length > 0) {
+                contReqs.style.display = 'block';
+                data.requisitos.forEach(req => {
+                    let li = document.createElement('li');
+                    li.innerText = req;
+                    listaReqs.appendChild(li);
+                });
             } else {
-                notaBox.style.display = 'none';
+                contReqs.style.display = 'none';
             }
-            
-            modal.style.display = 'flex';
+
+            const cajaNota = document.getElementById('modalNota');
+            if(data.nota) {
+                cajaNota.innerHTML = data.nota;
+                cajaNota.style.display = 'block';
+            } else {
+                cajaNota.style.display = 'none';
+            }
+
+            document.getElementById('detalleModal').style.display = 'flex';
         }
 
         function cerrarModal() {
             document.getElementById('detalleModal').style.display = 'none';
         }
 
-        let datosEvaluacion = { pasaporte: '', destino: 'Argentina', tiempo: '' };
+        /* LÓGICA DE LA EVALUACIÓN DE PERFIL */
+        let evaluacionRespuestas = {
+            pasaporte: '',
+            destino: '',
+            tiempo: '',
+            nombre: '',
+            correo: ''
+        };
 
         function abrirEvaluacion() {
+            siguientePaso(1);
             document.getElementById('evaluacionModal').style.display = 'flex';
-            irPasoEval(1);
         }
 
         function cerrarEvaluacion() {
             document.getElementById('evaluacionModal').style.display = 'none';
         }
 
-        function irPasoEval(paso) {
-            document.querySelectorAll('.eval-step').forEach(el => el.classList.remove('active'));
-            document.getElementById('evalStep' + paso).classList.add('active');
-            const barra = document.getElementById('evalProgressBar');
-            if (paso === 1) barra.style.width = '33%';
-            if (paso === 2) barra.style.width = '66%';
-            if (paso === 3) barra.style.width = '100%';
+        function siguientePaso(paso) {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`evalStep${i}`).classList.remove('active');
+            }
+            document.getElementById(`evalStep${paso}`).classList.add('active');
+            
+            const progressBar = document.getElementById('evalProgressBar');
+            progressBar.style.width = (paso * 25) + '%';
         }
 
         function seleccionarPasaporte(valor) {
-            datosEvaluacion.pasaporte = valor;
-            irPasoEval(2);
-        }
-
-        function siguientePaso(paso) {
-            const selectDestino = document.getElementById('evalDestino');
-            if (selectDestino) {
-                datosEvaluacion.destino = selectDestino.value;
-            }
-            irPasoEval(paso);
+            evaluacionRespuestas.pasaporte = valor;
+            siguientePaso(2);
         }
 
         function seleccionarTiempo(valor) {
-            datosEvaluacion.tiempo = valor;
-            cerrarEvaluacion();
-            const mensaje = encodeURIComponent(`Hola, acabo de hacer la evaluación en su web. Mi pasaporte: "${datosEvaluacion.pasaporte}", Destino deseado: "${datosEvaluacion.destino}", Tiempo estimado de viaje: "${valor}". Deseo iniciar mi trámite.`);
+            evaluacionRespuestas.tiempo = valor;
+            siguientePaso(4);
+        }
+
+        function finalizarEvaluacionWA() {
+            evaluacionRespuestas.destino = document.getElementById('evalDestino').value;
+            evaluacionRespuestas.nombre = document.getElementById('evalNombre').value || 'No especificado';
+            evaluacionRespuestas.correo = document.getElementById('evalCorreo').value || 'No especificado';
+
+            const mensaje = `Hola Prisma Agency, completé la evaluación de perfil:%0A%0A` +
+                            `👤 *Nombre:* ${encodeURIComponent(evaluacionRespuestas.nombre)}%0A` +
+                            `📧 *Correo:* ${encodeURIComponent(evaluacionRespuestas.correo)}%0A` +
+                            `Passport *Pasaporte vigente:* ${encodeURIComponent(evaluacionRespuestas.pasaporte)}%0A` +
+                            `✈️ *Destino deseado:* ${encodeURIComponent(evaluacionRespuestas.destino)}%0A` +
+                            `⏱️ *Tiempo para viajar:* ${encodeURIComponent(evaluacionRespuestas.tiempo)}`;
+
             window.open(`https://wa.me/13144013488?text=${mensaje}`, '_blank');
+            cerrarEvaluacion();
         }
 
         window.onclick = function(event) {
-            const modalDetalle = document.getElementById('detalleModal');
-            const modalEval = document.getElementById('evaluacionModal');
-            if (event.target == modalDetalle) { cerrarModal(); }
-            if (event.target == modalEval) { cerrarEvaluacion(); }
+            let modalDetalle = document.getElementById('detalleModal');
+            let modalEval = document.getElementById('evaluacionModal');
+            if (event.target == modalDetalle) {
+                modalDetalle.style.display = "none";
+            }
+            if (event.target == modalEval) {
+                modalEval.style.display = "none";
+            }
         }
     </script>
+
 </body>
 </html>
