@@ -4,10 +4,23 @@
   "display": "standalone",
   "name": "Prisma Agency",
   "orientation": "any",
-  "scope": "/",
+  "scope": "/ofertas-prisma/",
   "short_name": "Prisma",
-  "start_url": "/",
+  "start_url": "/ofertas-prisma/",
   "theme_color": "#f59e0b",
   "id": "/ofertas-prisma/",
-  "description": "Gestión de visados, reserva de hoteles y ayuda en el terreno para tus viajes"
+  "description": "Gestión de visados, reserva de hoteles y ayuda en el terreno para tus viajes.",
+  "lang": "en",
+  "categories": [
+    "transportation",
+    "travel"
+  ],
+  "icons": [
+    {
+      "src": "https://github.com/prismaagency/ofertas-prisma/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
