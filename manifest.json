@@ -17,7 +17,7 @@
   ],
   "icons": [
     {
-      "src": "https://github.com/prismaagency/ofertas-prisma/icon.png",
+      "src": "/ofertas-prisma/icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
