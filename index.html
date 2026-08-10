@@ -532,7 +532,7 @@
         .eval-progress-bar {
             height: 3px;
             background-color: var(--gold);
-            width: 30%;
+            width: 33%;
             border-radius: 2px;
             margin-bottom: 15px;
             transition: width 0.3s ease;
@@ -937,21 +937,21 @@
                     </div>
                     <div class="eval-form-group">
                         <select id="evalDestino" class="eval-select">
-                            <option value="Nicaragua (USD 1,500)">Nicaragua (USD 1,500)</option>
-                            <option value="Argentina (USD 2,200)">Argentina (USD 2,200)</option>
-                            <option value="Chile (USD 2,000)">Chile (USD 2,000)</option>
-                            <option value="Colombia (USD 2,100)">Colombia (USD 2,100)</option>
-                            <option value="El Salvador (USD 1,900)">El Salvador (USD 1,900)</option>
-                            <option value="Emiratos Árabes (USD 2,600)">Emiratos Árabes (USD 2,600)</option>
-                            <option value="España (USD 2,600)">España (USD 2,600)</option>
-                            <option value="Perú (USD 1,700)">Perú (USD 1,700)</option>
-                            <option value="Rusia (USD 1,500)">Rusia (USD 1,500)</option>
-                            <option value="Turquía (USD 2,750)">Turquía (USD 2,750)</option>
-                            <option value="Uruguay (Variable)">Uruguay (Variable)</option>
-                            <option value="México">México</option>
-                            <option value="Panamá">Panamá</option>
-                            <option value="República Dominicana">República Dominicana</option>
-                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Argentina">Argentina (USD 2,200)</option>
+                            <option value="Chile">Chile (USD 2,000)</option>
+                            <option value="Colombia">Colombia (USD 2,100)</option>
+                            <option value="El Salvador">El Salvador (USD 1,900)</option>
+                            <option value="Emiratos Árabes">Emiratos Árabes (USD 2,600)</option>
+                            <option value="España">España (USD 2,600)</option>
+                            <option value="Perú">Perú (USD 1,700)</option>
+                            <option value="Rusia">Rusia (USD 1,500)</option>
+                            <option value="Turquía">Turquía (USD 2,750)</option>
+                            <option value="Uruguay">Uruguay (Variable)</option>
+                            <option value="Nicaragua">Nicaragua (USD 1,500)</option>
+                            <option value="México">México (Consultar)</option>
+                            <option value="Panamá">Panamá (Consultar)</option>
+                            <option value="República Dominicana">República Dominicana (Consultar)</option>
+                            <option value="Costa Rica">Costa Rica (Consultar)</option>
                         </select>
                     </div>
                     <button type="button" onclick="siguientePaso(3)" class="modal-btn">Continuar</button>
@@ -979,5 +979,232 @@
             </div>
         </div>
     </div>
+
+    <!-- SCRIPT DE FUNCIONALIDAD COMPLETO -->
+    <script>
+        const destinosData = {
+            'Argentina': { 
+                precio: 'USD 2,200', 
+                sub: 'Turismo y Gestión de Visado', 
+                pago: '50% inicial, 50% al aprobar', 
+                tiempo: '15 días hábiles', 
+                incluye: ['Gestión de visa y documentación', 'Reserva de hotel confirmada', 'Seguro de viaje internacional'], 
+                reqs: ['Pasaporte vigente', 'Fotos actualizadas', 'Extractos bancarios'],
+                nota: 'Sujeto a disponibilidad consular.' 
+            },
+            'Chile': { 
+                precio: 'USD 2,000', 
+                sub: 'Turismo y Trámite Consular', 
+                pago: '50% reserva, 50% al finalizar', 
+                tiempo: '12 días hábiles', 
+                incluye: ['Trámites consulares', 'Guía de apoyo y asesoría', 'Reserva de alojamiento'], 
+                reqs: ['Pasaporte vigente', 'Extracto bancario reciente'],
+                nota: '' 
+            },
+            'Colombia': { 
+                precio: 'USD 2,100', 
+                sub: 'Paquete Turístico Completo', 
+                pago: '50% / 50%', 
+                tiempo: '10 días hábiles', 
+                incluye: ['Gestión de ingreso', 'Hotel categoría turística', 'Asistencia permanente'], 
+                reqs: ['Pasaporte vigente', 'Cédula de identidad'],
+                nota: '' 
+            },
+            'El Salvador': { 
+                precio: 'USD 1,900', 
+                sub: 'Paquete Express', 
+                pago: '50% / 50%', 
+                tiempo: '8 días hábiles', 
+                incluye: ['Gestión de documentación', 'Reserva de hotel'], 
+                reqs: ['Pasaporte vigente'],
+                nota: '' 
+            },
+            'Emiratos Árabes': { 
+                precio: 'USD 2,600', 
+                sub: 'Visa y Estancia Premium', 
+                pago: '50% / 50%', 
+                tiempo: '14 días hábiles', 
+                incluye: ['Visa electrónica de EAU', 'Hotel 4 estrellas', 'Seguro médico premium'], 
+                reqs: ['Pasaporte escaneado a color', 'Fotografía fondo blanco tamaño carnet'],
+                nota: 'Requiere validación anticipada de antecedentes.' 
+            },
+            'España': { 
+                precio: 'USD 2,600', 
+                sub: 'Schengen / Turismo', 
+                pago: '50% inicio, 50% al aprobar', 
+                tiempo: '20 a 25 días hábiles', 
+                incluye: ['Gestión completa de cita Schengen', 'Reserva de vuelos y hotel', 'Seguro médico obligatorio'], 
+                reqs: ['Pasaporte con vigencia mínima de 6 meses', 'Pruebas de vínculos laborales o económicos', 'Extractos bancarios'],
+                nota: 'Es indispensable la presencia física para la toma de datos biométricos.' 
+            },
+            'Perú': { 
+                precio: 'USD 1,700', 
+                sub: 'Turismo y Alojamiento', 
+                pago: '50% / 50%', 
+                tiempo: '8 días hábiles', 
+                incluye: ['Alojamiento confirmado', 'Asesoría de viaje', 'Soporte en destino'], 
+                reqs: ['Pasaporte vigente'],
+                nota: '' 
+            },
+            'Rusia': { 
+                precio: 'USD 1,500', 
+                sub: 'Visado y Alojamiento', 
+                pago: '50% / 50%', 
+                tiempo: '15 días hábiles', 
+                incluye: ['Carta invitación oficial', 'Gestión de visado consular', 'Reserva de hotel'], 
+                reqs: ['Pasaporte vigente', 'Formulario consular digital'],
+                nota: '' 
+            },
+            'Turquía': { 
+                precio: 'USD 2,750', 
+                sub: 'Circuito Completo', 
+                pago: '50% / 50%', 
+                tiempo: '12 días hábiles', 
+                incluye: ['Visa electrónica / Gestión', 'Hotel de categoría superior', 'Seguro de viaje internacional'], 
+                reqs: ['Pasaporte vigente', 'Correo electrónico activo'],
+                nota: '' 
+            },
+            'Uruguay': { 
+                precio: 'Variable', 
+                sub: 'Asesoría a Medida', 
+                pago: 'A consultar', 
+                tiempo: 'Según requerimiento', 
+                incluye: ['Evaluación de perfil migratorio', 'Armado de expediente'], 
+                reqs: ['Pasaporte vigente', 'Cédula de identidad'],
+                nota: 'Los costos varían según el tipo de visado o permiso solicitado.' 
+            },
+            'Nicaragua': { 
+                precio: 'USD 1,500', 
+                sub: 'Trámite Rápido', 
+                pago: '50% / 50%', 
+                tiempo: '7 días hábiles', 
+                incluye: ['Gestión migratoria', 'Reserva de hotel', 'Asistencia'], 
+                reqs: ['Pasaporte vigente'],
+                nota: '' 
+            },
+            'México': { 
+                precio: 'Consultar', 
+                sub: 'Evaluación Consular', 
+                pago: 'A convenir', 
+                tiempo: 'Sujeto a cita consular', 
+                incluye: ['Llenado de formulario de visado', 'Asesoría para entrevista', 'Revisión de requisitos'], 
+                reqs: ['Pasaporte vigente', 'Historial laboral y financiero'],
+                nota: 'Sujeto a disponibilidad de citas en la embajada.' 
+            },
+            'Panamá': { 
+                precio: 'Consultar', 
+                sub: 'Turismo y Negocios', 
+                pago: 'A convenir', 
+                tiempo: '10 días hábiles', 
+                incluye: ['Gestión de requisitos de entrada', 'Reserva hotelera', 'Asesoría de solvencia'], 
+                reqs: ['Pasaporte vigente', 'Boleto aéreo de salida'],
+                nota: '' 
+            },
+            'República Dominicana': { 
+                precio: 'Consultar', 
+                sub: 'Turismo y Estancia', 
+                pago: 'A convenir', 
+                tiempo: '8 días hábiles', 
+                incluye: ['Asesoría de ingreso', 'Reserva de hotel', 'Soporte 24/7'], 
+                reqs: ['Pasaporte vigente'],
+                nota: '' 
+            },
+            'Costa Rica': { 
+                precio: 'Consultar', 
+                sub: 'Trámite Especializado', 
+                pago: 'A convenir', 
+                tiempo: '12 días hábiles', 
+                incluye: ['Revisión de documentos', 'Asesoría consular', 'Reserva'], 
+                reqs: ['Pasaporte vigente', 'Extractos financieros'],
+                nota: '' 
+            }
+        };
+
+        function abrirModal(pais) {
+            const modal = document.getElementById('detalleModal');
+            const data = destinosData[pais] || { 
+                precio: 'Consultar', 
+                sub: 'Información general', 
+                pago: 'Contactar', 
+                tiempo: 'Consultar', 
+                incluye: ['Asesoría personalizada', 'Atención 24/7'], 
+                reqs: ['Pasaporte vigente', 'Documentación básica'],
+                nota: ''
+            };
+            
+            document.getElementById('modalTitle').innerText = pais;
+            document.getElementById('modalPrice').innerText = data.precio;
+            document.getElementById('modalSubtitulo').innerText = data.sub;
+            document.getElementById('modalPago').innerText = data.pago;
+            document.getElementById('modalTiempo').innerText = data.tiempo;
+            
+            const listaIncluye = document.getElementById('modalIncluye');
+            listaIncluye.innerHTML = data.incluye.map(item => `<li>${item}</li>`).join('');
+            
+            const listaReqs = document.getElementById('modalReqs');
+            listaReqs.innerHTML = data.reqs.map(item => `<li>${item}</li>`).join('');
+
+            const notaBox = document.getElementById('modalNota');
+            if (data.nota && data.nota.trim() !== '') {
+                notaBox.innerHTML = `<strong>Nota:</strong> ${data.nota}`;
+                notaBox.style.display = 'block';
+            } else {
+                notaBox.style.display = 'none';
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('detalleModal').style.display = 'none';
+        }
+
+        let datosEvaluacion = { pasaporte: '', destino: 'Argentina', tiempo: '' };
+
+        function abrirEvaluacion() {
+            document.getElementById('evaluacionModal').style.display = 'flex';
+            irPasoEval(1);
+        }
+
+        function cerrarEvaluacion() {
+            document.getElementById('evaluacionModal').style.display = 'none';
+        }
+
+        function irPasoEval(paso) {
+            document.querySelectorAll('.eval-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('evalStep' + paso).classList.add('active');
+            const barra = document.getElementById('evalProgressBar');
+            if (paso === 1) barra.style.width = '33%';
+            if (paso === 2) barra.style.width = '66%';
+            if (paso === 3) barra.style.width = '100%';
+        }
+
+        function seleccionarPasaporte(valor) {
+            datosEvaluacion.pasaporte = valor;
+            irPasoEval(2);
+        }
+
+        function siguientePaso(paso) {
+            const selectDestino = document.getElementById('evalDestino');
+            if (selectDestino) {
+                datosEvaluacion.destino = selectDestino.value;
+            }
+            irPasoEval(paso);
+        }
+
+        function seleccionarTiempo(valor) {
+            datosEvaluacion.tiempo = valor;
+            cerrarEvaluacion();
+            const mensaje = encodeURIComponent(`Hola, acabo de hacer la evaluación en su web. Mi pasaporte: "${datosEvaluacion.pasaporte}", Destino deseado: "${datosEvaluacion.destino}", Tiempo estimado de viaje: "${valor}". Deseo iniciar mi trámite.`);
+            window.open(`https://wa.me/13144013488?text=${mensaje}`, '_blank');
+        }
+
+        window.onclick = function(event) {
+            const modalDetalle = document.getElementById('detalleModal');
+            const modalEval = document.getElementById('evaluacionModal');
+            if (event.target == modalDetalle) { cerrarModal(); }
+            if (event.target == modalEval) { cerrarEvaluacion(); }
+        }
+    </script>
 </body>
 </html>
