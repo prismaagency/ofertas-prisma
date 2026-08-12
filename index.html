@@ -22,6 +22,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
@@ -51,6 +52,7 @@
             padding: 20px 5%;
             background: rgba(8, 8, 10, 0.5);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -268,7 +270,7 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: transform 0.3s, border-color 0.3s;
-            cursor: pointer;
+            cursor: pointer; /* Clave para Safari en iOS */
         }
 
         .card:hover {
@@ -335,6 +337,7 @@
             height: 100%; 
             background-color: rgba(0,0,0,0.85); 
             backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -347,6 +350,7 @@
             max-width: 460px;
             max-height: 90vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
             position: relative;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             animation: modalFadeIn 0.3s;
@@ -519,6 +523,7 @@
             font-weight: 600;
             transition: background 0.3s;
             margin-top: 10px;
+            cursor: pointer;
         }
 
         .modal-btn:hover {
@@ -787,67 +792,67 @@
         </div>
 
         <div class="grid-destinos">
-            <div class="card" onclick="abrirModal('Argentina')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Argentina')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ar.png');"></div>
                 <div class="card-info"><h3>Argentina</h3><p>USD 2,200</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Chile')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Chile')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/cl.png');"></div>
                 <div class="card-info"><h3>Chile</h3><p>USD 2,000</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Colombia')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Colombia')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/co.png');"></div>
                 <div class="card-info"><h3>Colombia</h3><p>USD 2,100</p></div>
             </div>
-            <div class="card" onclick="abrirModal('El Salvador')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('El Salvador')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/sv.png');"></div>
                 <div class="card-info"><h3>El Salvador</h3><p>USD 1,900</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Emiratos Árabes')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Emiratos Árabes')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ae.png');"></div>
                 <div class="card-info"><h3>Emiratos Árabes</h3><p>USD 2,600</p></div>
             </div>
-            <div class="card" onclick="abrirModal('España')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('España')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/es.png');"></div>
                 <div class="card-info"><h3>España</h3><p>USD 2,600</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Perú')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Perú')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/pe.png');"></div>
                 <div class="card-info"><h3>Perú</h3><p>USD 1,700</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Rusia')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Rusia')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ru.png');"></div>
                 <div class="card-info"><h3>Rusia</h3><p>USD 1,500</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Turquía')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Turquía')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/tr.png');"></div>
                 <div class="card-info"><h3>Turquía</h3><p>USD 2,750</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Uruguay')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Uruguay')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/uy.png');"></div>
                 <div class="card-info"><h3>Uruguay</h3><p>Variable</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Nicaragua')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Nicaragua')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png');"></div>
                 <div class="card-info"><h3>Nicaragua</h3><p>USD 1,500</p></div>
             </div>
-            <div class="card" onclick="abrirModal('México')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('México')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png');"></div>
                 <div class="card-info"><h3>México</h3><p>Consultar</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Panamá')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Panamá')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/pa.png');"></div>
                 <div class="card-info"><h3>Panamá</h3><p>Consultar</p></div>
             </div>
-            <div class="card" onclick="abrirModal('República Dominicana')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('República Dominicana')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/do.png');"></div>
                 <div class="card-info"><h3>República Dominicana</h3><p>Consultar</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Costa Rica')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Costa Rica')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/cr.png');"></div>
                 <div class="card-info"><h3>Costa Rica</h3><p>Consultar</p></div>
             </div>
-            <div class="card" onclick="abrirModal('Surinam')">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Surinam')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/sr.png');"></div>
                 <div class="card-info"><h3>Surinam</h3><p>USD 1,250</p></div>
             </div>
