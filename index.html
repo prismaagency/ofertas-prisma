@@ -1,1305 +1,719 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <link rel="manifest" href="manifest.json">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prisma Agency | Viajes Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #08080a; 
-            --gold: #f59e0b; 
-            --gold-hover: #d97706;
-            --text-light: #ffffff;
-            --text-muted: #94a3b8;
-            --card-bg: #121216;
-            --modal-bg: #0f172a; 
-            --modal-card: #1e293b;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+    html {
+        scroll-behavior: smooth;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-light);
+        background-image: linear-gradient(rgba(8, 8, 10, 0.85), rgba(8, 8, 10, 0.95)), url('image_f53400.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            background-image: linear-gradient(rgba(8, 8, 10, 0.85), rgba(8, 8, 10, 0.95)), url('image_f53400.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
+    .portada-wrapper {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .portada-wrapper {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 5%;
+        background: rgba(8, 8, 10, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
 
+    .logo img {
+        height: 50px;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: var(--gold);
+    }
+
+    .btn-contact {
+        background-color: var(--gold);
+        color: #000;
+        padding: 10px 24px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+
+    .btn-contact:hover {
+        background-color: var(--gold-hover);
+    }
+
+    .hero {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 10%;
+        max-width: 900px;
+    }
+
+    .badge {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: var(--gold);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        border: 1px solid var(--gold);
+        width: fit-content;
+        margin-bottom: 20px;
+    }
+
+    .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4.5rem;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+        color: var(--gold);
+    }
+
+    .hero p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        max-width: 600px;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-primary {
+        background-color: var(--gold);
+        color: #000;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--gold-hover);
+    }
+
+    .btn-secondary {
+        background-color: transparent;
+        color: var(--text-light);
+        padding: 15px 30px;
+        border: 1px solid #333;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: border 0.3s;
+        display: inline-block;
+    }
+
+    .btn-secondary:hover {
+        border-color: var(--gold);
+    }
+
+    /* SECCIÓN POR QUÉ NOSOTROS */
+    .nosotros-section {
+        padding: 90px 10%;
+        background: linear-gradient(180deg, var(--bg-color) 0%, #0d111a 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-header {
+        text-align: center;
+        max-width: 750px;
+        margin: 0 auto 50px;
+    }
+
+    .section-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .section-header h2 span {
+        color: var(--gold);
+    }
+
+    .section-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .nosotros-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .nosotros-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 35px 25px;
+        border: 1px solid rgba(245, 158, 11, 0.15);
+        transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .nosotros-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--gold);
+    }
+
+    .nosotros-icon {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        color: var(--gold);
+    }
+
+    .nosotros-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+        color: var(--text-light);
+    }
+
+    .nosotros-card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* SECCIÓN DESTINOS */
+    .destinos-section {
+        padding: 80px 10%;
+        background-color: var(--bg-color);
+    }
+
+    .destinos-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .destinos-header p {
+        color: var(--text-muted);
+        margin-bottom: 30px;
+        max-width: 700px;
+        line-height: 1.5;
+    }
+
+    .grid-destinos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.3s, border-color 0.3s;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: var(--gold);
+    }
+
+    .card-img {
+        height: 160px;
+        background-color: #1a1a24;
+        position: relative;
+    }
+
+    .card-img img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .card-info {
+        padding: 20px;
+    }
+
+    .card-info h3 {
+        font-size: 1.25rem;
+        margin-bottom: 5px;
+    }
+
+    .card-info p {
+        color: var(--gold);
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .floating-social {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 999;
+    }
+
+    .floating-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: white;
+        font-size: 24px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .wa-btn { background-color: #25D366; }
+
+    /* MODAL GENERAL */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.85);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-content {
+        background-color: var(--modal-bg);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 460px;
+        max-height: 90vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        animation: modalFadeIn 0.3s;
+    }
+
+    .modal-content::-webkit-scrollbar { width: 6px; }
+    .modal-content::-webkit-scrollbar-track { background: var(--modal-bg); }
+    .modal-content::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+    @keyframes modalFadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header-bg {
+        height: 140px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .modal-header-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to right, rgba(15, 23, 42, 0.95) 35%, rgba(15, 23, 42, 0.4) 100%);
+        border-radius: 16px 16px 0 0;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .close {
+        color: rgba(255,255,255,0.7);
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        cursor: pointer;
+        transition: color 0.3s;
+        z-index: 10;
+        background: transparent;
+        border: none;
+    }
+
+    .close:hover { color: #fff; }
+
+    .modal-title {
+        font-family: 'Playfair Display', serif;
+        color: #ffffff;
+        font-size: 2.2rem;
+        margin-bottom: 2px;
+        line-height: 1;
+    }
+
+    .modal-price {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--gold);
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .modal-subtitle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    .modal-subtitle svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+    }
+
+    .info-boxes {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .info-box {
+        background-color: var(--modal-card);
+        border-radius: 12px;
+        padding: 15px;
+        flex: 1;
+    }
+
+    .info-box-label {
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .info-box-value {
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .check-icon {
+        color: var(--gold);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .custom-list {
+        list-style: none;
+        margin-bottom: 25px;
+    }
+
+    .custom-list li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 12px;
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    .custom-list li::before {
+        content: "•";
+        color: var(--gold);
+        position: absolute;
+        left: 0;
+        top: -2px;
+        font-size: 1.2rem;
+    }
+
+    .nota-box {
+        background-color: rgba(245, 158, 11, 0.05);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 25px;
+        color: var(--gold);
+        font-size: 0.9rem;
+        display: none;
+    }
+
+    .nota-box strong { font-weight: 600; }
+
+    .modal-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: var(--gold);
+        color: #000;
+        padding: 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .modal-btn:hover {
+        background-color: var(--gold-hover);
+    }
+
+    /* MODAL DE EVALUACIÓN DE PERFIL */
+    .eval-header {
+        padding: 25px 25px 15px;
+    }
+
+    .eval-progress-bar {
+        height: 3px;
+        background-color: var(--gold);
+        width: 25%;
+        border-radius: 2px;
+        margin-bottom: 15px;
+        transition: width 0.3s ease;
+    }
+
+    .eval-header h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 6px;
+    }
+
+    .eval-header p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    .eval-body {
+        padding: 0 25px 25px;
+    }
+
+    .eval-question {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 20px;
+    }
+
+    .eval-question-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .eval-option {
+        background-color: #1a2333;
+        border: 1px solid #2a364f;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #e2e8f0;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+    .eval-option:hover {
+        border-color: var(--gold);
+        background-color: rgba(245, 158, 11, 0.05);
+    }
+
+    .eval-radio {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1px solid var(--gold);
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    .eval-form-group {
+        margin-bottom: 15px;
+    }
+
+    .eval-form-group label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+
+    .eval-input, .eval-select {
+        width: 100%;
+        padding: 14px 16px;
+        background-color: #1a2333;
+        border: 1px solid #2a364f;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        outline: none;
+    }
+
+    .eval-input:focus, .eval-select:focus {
+        border-color: var(--gold);
+    }
+
+    .eval-step {
+        display: none;
+    }
+
+    .eval-step.active {
+        display: block;
+    }
+
+    /* OPTIMIZACIÓN MÓVIL (RESPONSIVE) */
+    @media (max-width: 768px) {
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background: rgba(8, 8, 10, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex-direction: column;
+            gap: 15px;
+            padding: 15px;
+            text-align: center;
         }
-
-        .logo img {
-            height: 50px; 
-        }
-
         nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--gold);
-        }
-
-        .btn-contact {
-            background-color: var(--gold);
-            color: #000;
-            padding: 10px 24px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .btn-contact:hover {
-            background-color: var(--gold-hover);
-        }
-
         .hero {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            max-width: 900px;
+            padding: 0 5%;
+            text-align: center;
+            align-items: center;
         }
-
-        .badge {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--gold);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            border: 1px solid var(--gold);
-            width: fit-content;
-            margin-bottom: 20px;
-        }
-
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4.5rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
         }
-
-        .hero h1 span {
-            color: var(--gold);
-        }
-
         .hero p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 600px;
+            font-size: 1rem;
         }
-
         .cta-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-primary {
-            background-color: var(--gold);
-            color: #000;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--gold-hover);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-light);
-            padding: 15px 30px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: border 0.3s;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--gold);
-        }
-
-        /* SECCIÓN POR QUÉ NOSOTROS */
-        .nosotros-section {
-            padding: 90px 10%;
-            background: linear-gradient(180deg, var(--bg-color) 0%, #0d111a 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 750px;
-            margin: 0 auto 50px;
-        }
-
-        .section-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .section-header h2 span {
-            color: var(--gold);
-        }
-
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .nosotros-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .nosotros-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 35px 25px;
-            border: 1px solid rgba(245, 158, 11, 0.15);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .nosotros-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-        }
-
-        .nosotros-icon {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            color: var(--gold);
-        }
-
-        .nosotros-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-            color: var(--text-light);
-        }
-
-        .nosotros-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        /* SECCIÓN DESTINOS */
-        .destinos-section {
-            padding: 80px 10%;
-            background-color: var(--bg-color);
-        }
-
-        .destinos-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .destinos-header p {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            max-width: 700px;
-            line-height: 1.5;
-        }
-
-        .grid-destinos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s, border-color 0.3s;
-            cursor: pointer; /* Clave para Safari en iOS */
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-        }
-
-        .card-img {
-            height: 160px;
-            background-color: #1a1a24;
-            position: relative;
-            background-size: cover !important;
-            background-position: center !important;
-        }
-
-        .card-info {
-            padding: 20px;
-        }
-
-        .card-info h3 {
-            font-size: 1.25rem;
-            margin-bottom: 5px;
-        }
-
-        .card-info p {
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .floating-social {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
             flex-direction: column;
-            gap: 10px;
-            z-index: 999;
-        }
-        
-        .floating-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            font-size: 24px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        
-        .wa-btn { background-color: #25D366; }
-
-        /* MODAL GENERAL */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0,0,0,0.85); 
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background-color: var(--modal-bg);
-            border-radius: 16px;
             width: 100%;
-            max-width: 460px;
-            max-height: 90vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            animation: modalFadeIn 0.3s;
+            max-width: 300px;
+            gap: 10px;
         }
-
-        .modal-content::-webkit-scrollbar { width: 6px; }
-        .modal-content::-webkit-scrollbar-track { background: var(--modal-bg); }
-        .modal-content::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-primary, .btn-secondary {
+            text-align: center;
+            width: 100%;
         }
-
-        .modal-header-bg {
-            height: 140px;
-            position: relative;
-            background-size: cover;
-            background-position: center;
-            border-radius: 16px 16px 0 0;
+        .badge {
+            margin: 0 auto 20px auto;
         }
-
-        .modal-header-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to right, rgba(15, 23, 42, 0.95) 35%, rgba(15, 23, 42, 0.4) 100%);
-            border-radius: 16px 16px 0 0;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+        .nosotros-section, .destinos-section {
+            padding: 60px 5%;
         }
-
-        .close {
-            color: rgba(255,255,255,0.7);
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: color 0.3s;
-            z-index: 10;
-        }
-
-        .close:hover { color: #fff; }
-
-        .modal-title {
-            font-family: 'Playfair Display', serif;
-            color: #ffffff;
+        .section-header h2, .destinos-header h2 {
             font-size: 2.2rem;
-            margin-bottom: 2px;
-            line-height: 1;
         }
-
-        .modal-price {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--gold);
-        }
-
-        .modal-body {
-            padding: 25px;
-        }
-
-        .modal-subtitle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-        
-        .modal-subtitle svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
         .info-boxes {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .info-box {
-            background-color: var(--modal-card);
-            border-radius: 12px;
-            padding: 15px;
-            flex: 1;
-        }
-
-        .info-box-label {
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .info-box-value {
-            color: #ffffff;
-            font-size: 0.95rem;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 10px;
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
         }
-
-        .check-icon {
-            color: var(--gold);
-            font-weight: bold;
-            font-size: 1.2rem;
+        .modal-header-bg {
+            height: 120px;
         }
-
-        .custom-list {
-            list-style: none;
-            margin-bottom: 25px;
+        .modal-title {
+            font-size: 1.8rem;
         }
-
-        .custom-list li {
-            position: relative;
-            padding-left: 20px;
-            margin-bottom: 12px;
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            line-height: 1.4;
+        .modal-price {
+            font-size: 1.3rem;
         }
-
-        .custom-list li::before {
-            content: "•";
-            color: var(--gold);
-            position: absolute;
-            left: 0;
-            top: -2px;
-            font-size: 1.2rem;
+        .floating-social {
+            bottom: 15px;
+            right: 15px;
         }
-
-        .nota-box {
-            background-color: rgba(245, 158, 11, 0.05);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 25px;
-            color: var(--gold);
-            font-size: 0.9rem;
-            display: none;
+        .floating-btn {
+            width: 45px;
+            height: 45px;
+            font-size: 22px;
         }
-        
-        .nota-box strong { font-weight: 600; }
+    }
 
-        .modal-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background-color: var(--gold);
-            color: #000;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
-            margin-top: 10px;
-            cursor: pointer;
+    @media (max-width: 480px) {
+        .hero h1 {
+            font-size: 2.3rem;
         }
-
-        .modal-btn:hover {
-            background-color: var(--gold-hover);
+        .modal-content {
+            width: 95%;
+            margin: 10px;
         }
-
-        /* MODAL DE EVALUACIÓN DE PERFIL */
-        .eval-header {
-            padding: 25px 25px 15px;
-        }
-
-        .eval-progress-bar {
-            height: 3px;
-            background-color: var(--gold);
-            width: 30%;
-            border-radius: 2px;
-            margin-bottom: 15px;
-            transition: width 0.3s ease;
-        }
-
-        .eval-header h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 6px;
-        }
-
-        .eval-header p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .eval-body {
-            padding: 0 25px 25px;
-        }
-
         .eval-question {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 20px;
+            font-size: 0.95rem;
         }
-
-        .eval-question-icon {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            flex-shrink: 0;
-        }
-
         .eval-option {
-            background-color: #1a2333;
-            border: 1px solid #2a364f;
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #e2e8f0;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+            padding: 12px 15px;
         }
-
-        .eval-option:hover {
-            border-color: var(--gold);
-            background-color: rgba(245, 158, 11, 0.05);
-        }
-
-        .eval-radio {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 1px solid var(--gold);
-            display: inline-block;
-            flex-shrink: 0;
-        }
-
-        .eval-form-group {
-            margin-bottom: 15px;
-        }
-
-        .eval-form-group label {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-        }
-
-        .eval-input, .eval-select {
-            width: 100%;
-            padding: 14px 16px;
-            background-color: #1a2333;
-            border: 1px solid #2a364f;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        .eval-input:focus, .eval-select:focus {
-            border-color: var(--gold);
-        }
-
-        .eval-step {
-            display: none;
-        }
-
-        .eval-step.active {
-            display: block;
-        }
-
-        /* OPTIMIZACIÓN MÓVIL (RESPONSIVE) */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px;
-                text-align: center;
-            }
-            nav ul {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .hero {
-                padding: 0 5%;
-                text-align: center;
-                align-items: center;
-            }
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            .hero p {
-                font-size: 1rem;
-            }
-            .cta-buttons {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-                gap: 10px;
-            }
-            .btn-primary, .btn-secondary {
-                text-align: center;
-                width: 100%;
-            }
-            .badge {
-                margin: 0 auto 20px auto;
-            }
-            .nosotros-section, .destinos-section {
-                padding: 60px 5%;
-            }
-            .section-header h2, .destinos-header h2 {
-                font-size: 2.2rem;
-            }
-            .info-boxes {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .modal-header-bg {
-                height: 120px;
-            }
-            .modal-title {
-                font-size: 1.8rem;
-            }
-            .modal-price {
-                font-size: 1.3rem;
-            }
-            .floating-social {
-                bottom: 15px;
-                right: 15px;
-            }
-            .floating-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 22px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2.3rem;
-            }
-            .modal-content {
-                width: 95%;
-                margin: 10px;
-            }
-            .eval-question {
-                font-size: 0.95rem;
-            }
-            .eval-option {
-                padding: 12px 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="portada-wrapper">
-        <header>
-            <div class="logo">
-                <img src="logo.png" alt="Prisma Agency">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#destinos">Destinos</a></li>
-                    <li><a href="#nosotros">Por qué nosotros</a></li>
-                    <li><a href="javascript:void(0)" onclick="abrirEvaluacion()">Evaluación</a></li>
-                </ul>
-            </nav>
-            <a href="https://wa.me/13144013488" class="btn-contact">Contactar</a>
-        </header>
-
-        <section class="hero">
-            <div class="badge">• Atención 24/7 Disponible</div>
-            <h1>Vuela ya hacia tus <span>sueños</span></h1>
-            <p>Gestión de visados, reserva de hoteles y ayuda en el terreno. Te acompañamos en cada paso para que tu única preocupación sea disfrutar.</p>
-            <div class="cta-buttons">
-                <a href="javascript:void(0)" onclick="abrirEvaluacion()" class="btn-primary">Consultar disponibilidad</a>
-                <a href="#destinos" class="btn-secondary">Ver Destinos</a>
-            </div>
-        </section>
-    </div>
-
-    <!-- SECCIÓN POR QUÉ NOSOTROS -->
-    <section id="nosotros" class="nosotros-section">
-        <div class="section-header">
-            <h2>¿Por qué elegir <span>Prisma Agency</span>?</h2>
-            <p>En Prisma Agency transformamos la incertidumbre en resultados concretos. Entendemos el valor de tu tiempo y la importancia de tus metas; por eso creamos un sistema ágil, transparente y diseñado para superar cualquier obstáculo.</p>
-        </div>
-
-        <div class="nosotros-grid">
-            <div class="nosotros-card">
-                <div class="nosotros-icon">⚡</div>
-                <h3>Eficiencia Extraordinaria</h3>
-                <p>Optimizamos cada trámite reduciendo tiempos de espera innecesarios. Gestionamos tu visado y reserva con la máxima celeridad técnica.</p>
-            </div>
-            <div class="nosotros-card">
-                <div class="nosotros-icon">🛡️</div>
-                <h3>Garantía y Precisión</h3>
-                <p>Revisión exhaustiva de documentación. Minimizamos el margen de error para que viajes con absoluta tranquilidad y respaldo profesional.</p>
-            </div>
-            <div class="nosotros-card">
-                <div class="nosotros-icon">🤝</div>
-                <h3>Acompañamiento 24/7</h3>
-                <p>No eres un número más. Cuentas con un equipo altamente calificado a tu disposición constante antes, durante y después de tu viaje.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN DESTINOS -->
-    <section id="destinos" class="destinos-section">
-        <div class="destinos-header">
-            <h2>Nuestros Destinos</h2>
-            <p>Haz clic en cualquier destino para ver la información detallada de servicios, precios y requisitos.</p>
-        </div>
-
-        <div class="grid-destinos">
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Argentina')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/ar.png');"></div>
-                <div class="card-info"><h3>Argentina</h3><p>USD 2,200</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Chile')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/cl.png');"></div>
-                <div class="card-info"><h3>Chile</h3><p>USD 2,000</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Colombia')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/co.png');"></div>
-                <div class="card-info"><h3>Colombia</h3><p>USD 2,100</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('El Salvador')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/sv.png');"></div>
-                <div class="card-info"><h3>El Salvador</h3><p>USD 1,900</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Emiratos Árabes')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/ae.png');"></div>
-                <div class="card-info"><h3>Emiratos Árabes</h3><p>USD 2,600</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('España')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/es.png');"></div>
-                <div class="card-info"><h3>España</h3><p>USD 2,600</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Perú')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/pe.png');"></div>
-                <div class="card-info"><h3>Perú</h3><p>USD 1,700</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Rusia')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/ru.png');"></div>
-                <div class="card-info"><h3>Rusia</h3><p>USD 1,500</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Turquía')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/tr.png');"></div>
-                <div class="card-info"><h3>Turquía</h3><p>USD 2,750</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Uruguay')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/uy.png');"></div>
-                <div class="card-info"><h3>Uruguay</h3><p>Variable</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Nicaragua')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/ni.png');"></div>
-                <div class="card-info"><h3>Nicaragua</h3><p>USD 1,500</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('México')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/mx.png');"></div>
-                <div class="card-info"><h3>México</h3><p>Consultar</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Panamá')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/pa.png');"></div>
-                <div class="card-info"><h3>Panamá</h3><p>Consultar</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('República Dominicana')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/do.png');"></div>
-                <div class="card-info"><h3>República Dominicana</h3><p>Consultar</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Costa Rica')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/cr.png');"></div>
-                <div class="card-info"><h3>Costa Rica</h3><p>Consultar</p></div>
-            </div>
-            <div class="card" role="button" tabindex="0" onclick="abrirModal('Surinam')">
-                <div class="card-img" style="background: url('https://flagcdn.com/w640/sr.png');"></div>
-                <div class="card-info"><h3>Surinam</h3><p>USD 1,250</p></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- VENTANA EMERGENTE DE DETALLES DEL DESTINO -->
-    <div id="detalleModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModal()">&times;</span>
-            
-            <div id="modalHeaderBg" class="modal-header-bg">
-                <div class="modal-header-overlay">
-                    <h2 id="modalTitle" class="modal-title">País</h2>
-                    <div id="modalPrice" class="modal-price">USD 0,000</div>
-                </div>
-            </div>
-            
-            <div class="modal-body">
-                <div class="modal-subtitle">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    <span id="modalSubtitulo">Tipo de Servicio · Tiempo</span>
-                </div>
-
-                <div class="info-boxes">
-                    <div class="info-box">
-                        <div class="info-box-label">ESTRUCTURA DE PAGO</div>
-                        <div id="modalPago" class="info-box-value">-</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-box-label">TIEMPO ESTIMADO</div>
-                        <div id="modalTiempo" class="info-box-value">-</div>
-                    </div>
-                </div>
-
-                <div class="section-title"><span class="check-icon">✓</span> Qué incluye</div>
-                <ul id="modalIncluye" class="custom-list"></ul>
-
-                <div id="contenedorRequisitos">
-                    <div class="section-title"><span class="check-icon">✓</span> Requisitos</div>
-                    <ul id="modalReqs" class="custom-list"></ul>
-                </div>
-
-                <div id="modalNota" class="nota-box"></div>
-                
-                <a href="https://wa.me/13144013488" class="modal-btn">Iniciar trámite por WhatsApp</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- VENTANA EMERGENTE DE EVALUACIÓN DE PERFIL -->
-    <div id="evaluacionModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarEvaluacion()">&times;</span>
-            
-            <div class="eval-header">
-                <div id="evalProgressBar" class="eval-progress-bar"></div>
-                <h3>Evaluación de perfil</h3>
-                <p>Responde unas preguntas para conocer si podemos atenderte.</p>
-            </div>
-            
-            <div class="eval-body">
-                <!-- PASO 1: PASAPORTE -->
-                <div id="evalStep1" class="eval-step active">
-                    <div class="eval-question">
-                        <span class="eval-question-icon">✓</span>
-                        ¿Tienes pasaporte vigente?
-                    </div>
-                    <div class="eval-option" onclick="seleccionarPasaporte('Sí, lo tengo vigente')">
-                        <span class="eval-radio"></span>
-                        Sí, lo tengo vigente
-                    </div>
-                    <div class="eval-option" onclick="seleccionarPasaporte('Estoy en trámite')">
-                        <span class="eval-radio"></span>
-                        Estoy en trámite
-                    </div>
-                    <div class="eval-option" onclick="seleccionarPasaporte('Aún no lo tengo')">
-                        <span class="eval-radio"></span>
-                        Aún no lo tengo
-                    </div>
-                </div>
-
-                <!-- PASO 2: DESTINO -->
-                <div id="evalStep2" class="eval-step">
-                    <div class="eval-question">
-                        <span class="eval-question-icon">✈</span>
-                        ¿A qué país deseas viajar?
-                    </div>
-                    <div class="eval-form-group">
-                        <select id="evalDestino" class="eval-select">
-                            <option value="Nicaragua (USD 1,500)">Nicaragua (USD 1,500)</option>
-                            <option value="Argentina (USD 2,200)">Argentina (USD 2,200)</option>
-                            <option value="Chile (USD 2,000)">Chile (USD 2,000)</option>
-                            <option value="Colombia (USD 2,100)">Colombia (USD 2,100)</option>
-                            <option value="El Salvador (USD 1,900)">El Salvador (USD 1,900)</option>
-                            <option value="Emiratos Árabes (USD 2,600)">Emiratos Árabes (USD 2,600)</option>
-                            <option value="España (USD 2,600)">España (USD 2,600)</option>
-                            <option value="Perú (USD 1,700)">Perú (USD 1,700)</option>
-                            <option value="Rusia (USD 1,500)">Rusia (USD 1,500)</option>
-                            <option value="Turquía (USD 2,750)">Turquía (USD 2,750)</option>
-                            <option value="Uruguay (Variable)">Uruguay (Variable)</option>
-                            <option value="México">México</option>
-                            <option value="Panamá">Panamá</option>
-                            <option value="República Dominicana">República Dominicana</option>
-                            <option value="Costa Rica">Costa Rica</option>
-                            <option value="Surinam (USD 1,250)">Surinam (USD 1,250)</option>
-                        </select>
-                    </div>
-                    <button type="button" onclick="siguientePaso(3)" class="modal-btn">Continuar</button>
-                </div>
-
-                <!-- PASO 3: TIEMPO -->
-                <div id="evalStep3" class="eval-step">
-                    <div class="eval-question">
-                        <span class="eval-question-icon">⏱</span>
-                        ¿Cuándo tienes pensado viajar?
-                    </div>
-                    <div class="eval-option" onclick="seleccionarTiempo('Lo antes posible (Urgente)')">
-                        <span class="eval-radio"></span>
-                        Lo antes posible (Urgente)
-                    </div>
-                    <div class="eval-option" onclick="seleccionarTiempo('En los próximos 30 días')">
-                        <span class="eval-radio"></span>
-                        En los próximos 30 días
-                    </div>
-                    <div class="eval-option" onclick="seleccionarTiempo('En 2 a 3 meses')">
-                        <span class="eval-radio"></span>
-                        En 2 a 3 meses
-                    </div>
-                </div>
-
-                <!-- PASO 4: DATOS DE CONTACTO Y ENVÍO -->
-                <div id="evalStep4" class="eval-step">
-                    <div class="eval-question">
-                        <span class="eval-question-icon">✉</span>
-                        Tus datos para darte disponibilidad
-                    </div>
-                    <div class="eval-form-group">
-                        <label for="evalNombre">Nombre completo</label>
-                        <input type="text" id="evalNombre" class="eval-input" placeholder="Tu nombre">
-                    </div>
-                    <div class="eval-form-group">
-                        <label for="evalCorreo">Correo electrónico</label>
-                        <input type="email" id="evalCorreo" class="eval-input" placeholder="tu-correo@ejemplo.com">
-                    </div>
-                    <button type="button" onclick="finalizarEvaluacionWA()" class="modal-btn">Enviar evaluación por WhatsApp</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="floating-social">
-        <a href="https://wa.me/13144013488" class="floating-btn wa-btn">📞</a>
-    </div>
-
-    <script>
-        const destinosData = {
-            'Argentina': {
-                precio: 'USD 2,200',
-                subtitulo: 'Visa · 2 meses',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '2 meses',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ar.png'
-            },
-            'Chile': {
-                precio: 'USD 2,000',
-                subtitulo: 'Visa · 1 mes a 1 mes y medio',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '1 mes a 1 mes y medio',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/cl.png'
-            },
-            'Colombia': {
-                precio: 'USD 2,100',
-                subtitulo: 'Visa · 2 meses a 2 meses y medio',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '2 meses a 2 meses y medio',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/co.png'
-            },
-            'El Salvador': {
-                precio: 'USD 1,900',
-                subtitulo: 'Visa · 1 mes a 2 meses',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '1 mes a 2 meses',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/sv.png'
-            },
-            'Emiratos Árabes': {
-                precio: 'USD 2,600',
-                subtitulo: 'Visa · 5 días',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '5 días',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ae.png'
-            },
-            'España': {
-                precio: 'USD 2,600',
-                subtitulo: 'Visado Schengen · 2 meses a 2 meses y medio',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '2 meses a 2 meses y medio',
-                incluye: ['Gestión de visado', 'Reservación de vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
-                requisitos: ['Foto 4×4', 'Foto del pasaporte', 'Relleno de formulario', 'Documentación adicional solicitada por el consulado'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/es.png'
-            },
-            'Perú': {
-                precio: 'USD 1,700',
-                subtitulo: 'Visa · 1 mes',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: '1 mes',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/pe.png'
-            },
-            'Rusia': {
-                precio: 'USD 1,500',
-                subtitulo: 'Visa · Una semana',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: 'Una semana',
-                incluye: ['Visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ru.png'
-            },
-            'Turquía': {
-                precio: 'USD 2,750',
-                subtitulo: 'E-visa · Una semana',
-                pago: '50% inicial · 50% al finalizar',
-                tiempo: 'Una semana',
-                incluye: ['E-visa', 'Vuelo', 'Hotel', 'Seguro médico internacional'],
-                requisitos: ['Relleno de formulario', 'Foto 4×4', 'Foto del pasaporte'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/tr.png'
-            },
-            'Uruguay': {
-                precio: 'Variable',
-                subtitulo: 'Traslado terrestre desde Brasil · 3 días a una semana',
-                pago: 'Pago íntegro',
-                tiempo: '3 días a una semana',
-                incluye: ['Traslado terrestre', 'Hotel', 'Seguro médico internacional', 'Desayuno, almuerzo y comida', 'SIM con llamadas e internet'],
-                requisitos: [],
-                nota: '<strong>Nota:</strong> No incluye gestión de visa.',
-                flag: 'https://flagcdn.com/w640/uy.png'
-            },
-            'Nicaragua': {
-                precio: 'USD 1,500',
-                subtitulo: 'Visado · Una semana',
-                pago: 'Pago íntegro al iniciar',
-                tiempo: 'Una semana',
-                incluye: [
-                    'Reservación de vuelo',
-                    'Reservación de hotel',
-                    'Seguro médico internacional',
-                    'Gestión de visado'
-                ],
-                requisitos: [
-                    'Fotografías tipo pasaporte',
-                    'Carnet de identidad',
-                    'Foto de la primera hoja del pasaporte',
-                    'Fotos de páginas con cuños de entrada/salida (si ha viajado)',
-                    'Dirección actual',
-                    'Estado civil',
-                    'Ocupación',
-                    'Teléfono',
-                    'Correo electrónico'
-                ],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/ni.png'
-            },
-            'México': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y trámites',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente', 'Documentación consular'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/mx.png'
-            },
-            'Panamá': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y conexiones',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/pa.png'
-            },
-            'República Dominicana': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y turismo',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/do.png'
-            },
-            'Costa Rica': {
-                precio: 'Consultar',
-                subtitulo: 'Gestión de viajes y servicios',
-                pago: 'Personalizado',
-                tiempo: 'Consultar',
-                incluye: ['Boleto aéreo', 'Asesoría de viaje', 'Atención personalizada'],
-                requisitos: ['Pasaporte vigente'],
-                nota: null,
-                flag: 'https://flagcdn.com/w640/cr.png'
-            },
-            'Surinam': {
-                precio: 'USD 1,250',
-                subtitulo: 'Emisión de boleto aéreo · 12 horas',
-                pago: 'Pago íntegro',
-                tiempo: '12 horas',
-                incluye: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional'],
-                requisitos: [],
-                nota: '<strong>Nota:</strong> Entrega posterior a la confirmación del pago.',
-                flag: 'https://flagcdn.com/w640/sr.png'
-            }
-        };
-
-        function abrirModal(pais) {
-            const data = destinosData[pais];
-            if(!data) return;
-
-            document.getElementById('modalTitle').innerText = pais;
-            document.getElementById('modalPrice').innerText = data.precio;
-            document.getElementById('modalSubtitulo').innerText = data.subtitulo;
-            document.getElementById('modalPago').innerText = data.pago;
-            document.getElementById('modalTiempo').innerText = data.tiempo;
-            document.getElementById('modalHeaderBg').style.backgroundImage = `url('${data.flag}')`;
-
-            const listaIncluye = document.getElementById('modalIncluye');
-            listaIncluye.innerHTML = '';
-            data.incluye.forEach(item => {
-                let li = document.createElement('li');
-                li.innerText = item;
-                listaIncluye.appendChild(li);
-            });
-
-            const listaReqs = document.getElementById('modalReqs');
-            const contReqs = document.getElementById('contenedorRequisitos');
-            listaReqs.innerHTML = '';
-            if(data.requisitos.length > 0) {
-                contReqs.style.display = 'block';
-                data.requisitos.forEach(req => {
-                    let li = document.createElement('li');
-                    li.innerText = req;
-                    listaReqs.appendChild(li);
-                });
-            } else {
-                contReqs.style.display = 'none';
-            }
-
-            const cajaNota = document.getElementById('modalNota');
-            if(data.nota) {
-                cajaNota.innerHTML = data.nota;
-                cajaNota.style.display = 'block';
-            } else {
-                cajaNota.style.display = 'none';
-            }
-
-            document.getElementById('detalleModal').style.display = 'flex';
-        }
-
-        function cerrarModal() {
-            document.getElementById('detalleModal').style.display = 'none';
-        }
-
-        /* LÓGICA DE LA EVALUACIÓN DE PERFIL */
-        let evaluacionRespuestas = {
-            pasaporte: '',
-            destino: '',
-            tiempo: '',
-            nombre: '',
-            correo: ''
-        };
-
-        function abrirEvaluacion() {
-            siguientePaso(1);
-            document.getElementById('evaluacionModal').style.display = 'flex';
-        }
-
-        function cerrarEvaluacion() {
-            document.getElementById('evaluacionModal').style.display = 'none';
-        }
-
-        function siguientePaso(paso) {
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`evalStep${i}`).classList.remove('active');
-            }
-            document.getElementById(`evalStep${paso}`).classList.add('active');
-            
-            const progressBar = document.getElementById('evalProgressBar');
-            progressBar.style.width = (paso * 25) + '%';
-        }
-
-        function seleccionarPasaporte(valor) {
-            evaluacionRespuestas.pasaporte = valor;
-            siguientePaso(2);
-        }
-
-        function seleccionarTiempo(valor) {
-            evaluacionRespuestas.tiempo = valor;
-            siguientePaso(4);
-        }
-
-        function finalizarEvaluacionWA() {
-            evaluacionRespuestas.destino = document.getElementById('evalDestino').value;
-            evaluacionRespuestas.nombre = document.getElementById('evalNombre').value || 'No especificado';
-            evaluacionRespuestas.correo = document.getElementById('evalCorreo').value || 'No especificado';
-
-            const mensaje = `Hola Prisma Agency, completé la evaluación de perfil:%0A%0A` +
-                            `👤 *Nombre:* ${encodeURIComponent(evaluacionRespuestas.nombre)}%0A` +
-                            `📧 *Correo:* ${encodeURIComponent(evaluacionRespuestas.correo)}%0A` +
-                            `Passport *Pasaporte vigente:* ${encodeURIComponent(evaluacionRespuestas.pasaporte)}%0A` +
-                            `✈️ *Destino deseado:* ${encodeURIComponent(evaluacionRespuestas.destino)}%0A` +
-                            `⏱️ *Tiempo para viajar:* ${encodeURIComponent(evaluacionRespuestas.tiempo)}`;
-
-            window.open(`https://wa.me/13144013488?text=${mensaje}`, '_blank');
-            cerrarEvaluacion();
-        }
-
-        window.onclick = function(event) {
-            let modalDetalle = document.getElementById('detalleModal');
-            let modalEval = document.getElementById('evaluacionModal');
-            if (event.target == modalDetalle) {
-                modalDetalle.style.display = "none";
-            }
-            if (event.target == modalEval) {
-                modalEval.style.display = "none";
-            }
-        }
-    </script>
-
-</body>
-</html>
+    }
+</style>
