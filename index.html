@@ -792,6 +792,10 @@
         </div>
 
         <div class="grid-destinos">
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Canadá')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/ca.png');"></div>
+                <div class="card-info"><h3>Canadá</h3><p>USD 7,900</p></div>
+            </div>
             <div class="card" role="button" tabindex="0" onclick="abrirModal('Argentina')">
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/ar.png');"></div>
                 <div class="card-info"><h3>Argentina</h3><p>USD 2,200</p></div>
@@ -943,6 +947,7 @@
                     </div>
                     <div class="eval-form-group">
                         <select id="evalDestino" class="eval-select">
+                            <option value="Canadá (USD 7,900)">Canadá (USD 7,900)</option>
                             <option value="Nicaragua (USD 1,500)">Nicaragua (USD 1,500)</option>
                             <option value="Argentina (USD 2,200)">Argentina (USD 2,200)</option>
                             <option value="Chile (USD 2,000)">Chile (USD 2,000)</option>
@@ -1010,6 +1015,27 @@
 
     <script>
         const destinosData = {
+            'Canadá': {
+                precio: 'USD 7,900',
+                subtitulo: 'Contrato de trabajo · Visa laboral',
+                pago: 'Consultar',
+                tiempo: 'Consultar',
+                incluye: [
+                    'Contrato de trabajo',
+                    'Visa por contrato de trabajo',
+                    'Boleto de avión (solicitante)',
+                    'Seguro médico internacional de viaje',
+                    'Extensión familiar (incluye el trámite de cónyuge e hijos; boletos de familiares se pagan aparte)'
+                ],
+                requisitos: [
+                    'Pasaporte vigente (titular y dependientes)',
+                    'Documentación de vínculo familiar (acta de matrimonio / nacimiento)',
+                    'Currículum vitae y certificados de experiencia',
+                    'Certificado de antecedentes penales'
+                ],
+                nota: null,
+                flag: 'https://flagcdn.com/w640/ca.png'
+            },
             'Argentina': {
                 precio: 'USD 2,200',
                 subtitulo: 'Visa · 2 meses',
