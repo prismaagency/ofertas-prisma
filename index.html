@@ -857,6 +857,10 @@
                 <div class="card-img" style="background: url('https://flagcdn.com/w640/sr.png');"></div>
                 <div class="card-info"><h3>Surinam</h3><p>USD 1,250</p></div>
             </div>
+            <div class="card" role="button" tabindex="0" onclick="abrirModal('Guyana')">
+                <div class="card-img" style="background: url('https://flagcdn.com/w640/gy.png');"></div>
+                <div class="card-info"><h3>Guyana</h3><p>USD 1,400</p></div>
+            </div>
         </div>
     </section>
 
@@ -959,6 +963,7 @@
                             <option value="República Dominicana">República Dominicana</option>
                             <option value="Costa Rica">Costa Rica</option>
                             <option value="Surinam (USD 1,250)">Surinam (USD 1,250)</option>
+                            <option value="Guyana (USD 1,400)">Guyana (USD 1,400)</option>
                         </select>
                     </div>
                     <button type="button" onclick="siguientePaso(3)" class="modal-btn">Continuar</button>
@@ -1208,6 +1213,16 @@
                 requisitos: [],
                 nota: '<strong>Nota:</strong> Entrega posterior a la confirmación del pago.',
                 flag: 'https://flagcdn.com/w640/sr.png'
+            },
+            'Guyana': {
+                precio: 'USD 1,400',
+                subtitulo: 'Emisión de boleto aéreo · 12 horas',
+                pago: 'Pago íntegro',
+                tiempo: '12 horas',
+                incluye: ['Vuelo', 'Reservación de hotel', 'Seguro médico internacional', 'Documentación correspondiente'],
+                requisitos: [],
+                nota: '<strong>Nota:</strong> Entrega aproximada: 12 horas después de confirmado el pago.',
+                flag: 'https://flagcdn.com/w640/gy.png'
             }
         };
 
