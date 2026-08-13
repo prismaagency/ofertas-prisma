@@ -172,7 +172,6 @@
             border-color: var(--gold);
         }
 
-        /* SECCIÓN POR QUÉ NOSOTROS */
         .nosotros-section {
             padding: 90px 10%;
             background: linear-gradient(180deg, var(--bg-color) 0%, #0d111a 100%);
@@ -239,7 +238,6 @@
             line-height: 1.5;
         }
 
-        /* SECCIÓN DESTINOS */
         .destinos-section {
             padding: 80px 10%;
             background-color: var(--bg-color);
@@ -270,7 +268,7 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: transform 0.3s, border-color 0.3s;
-            cursor: pointer; /* Clave para Safari en iOS */
+            cursor: pointer;
         }
 
         .card:hover {
@@ -326,7 +324,6 @@
         
         .wa-btn { background-color: #25D366; }
 
-        /* MODAL GENERAL */
         .modal {
             display: none; 
             position: fixed; 
@@ -350,7 +347,7 @@
             max-width: 460px;
             max-height: 90vh;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+            -webkit-overflow-scrolling: touch;
             position: relative;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             animation: modalFadeIn 0.3s;
@@ -524,6 +521,7 @@
             transition: background 0.3s;
             margin-top: 10px;
             cursor: pointer;
+            border: none;
         }
 
         .modal-btn:hover {
@@ -646,7 +644,6 @@
             display: block;
         }
 
-        /* OPTIMIZACIÓN MÓVIL (RESPONSIVE) */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -919,7 +916,6 @@
             </div>
             
             <div class="eval-body">
-                <!-- PASO 1: PASAPORTE -->
                 <div id="evalStep1" class="eval-step active">
                     <div class="eval-question">
                         <span class="eval-question-icon">✓</span>
@@ -939,7 +935,6 @@
                     </div>
                 </div>
 
-                <!-- PASO 2: DESTINO -->
                 <div id="evalStep2" class="eval-step">
                     <div class="eval-question">
                         <span class="eval-question-icon">✈</span>
@@ -969,7 +964,6 @@
                     <button type="button" onclick="siguientePaso(3)" class="modal-btn">Continuar</button>
                 </div>
 
-                <!-- PASO 3: TIEMPO -->
                 <div id="evalStep3" class="eval-step">
                     <div class="eval-question">
                         <span class="eval-question-icon">⏱</span>
@@ -989,7 +983,6 @@
                     </div>
                 </div>
 
-                <!-- PASO 4: DATOS DE CONTACTO Y ENVÍO -->
                 <div id="evalStep4" class="eval-step">
                     <div class="eval-question">
                         <span class="eval-question-icon">✉</span>
@@ -1017,23 +1010,27 @@
         const destinosData = {
             'Canadá': {
                 precio: 'USD 7,900',
-                subtitulo: 'Contrato de trabajo · Visa laboral',
-                pago: 'Consultar',
-                tiempo: 'Consultar',
+                subtitulo: 'Visado y Contrato de Trabajo · 1 semana',
+                pago: '50% al inicio del proceso y 50% al entregar los visados',
+                tiempo: '1 semana',
                 incluye: [
                     'Contrato de trabajo',
-                    'Visa por contrato de trabajo',
+                    'Gestión de visa',
                     'Boleto de avión (solicitante)',
                     'Seguro médico internacional de viaje',
-                    'Extensión familiar (incluye el trámite de cónyuge e hijos; boletos de familiares se pagan aparte)'
+                    'Extensión familiar (trámites migratorios para cónyuge e hijos)'
                 ],
                 requisitos: [
+                    'Documentos de identidad',
                     'Pasaporte vigente (titular y dependientes)',
+                    'Datos personales (dirección, estado civil, ocupación, teléfono, correo)',
                     'Documentación de vínculo familiar (acta de matrimonio / nacimiento)',
                     'Currículum vitae y certificados de experiencia',
-                    'Certificado de antecedentes penales'
+                    'Certificado de antecedentes penales',
+                    'Exámenes médicos requeridos por el proceso migratorio',
+                    'En caso de acompañantes, presentar los mismos requisitos'
                 ],
-                nota: null,
+                nota: '<strong>Nota:</strong> Los boletos de avión de los familiares se pagan aparte.',
                 flag: 'https://flagcdn.com/w640/ca.png'
             },
             'Argentina': {
@@ -1157,7 +1154,7 @@
                     'Ocupación',
                     'Teléfono',
                     'Correo electrónico',
-                    'En caso de llevar acompañante, se deben presentar exactamente los mismos requisitos descritos anteriormente para cada acompañante.'
+                    'En caso de llevar acompañante, se deben presentar exactamente los mismos requisitos.'
                 ],
                 nota: null,
                 flag: 'https://flagcdn.com/w640/ni.png'
@@ -1262,7 +1259,6 @@
             document.getElementById('detalleModal').style.display = 'none';
         }
 
-        /* LÓGICA DE LA EVALUACIÓN DE PERFIL */
         let evaluacionRespuestas = {
             pasaporte: '',
             destino: '',
@@ -1308,7 +1304,7 @@
             const mensaje = `Hola Prisma Agency, completé la evaluación de perfil:%0A%0A` +
                             `👤 *Nombre:* ${encodeURIComponent(evaluacionRespuestas.nombre)}%0A` +
                             `📧 *Correo:* ${encodeURIComponent(evaluacionRespuestas.correo)}%0A` +
-                            `Passport *Pasaporte vigente:* ${encodeURIComponent(evaluacionRespuestas.pasaporte)}%0A` +
+                            `🛂 *Pasaporte vigente:* ${encodeURIComponent(evaluacionRespuestas.pasaporte)}%0A` +
                             `✈️ *Destino deseado:* ${encodeURIComponent(evaluacionRespuestas.destino)}%0A` +
                             `⏱️ *Tiempo para viajar:* ${encodeURIComponent(evaluacionRespuestas.tiempo)}`;
 
