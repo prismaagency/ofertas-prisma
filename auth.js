@@ -6,12 +6,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCJp8kxqNLONHFNyUEsg1n09LjJaVG0GY",
+  apiKey: "AIzaSyCJp0kxqNLONHFNyUEsg1nO9LjgJaVG0GY",
   authDomain: "prisma-agency-86c98.firebaseapp.com",
   projectId: "prisma-agency-86c98",
   storageBucket: "prisma-agency-86c98.firebasestorage.app",
   messagingSenderId: "938361295336",
-  appId: "1:938361295336:web:91eaedf36823f5d8de945d"
+  appId: "1:938361295336:web:91eaedf36823f5d8de945d",
+  measurementId: "G-J5LEGVED72"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -58,6 +59,7 @@ $("#googleLogin")?.addEventListener("click", async () => {
     button.disabled = true;
     button.textContent = "Conectando con Google...";
   }
+
   try {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
@@ -81,10 +83,11 @@ function humanizeAuthError(code, message = "") {
     "auth/invalid-email": "El correo electrónico no es válido.",
     "auth/popup-closed-by-user": "La ventana de Google fue cerrada.",
     "auth/popup-blocked": "El navegador bloqueó la ventana de Google.",
-    "auth/unauthorized-domain": "Este dominio no está autorizado en Firebase. Añádelo en Authentication → Settings → Authorized domains.",
+    "auth/unauthorized-domain": "Este dominio no está autorizado en Firebase Authentication. Añádelo en Authentication → Settings → Authorized domains.",
     "auth/operation-not-allowed": "El acceso con Google no está habilitado. Activa Google en Authentication → Sign-in method.",
     "auth/account-exists-with-different-credential": "Ya existe una cuenta con este correo usando otro método de acceso.",
-    "auth/network-request-failed": "No se pudo conectar con Firebase. Comprueba tu conexión."
+    "auth/network-request-failed": "No se pudo conectar con Firebase. Comprueba tu conexión.",
+    "auth/api-key-not-valid": "La API key de Firebase no es válida para esta Web App. Verifica la configuración de Firebase."
   };
   return map[code] || `Error de Firebase: ${code || "desconocido"}${message ? ` — ${message}` : ""}`;
 }
