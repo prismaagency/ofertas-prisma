@@ -1,16 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js";
 
-const firebaseConfig = window.PRISMA_FIREBASE_CONFIG || null;
-let auth = null;
-if (firebaseConfig && firebaseConfig.apiKey) {
-  const firebaseApp = initializeApp(firebaseConfig);
-  auth = getAuth(firebaseApp);
-}
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
 
 const WISHLIST_KEY = "prisma_wishlist";
 const QUOTES_KEY = "prisma_quotes";
-
+const WHATSAPP_NUMBER = "13144013488";
 const $ = (selector, scope=document) => scope.querySelector(selector);
 const $$ = (selector, scope=document) => [...scope.querySelectorAll(selector)];
 
@@ -32,6 +29,7 @@ window.PRISMA_WISHLIST = { getWishlist, toggleWishlist };
 function renderHeader() {
   const host = $("#siteHeader");
   if (!host) return;
+
   host.innerHTML = `
     <header class="site-header">
       <div class="container nav">
@@ -43,15 +41,37 @@ function renderHeader() {
           <li><a href="index.html#testimonios">Testimonios</a></li>
           <li><a href="index.html#cotizacion">Cotización</a></li>
         </ul></nav>
-        <div class="nav-actions"><a class="btn btn--ghost" href="login.html" id="accountLink">Acceder</a></div>
+        <div class="nav-actions">
+          <a class="btn btn--ghost" href="login.html" id="accountLink">Acceder</a>
+        </div>
       </div>
     </header>`;
-  $(".menu-toggle", host)?.addEventListener("click", () => $(".nav-links", host)?.classList.toggle("is-open"));
-  if (auth) onAuthStateChanged(auth, user => {
+
+  $(".menu-toggle", host)?.addEventListener("click", () =>
+    $(".nav-links", host)?.classList.toggle("is-open")
+  );
+
+  onAuthStateChanged(auth, user => {
     const link = $("#accountLink");
-    if (link) { link.textContent = user ? "Mi perfil" : "Acceder"; link.href = user ? "perfil.html" : "login.html"; }
+    if (!link) return;
+
+    if (user) {
+      const name =
+        (user.displayName || "").trim() ||
+        (user.email || "").split("@")[0] ||
+        "Cliente";
+
+      link.textContent = `Hola, ${name}`;
+      link.href = "perfil.html";
+      link.setAttribute("aria-label", `Abrir perfil de ${name}`);
+    } else {
+      link.textContent = "Acceder";
+      link.href = "login.html";
+      link.removeAttribute("aria-label");
+    }
   });
 }
+
 function renderFooter() {
   const host = $("#siteFooter");
   if (!host) return;
@@ -65,7 +85,6 @@ function renderDestinations() {
   const maxPrice = Number($("#filterPrice")?.value || 0);
   const from = $("#filterDateFrom")?.value || "";
   const to = $("#filterDateTo")?.value || "";
-
   const filtered = window.PRISMA_DESTINATIONS.filter(d => {
     const matchText = !text || d.name.toLowerCase().includes(text) || d.service.toLowerCase().includes(text);
     const matchPrice = !maxPrice || (d.price !== null && d.price <= maxPrice);
@@ -73,7 +92,6 @@ function renderDestinations() {
     const matchTo = !to || d.dateFrom <= to;
     return matchText && matchPrice && matchFrom && matchTo;
   });
-
   $("#resultsCount").textContent = `${filtered.length} destino${filtered.length === 1 ? "" : "s"} encontrado${filtered.length === 1 ? "" : "s"}.`;
   grid.innerHTML = filtered.length ? filtered.map(d => `
     <article class="destination-card">
@@ -85,7 +103,6 @@ function renderDestinations() {
         <div class="destination-card__footer"><span class="price">${d.priceLabel}</span><button class="small-link" data-detail="${d.id}" type="button">Ver detalles →</button></div>
       </div>
     </article>`).join("") : `<div class="card-surface" style="grid-column:1/-1;padding:30px"><p>No hay destinos que coincidan con los filtros.</p></div>`;
-
   $$("[data-wishlist]", grid).forEach(btn => btn.addEventListener("click", () => {
     const saved = toggleWishlist(btn.dataset.wishlist);
     showToast(saved ? "Oferta guardada en tu wishlist." : "Oferta eliminada de tu wishlist.");
@@ -125,6 +142,7 @@ function initFilters() {
     renderDestinations();
   });
 }
+
 function initQuoteForm() {
   const form = $("#quoteForm"); if (!form) return;
   $("#quoteDestination").innerHTML += window.PRISMA_DESTINATIONS.map(d => `<option value="${d.name}">${d.name}</option>`).join("");
@@ -142,6 +160,7 @@ function initQuoteForm() {
     showToast("Cotización enviada correctamente.");
   });
 }
+
 function initCountdown() {
   const el = $("#countdown"); if (!el) return;
   let target = localStorage.getItem("prisma_flash_deadline");
@@ -153,11 +172,13 @@ function initCountdown() {
   };
   tick(); setInterval(tick,1000);
 }
+
 const testimonials = [
   ["“Nos guiaron desde la documentación hasta la reserva. Todo estuvo mucho más claro de lo que esperaba.”","María G. · Viaje internacional"],
   ["“La atención fue rápida y siempre supimos cuál era el siguiente paso.”","Carlos R. · Gestión de viaje"],
   ["“El acompañamiento hizo la diferencia. Volvería a trabajar con Prisma Agency.”","Daniela P. · Servicio personalizado"]
 ];
+
 function initTestimonials() {
   const track=$("#testimonialTrack"), dots=$("#carouselDots"); if(!track||!dots)return;
   let index=0;
@@ -166,12 +187,97 @@ function initTestimonials() {
   $(".carousel-btn--next")?.addEventListener("click",()=>{index=(index+1)%testimonials.length;render()});
   render();
 }
+
 function initSocial() {
   const grid=$("#socialGrid"); if(!grid)return;
   const imgs=["https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=700&q=80"];
   grid.innerHTML=imgs.map((src,i)=>`<a class="social-tile" href="#" aria-label="Publicación ${i+1}"><img src="${src}" alt="Inspiración de viaje ${i+1}" loading="lazy"><span>#PrismaAgency</span></a>`).join("");
 }
-function showToast(text) { const t=$("#toast"); if(!t)return; t.textContent=text;t.classList.add("is-visible");setTimeout(()=>t.classList.remove("is-visible"),2500); }
-window.addEventListener("keydown", e => { if(e.key==="Escape") $("#modalRoot").innerHTML=""; });
 
-renderHeader(); renderFooter(); renderDestinations(); initFilters(); initQuoteForm(); initCountdown(); initTestimonials(); initSocial();
+function initWhatsAppFloat() {
+  if (document.querySelector("[data-prisma-whatsapp]")) return;
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .prisma-whatsapp-float {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,.28);
+      z-index: 9999;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .prisma-whatsapp-float:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 12px 28px rgba(0,0,0,.34);
+    }
+    .prisma-whatsapp-float:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 3px;
+    }
+    .prisma-whatsapp-float svg {
+      width: 30px;
+      height: 30px;
+      fill: currentColor;
+    }
+    @media (max-width: 600px) {
+      .prisma-whatsapp-float {
+        width: 52px;
+        height: 52px;
+        right: 16px;
+        bottom: 16px;
+      }
+      .prisma-whatsapp-float svg {
+        width: 27px;
+        height: 27px;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const link = document.createElement("a");
+  link.className = "prisma-whatsapp-float";
+  link.href = `https://wa.me/${WHATSAPP_NUMBER}`;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.setAttribute("data-prisma-whatsapp", "");
+  link.setAttribute("aria-label", "Contactar a Prisma Agency por WhatsApp");
+  link.title = "Contactar por WhatsApp";
+  link.innerHTML = `
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M19.11 17.23c-.27-.14-1.59-.78-1.84-.87-.25-.09-.43-.14-.61.14-.18.27-.7.87-.86 1.05-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.58-1.5-1.85-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27s.98 2.63 1.11 2.81c.14.18 1.92 2.93 4.65 4.11.65.28 1.15.45 1.54.58.65.21 1.24.18 1.7.11.52-.08 1.59-.65 1.82-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32z"/>
+      <path d="M16.03 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.59 4.39 1.63 6.24L3.12 28.8l6.7-1.71a12.75 12.75 0 0 0 6.21 1.61h.01c7.06 0 12.8-5.74 12.8-12.8S23.09 3.2 16.03 3.2zm0 23.4h-.01a10.6 10.6 0 0 1-5.4-1.48l-.39-.23-3.98 1.02 1.06-3.88-.25-.4a10.59 10.59 0 1 1 8.97 4.97z"/>
+    </svg>
+  `;
+  document.body.appendChild(link);
+}
+
+function showToast(text) {
+  const t=$("#toast"); if(!t)return;
+  t.textContent=text;
+  t.classList.add("is-visible");
+  setTimeout(()=>t.classList.remove("is-visible"),2500);
+}
+
+window.addEventListener("keydown", e => {
+  if(e.key==="Escape") $("#modalRoot").innerHTML="";
+});
+
+renderHeader();
+renderFooter();
+renderDestinations();
+initFilters();
+initQuoteForm();
+initCountdown();
+initTestimonials();
+initSocial();
+initWhatsAppFloat();
