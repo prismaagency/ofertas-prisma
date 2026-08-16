@@ -266,290 +266,211 @@ function initPrismaAssistant() {
   const root = $("#prismaAssistant");
   if (!root) return;
 
-  const messages = $("#assistantMessages");
-  const options = $("#assistantOptions");
-  const inputForm = $("#assistantInputForm");
-  const input = $("#assistantTextInput");
-  const progress = $("#assistantProgressBar");
+  try {
+    const messages = $("#assistantMessages");
+    const options = $("#assistantOptions");
+    const progress = $("#assistantProgressBar");
+    if (!messages || !options) return;
 
-  // El origen está fijado por la operación actual de Prisma Agency.
-  const FIXED_ORIGIN = "La Habana, Cuba";
+    const FIXED_ORIGIN = "La Habana, Cuba";
+    const destinations = Array.isArray(window.PRISMA_DESTINATIONS)
+      ? window.PRISMA_DESTINATIONS.filter(d => d && d.name)
+      : [];
 
-  // IMPORTANTE: los destinos se toman exclusivamente del catálogo real
-  // cargado por destinations.js. No hay países escritos manualmente aquí.
-  const destinations = Array.isArray(window.PRISMA_DESTINATIONS)
-    ? window.PRISMA_DESTINATIONS
-    : [];
+    const state = {
+      step: 0,
+      destination: null,
+      service: "",
+      date: "",
+      travelers: ""
+    };
 
-  const state = {
-    step: 0,
-    destination: "",
-    service: "",
-    date: "",
-    travelers: "",
-    budget: ""
-  };
-
-  const steps = [
-    {
-      key: "destination",
-      question: "¿A qué país quieres viajar? Estas son las ofertas disponibles actualmente en Prisma Agency:",
-      options: destinations.map(destination => destination.name)
-    },
-    {
-      key: "service",
-      question: "¿Qué necesitas gestionar para tu viaje?",
-      options: ["Visado", "Vuelo", "Vuelo + hotel", "Paquete completo", "Asesoría de viaje"]
-    },
-    {
-      key: "date",
-      question: "¿Cuándo tienes pensado viajar? Puedes escribir una fecha, mes o algo como «diciembre de 2026».",
-      options: ["Próximamente", "En 1–3 meses", "En 4–6 meses", "Aún no lo sé"]
-    },
-    {
-      key: "travelers",
-      question: "¿Cuántas personas viajarán?",
-      options: ["1 persona", "2 personas", "3–4 personas", "5 o más"]
-    },
-    {
-      key: "budget",
-      question: "¿Cuál es tu presupuesto aproximado en USD?",
-      options: ["Menos de $1,000", "$1,000–$2,500", "$2,500–$5,000", "Más de $5,000", "Aún no lo sé"]
-    }
-  ];
-
-  function addMessage(text, who="bot", html=false) {
-    const el = document.createElement("div");
-    el.className = `assistant-msg ${who}`;
-    if (html) el.innerHTML = text;
-    else el.textContent = text;
-    messages.appendChild(el);
-    messages.scrollTop = messages.scrollHeight;
-  }
-
-  function setProgress() {
-    progress.style.width = `${Math.min(100, Math.max(8, (state.step / steps.length) * 100))}%`;
-  }
-
-  function renderOptions(list) {
-    options.innerHTML = "";
-
-    if (!list.length) return;
-
-    list.forEach(value => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "assistant-option";
-      button.textContent = value;
-      button.addEventListener("click", () => answer(value));
-      options.appendChild(button);
-    });
-  }
-
-  function askCurrentStep() {
-    const current = steps[state.step];
-
-    if (!current) {
-      finish();
-      return;
+    function addMessage(text, who = "bot") {
+      const el = document.createElement("div");
+      el.className = `assistant-msg ${who}`;
+      el.textContent = text;
+      messages.appendChild(el);
+      messages.scrollTop = messages.scrollHeight;
     }
 
-    addMessage(current.question);
-    renderOptions(current.options);
-    setProgress();
+    function setProgress() {
+      const total = 4;
+      progress.style.width = `${Math.min(100, Math.max(8, (state.step / total) * 100))}%`;
+    }
 
-    input.placeholder =
-      current.key === "date"
-        ? "Ej. diciembre de 2026"
-        : current.key === "destination"
-          ? "También puedes escribir el nombre del país..."
-          : "Escribe tu respuesta...";
+    function renderOptions(items) {
+      options.innerHTML = "";
+      items.forEach(item => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "assistant-option";
+        button.textContent = item.label || item;
+        button.addEventListener("click", () => answer(item));
+        options.appendChild(button);
+      });
+    }
 
-    input.focus();
-  }
-
-  function answer(value) {
-    const clean = String(value || "").trim();
-    if (!clean || state.step >= steps.length) return;
-
-    // Para destino, solo aceptamos una opción que exista en el catálogo real.
-    if (state.step === 0) {
-      const validDestination = destinations.find(
-        destination => destination.name.toLowerCase() === clean.toLowerCase()
-      );
-
-      if (!validDestination) {
-        addMessage("Ese destino no aparece entre nuestras ofertas actuales. Selecciona uno de los destinos disponibles.");
-        renderOptions(destinations.map(destination => destination.name));
-        input.value = "";
+    function askDestination() {
+      state.step = 0;
+      setProgress();
+      addMessage("¿A qué país quieres viajar? Estas son las ofertas disponibles actualmente:");
+      if (!destinations.length) {
+        addMessage("No hay ofertas cargadas en este momento. Puedes continuar con el formulario de cotización.");
         return;
       }
-
-      state.destination = validDestination.name;
-      addMessage(validDestination.name, "user");
-    } else {
-      addMessage(clean, "user");
-      const key = steps[state.step]?.key;
-      if (key) state[key] = clean;
+      renderOptions(destinations.map(d => ({ label: d.name, value: d })));
     }
 
-    options.innerHTML = "";
-    state.step += 1;
-
-    if (state.step < steps.length) {
-      window.setTimeout(askCurrentStep, 220);
-    } else {
-      window.setTimeout(finish, 250);
-    }
-  }
-
-  function buildSummary() {
-    return `
-      <div class="assistant-result">
-        <strong>Tu solicitud está lista</strong>
-        <div class="assistant-result__row"><span>Origen</span><b>${escapeAssistant(FIXED_ORIGIN)}</b></div>
-        <div class="assistant-result__row"><span>Destino</span><b>${escapeAssistant(state.destination)}</b></div>
-        <div class="assistant-result__row"><span>Servicio</span><b>${escapeAssistant(state.service)}</b></div>
-        <div class="assistant-result__row"><span>Fecha</span><b>${escapeAssistant(state.date)}</b></div>
-        <div class="assistant-result__row"><span>Viajeros</span><b>${escapeAssistant(state.travelers)}</b></div>
-        <div class="assistant-result__row"><span>Presupuesto</span><b>${escapeAssistant(state.budget)}</b></div>
-        <div class="assistant-actions">
-          <button class="btn btn--primary" type="button" id="assistantUseForm">Pasar al formulario</button>
-          <a class="btn btn--ghost" id="assistantWhatsApp" target="_blank" rel="noopener noreferrer">Enviar por WhatsApp</a>
-        </div>
-      </div>`;
-  }
-
-  function finish() {
-    state.step = steps.length;
-    setProgress();
-
-    addMessage(
-      "Perfecto. Como actualmente gestionamos salidas desde La Habana, Cuba, he dejado ese origen fijo. Aquí tienes el resumen de tu solicitud:",
-      "bot"
-    );
-
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = buildSummary();
-    messages.appendChild(wrapper.firstElementChild);
-    messages.scrollTop = messages.scrollHeight;
-
-    const waText =
-      `Hola Prisma Agency, quiero solicitar una cotización.%0A%0A` +
-      `📌 Origen: ${encodeURIComponent(FIXED_ORIGIN)}%0A` +
-      `📍 Destino: ${encodeURIComponent(state.destination)}%0A` +
-      `🧳 Servicio: ${encodeURIComponent(state.service)}%0A` +
-      `📅 Fecha: ${encodeURIComponent(state.date)}%0A` +
-      `👥 Viajeros: ${encodeURIComponent(state.travelers)}%0A` +
-      `💰 Presupuesto: ${encodeURIComponent(state.budget)}`;
-
-    const wa = $("#assistantWhatsApp");
-    if (wa) {
-      wa.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+    function askService() {
+      state.step = 1;
+      setProgress();
+      addMessage("¿Qué necesitas para tu viaje?");
+      renderOptions([
+        {label: "Visa / Visado", value: "Visa / Visado"},
+        {label: "Vuelo", value: "Vuelo"},
+        {label: "Hotel", value: "Hotel"},
+        {label: "Paquete completo", value: "Paquete completo"}
+      ]);
     }
 
-    $("#assistantUseForm")?.addEventListener("click", () => fillQuoteForm());
-  }
+    function askDate() {
+      state.step = 2;
+      setProgress();
+      addMessage("¿Cuándo tienes pensado viajar?");
+      renderOptions([
+        {label: "Próximamente", value: "Próximamente"},
+        {label: "En 1–3 meses", value: "En 1–3 meses"},
+        {label: "En 4–6 meses", value: "En 4–6 meses"},
+        {label: "Aún no lo sé", value: "Aún no lo sé"}
+      ]);
+    }
 
-  function fillQuoteForm() {
-    const form = $("#quoteForm");
-    if (!form) return;
+    function askTravelers() {
+      state.step = 3;
+      setProgress();
+      addMessage("¿Cuántas personas viajarán?");
+      renderOptions([
+        {label: "1 persona", value: "1 persona"},
+        {label: "2 personas", value: "2 personas"},
+        {label: "3–4 personas", value: "3–4 personas"},
+        {label: "5 o más", value: "5 o más"}
+      ]);
+    }
 
-    const destination = form.elements.destination;
-    const travelers = form.elements.travelers;
-    const budget = form.elements.budget;
-    const service = form.elements.service;
-    const details = form.elements.details;
+    function priceFor(destination) {
+      return destination?.priceLabel || "Consultar precio";
+    }
 
-    if (destination) {
-      const option = [...destination.options].find(
-        option => option.value.toLowerCase() === state.destination.toLowerCase()
-      );
+    function finish() {
+      state.step = 4;
+      setProgress();
+      options.innerHTML = "";
 
-      if (option) {
-        destination.value = option.value;
+      const d = state.destination;
+      const summary = document.createElement("div");
+      summary.className = "assistant-msg bot";
+      summary.innerHTML = `
+        <div class="assistant-result">
+          <strong>Tu solicitud está lista</strong>
+          <div class="assistant-result__row"><span>Origen</span><b>${escapeAssistant(FIXED_ORIGIN)}</b></div>
+          <div class="assistant-result__row"><span>Destino</span><b>${escapeAssistant(d.name)}</b></div>
+          <div class="assistant-result__row"><span>Oferta</span><b>${escapeAssistant(d.service || state.service)}</b></div>
+          <div class="assistant-result__row"><span>Fecha</span><b>${escapeAssistant(state.date)}</b></div>
+          <div class="assistant-result__row"><span>Viajeros</span><b>${escapeAssistant(state.travelers)}</b></div>
+          <div class="assistant-result__row"><span>Precio de la oferta</span><b>${escapeAssistant(priceFor(d))}</b></div>
+          <div class="assistant-actions">
+            <button class="btn btn--primary" type="button" id="assistantUseForm">Pasar al formulario</button>
+            <a class="btn btn--ghost" id="assistantWhatsApp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          </div>
+        </div>`;
+      messages.appendChild(summary);
+      messages.scrollTop = messages.scrollHeight;
+
+      const text =
+        `Hola Prisma Agency, quiero solicitar esta oferta.%0A%0A` +
+        `📍 Origen: ${encodeURIComponent(FIXED_ORIGIN)}%0A` +
+        `✈️ Destino: ${encodeURIComponent(d.name)}%0A` +
+        `🧳 Oferta: ${encodeURIComponent(d.service || state.service)}%0A` +
+        `📅 Fecha: ${encodeURIComponent(state.date)}%0A` +
+        `👥 Viajeros: ${encodeURIComponent(state.travelers)}%0A` +
+        `💰 Precio de la oferta: ${encodeURIComponent(priceFor(d))}`;
+
+      $("#assistantWhatsApp").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+      $("#assistantUseForm")?.addEventListener("click", () => fillQuoteForm(d));
+    }
+
+    function fillQuoteForm(d) {
+      const form = $("#quoteForm");
+      if (!form) return;
+
+      const destination = form.elements.destination || $("#quoteDestination");
+      const travelers = form.elements.travelers;
+      const service = form.elements.service;
+      const details = form.elements.details;
+
+      if (destination) {
+        const exact = [...destination.options].find(o =>
+          o.value.toLowerCase() === d.name.toLowerCase()
+        );
+        if (exact) destination.value = exact.value;
+      }
+
+      if (travelers) {
+        const number = state.travelers.match(/\d+/);
+        if (number) travelers.value = state.travelers.includes("5 o más") ? 5 : Number(number[0]);
+      }
+
+      if (service) {
+        const wanted = state.service.toLowerCase();
+        const exact = [...service.options].find(o => o.value.toLowerCase() === wanted);
+        if (exact) service.value = exact.value;
+      }
+
+      if (details) {
+        details.value =
+          `Origen: ${FIXED_ORIGIN}\n` +
+          `Oferta seleccionada: ${d.name} — ${priceFor(d)}\n` +
+          `Servicio: ${d.service || state.service}\n` +
+          `Fecha: ${state.date}\n` +
+          `Viajeros: ${state.travelers}`;
+      }
+
+      $("#cotizacion")?.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function escapeAssistant(value) {
+      return String(value || "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
+    }
+
+    function answer(item) {
+      options.innerHTML = "";
+      if (state.step === 0) {
+        state.destination = item.value;
+        addMessage(item.label, "user");
+        addMessage(`Has seleccionado ${item.label}.`);
+        setTimeout(askService, 180);
+      } else if (state.step === 1) {
+        state.service = item.value;
+        addMessage(item.label, "user");
+        setTimeout(askDate, 180);
+      } else if (state.step === 2) {
+        state.date = item.value;
+        addMessage(item.label, "user");
+        setTimeout(askTravelers, 180);
+      } else if (state.step === 3) {
+        state.travelers = item.value;
+        addMessage(item.label, "user");
+        setTimeout(finish, 180);
       }
     }
 
-    if (travelers) {
-      const match = state.travelers.match(/\d+/);
-
-      if (match) {
-        travelers.value = state.travelers.includes("5 o más")
-          ? 5
-          : Number(match[0]);
-      }
-    }
-
-    if (budget) {
-      const numeric = state.budget.match(/[\d,]+/);
-
-      if (numeric) {
-        budget.value = numeric[0].replace(/,/g, "");
-      }
-    }
-
-    if (service) {
-      const option = [...service.options].find(
-        option => option.value.toLowerCase() === state.service.toLowerCase()
-      );
-
-      if (option) service.value = option.value;
-    }
-
-    if (details) {
-      details.value =
-        `Origen: ${FIXED_ORIGIN}\n` +
-        `Destino: ${state.destination}\n` +
-        `Fecha indicada: ${state.date}\n` +
-        `Presupuesto indicado: ${state.budget}\n` +
-        `Información recopilada por el Asistente Prisma.`;
-    }
-
-    document.querySelector("#cotizacion")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-    setTimeout(() => {
-      const name = form.elements.name;
-      const email = form.elements.email;
-      const phone = form.elements.phone;
-
-      if (!name?.value) name?.focus();
-      else if (!email?.value) email?.focus();
-      else if (!phone?.value) phone?.focus();
-    }, 500);
+    askDestination();
+  } catch (error) {
+    // El asistente nunca debe impedir que el resto de app.js siga funcionando.
+    console.error("Asistente Prisma:", error);
   }
-
-  function escapeAssistant(value) {
-    return String(value || "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[char]));
-  }
-
-  inputForm?.addEventListener("submit", event => {
-    event.preventDefault();
-    if (state.step >= steps.length) return;
-
-    answer(input.value);
-    input.value = "";
-  });
-
-  if (!destinations.length) {
-    addMessage("No se pudo cargar el catálogo de ofertas. Recarga la página e inténtalo de nuevo.");
-    return;
-  }
-
-  addMessage(
-    "Hola 👋 Soy el Asistente Prisma. Te ayudaré a preparar tu cotización usando únicamente los destinos que aparecen en nuestras ofertas."
-  );
-
-  window.setTimeout(askCurrentStep, 250);
 }
 
 function showToast(text) {
