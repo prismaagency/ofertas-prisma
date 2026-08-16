@@ -45,3 +45,23 @@ button{cursor:pointer}.container{width:min(var(--max),92%);margin:auto}
 .assistant-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.assistant-actions .btn{min-height:42px;padding:10px 12px;font-size:.76rem}
 @keyframes assistantIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 @media(max-width:600px){.assistant-messages{min-height:260px;max-height:340px}.assistant-actions{grid-template-columns:1fr}.assistant-status{display:none!important}}
+
+/* VIAJAR y contacto directo */
+.viajar-layout{max-width:760px;margin:auto}
+.prisma-whatsapp-float{position:fixed;right:22px;bottom:22px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#25D366;color:#fff;text-decoration:none;font-size:2rem;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.28);z-index:9999;transition:transform .2s ease,box-shadow .2s ease}.prisma-whatsapp-float:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 28px rgba(0,0,0,.34)}.prisma-whatsapp-float:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:600px){.prisma-whatsapp-float{width:52px;height:52px;right:16px;bottom:16px;font-size:1.7rem}}
+
+/* Carrusel de Instagram */
+.social-grid{display:block}.social-carousel{max-width:900px;margin:auto}.social-carousel__viewport{overflow:hidden;border-radius:14px}.social-carousel__track{display:flex;transition:transform .35s ease}.social-carousel__track .social-tile{display:block;flex:0 0 100%;aspect-ratio:16/9}.social-carousel__track .social-tile img{opacity:.86}.social-carousel__controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px}.social-carousel__button{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:transparent;color:#fff;font-size:1.4rem}.social-carousel__button:hover,.social-carousel__button:focus-visible{border-color:var(--gold);color:var(--gold)}.social-carousel__dots{display:flex;gap:8px}.social-carousel__dot{width:9px;height:9px;border:0;border-radius:50%;background:#475569}.social-carousel__dot.is-active{background:var(--gold)}
+
+/* Navegación optimizada para Android y iPhone */
+@media(max-width:600px){.nav{min-height:64px;gap:8px}.brand{font-size:1.22rem;white-space:nowrap}.nav-actions{margin-left:auto}.nav-actions .btn{display:inline-flex!important;min-height:38px;padding:8px 11px;font-size:.76rem}.menu-toggle{padding:7px;line-height:1}.nav-links.is-open{top:62px;left:4%;right:4%;z-index:60}.social-carousel__track .social-tile{aspect-ratio:1/1}.social-carousel__controls{margin-top:12px}}
+
+/* Cuadrícula de Instagram (sin carrusel) */
+.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:900px){.social-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.social-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+
+/* Videos reales de Instagram */
+.social-grid{grid-template-columns:repeat(auto-fit,minmax(330px,1fr));align-items:start}.social-tile--instagram{aspect-ratio:auto;min-height:0;display:flex;justify-content:center;background:transparent;overflow:visible}.social-tile--instagram .instagram-media{width:100%!important;min-width:0!important;margin:0!important;background:var(--surface)!important;border-color:var(--border)!important;border-radius:12px!important}.social-tile--instagram a{color:var(--gold)}
+@media(max-width:420px){.social-grid{grid-template-columns:minmax(0,1fr)}.social-tile--instagram .instagram-media{min-width:0!important}}
