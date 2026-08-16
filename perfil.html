@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi perfil | Prisma Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="profile">
+  <div id="siteHeader"></div>
+  <main class="section profile-page">
+    <div class="container">
+      <div class="profile-head">
+        <div><span class="eyebrow">Área privada</span><h1>Mi perfil</h1><p id="profileWelcome">Cargando sesión...</p></div>
+        <button class="btn btn--ghost" id="logoutBtn" type="button">Cerrar sesión</button>
+      </div>
+
+      <div class="profile-grid">
+        <section class="card-surface">
+          <div class="section-heading section-heading--compact"><span class="eyebrow">Wishlist</span><h2>Ofertas guardadas</h2></div>
+          <div class="wishlist-grid" id="wishlistGrid"></div>
+        </section>
+
+        <section class="card-surface">
+          <div class="section-heading section-heading--compact"><span class="eyebrow">Seguimiento</span><h2>Mis cotizaciones</h2></div>
+          <div class="quote-list" id="quoteList"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="siteFooter"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="destinations.js"></script>
+  <script type="module" src="profile.js"></script>
+</body>
+</html>

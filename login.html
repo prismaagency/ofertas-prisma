@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acceso | Prisma Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="login">
+  <div id="siteHeader"></div>
+  <main class="auth-page">
+    <section class="auth-card card-surface">
+      <span class="eyebrow">Área del cliente</span>
+      <h1 id="authTitle">Iniciar sesión</h1>
+      <p id="authSubtitle">Accede para consultar tus cotizaciones y ofertas guardadas.</p>
+
+      <button class="btn btn--google btn--wide" id="googleLogin" type="button">Continuar con Google</button>
+      <div class="divider"><span>o</span></div>
+
+      <form id="authForm" novalidate>
+        <label id="nameField" class="hidden">Nombre completo<input id="authName" type="text" autocomplete="name"></label>
+        <label>Correo electrónico<input id="authEmail" type="email" autocomplete="email" required></label>
+        <label>Contraseña<input id="authPassword" type="password" autocomplete="current-password" required minlength="6"></label>
+        <button class="btn btn--primary btn--wide" id="authSubmit" type="submit">Entrar</button>
+      </form>
+
+      <p class="auth-switch"><span id="switchText">¿No tienes cuenta?</span> <button id="toggleMode" type="button">Crear cuenta</button></p>
+      <p class="form-message" id="authMessage" role="status"></p>
+      <p class="auth-demo">Firebase está preparado para conexión. Edita <code>auth.js</code> con tu configuración.</p>
+    </section>
+  </main>
+  <div id="siteFooter"></div>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence,
+  signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  updateProfile, GoogleAuthProvider, signInWithPopup, signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "REEMPLAZAR_API_KEY",
+  authDomain: "REEMPLAZAR.firebaseapp.com",
+  projectId: "REEMPLAZAR_PROJECT_ID",
+  storageBucket: "REEMPLAZAR.firebasestorage.app",
+  messagingSenderId: "REEMPLAZAR_MESSAGING_SENDER_ID",
+  appId: "REEMPLAZAR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+const $ = s => document.querySelector(s);
+const form=$("#authForm"), message=$("#authMessage"), toggle=$("#toggleMode"), submit=$("#authSubmit"), title=$("#authTitle"), subtitle=$("#authSubtitle"), nameField=$("#nameField");
+let registerMode=false;
+
+function setMessage(text,error=false){message.textContent=text;message.className=`form-message ${error?"error":"success"}`;}
+function renderHeader(){
+  const host=$("#siteHeader"); if(!host)return;
+  host.innerHTML=`<header class="site-header"><div class="container nav"><a class="brand" href="index.html">Prisma <span>Agency</span></a><button class="menu-toggle" type="button">☰</button><nav><ul class="nav-links"><li><a href="index.html#destinos">Destinos</a></li><li><a href="index.html#nosotros">Nosotros</a></li><li><a href="index.html#cotizacion">Cotización</a></li></ul></nav><div class="nav-actions"><a class="btn btn--ghost" href="index.html">Inicio</a></div></div></header>`;
+}
+function renderFooter(){const h=$("#siteFooter");if(h)h.innerHTML=`<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} Prisma Agency</span><span>Área segura del cliente</span></div></footer>`;}
+function setMode(){
+  registerMode=!registerMode;
+  title.textContent=registerMode?"Crear cuenta":"Iniciar sesión";
+  subtitle.textContent=registerMode?"Regístrate para guardar ofertas y seguir tus cotizaciones.":"Accede para consultar tus cotizaciones y ofertas guardadas.";
+  nameField.classList.toggle("hidden",!registerMode);
+  $("#authPassword").autocomplete=registerMode?"new-password":"current-password";
+  submit.textContent=registerMode?"Crear cuenta":"Entrar";
+  $("#switchText").textContent=registerMode?"¿Ya tienes cuenta?":"¿No tienes cuenta?";
+  toggle.textContent=registerMode?"Iniciar sesión":"Crear cuenta";
+  setMessage("");
+}
+toggle?.addEventListener("click",setMode);
+form?.addEventListener("submit",async e=>{
+  e.preventDefault(); setMessage("");
+  const email=$("#authEmail").value.trim(), password=$("#authPassword").value, name=$("#authName").value.trim();
+  if(!form.checkValidity()){form.reportValidity();return;}
+  try{
+    if(registerMode){
+      const credential=await createUserWithEmailAndPassword(auth,email,password);
+      if(name) await updateProfile(credential.user,{displayName:name});
+    }else await signInWithEmailAndPassword(auth,email,password);
+    location.href="perfil.html";
+  }catch(err){setMessage(humanizeAuthError(err.code),true);}
+});
+$("#googleLogin")?.addEventListener("click",async()=>{
+  try{await signInWithPopup(auth,new GoogleAuthProvider());location.href="perfil.html";}
+  catch(err){setMessage(humanizeAuthError(err.code),true);}
+});
+$("#logoutBtn")?.addEventListener("click",()=>signOut(auth));
+function humanizeAuthError(code){
+  const map={"auth/invalid-credential":"Correo o contraseña incorrectos.","auth/email-already-in-use":"Ese correo ya está registrado.","auth/weak-password":"La contraseña debe tener al menos 6 caracteres.","auth/invalid-email":"El correo electrónico no es válido.","auth/popup-closed-by-user":"La ventana de Google fue cerrada.","auth/popup-blocked":"El navegador bloqueó la ventana de acceso.","auth/too-many-requests":"Demasiados intentos. Espera unos minutos."};
+  return map[code]||"No fue posible completar la autenticación. Revisa la configuración de Firebase.";
+}
+onAuthStateChanged(auth,user=>{ if(user && location.pathname.endsWith("login.html")) location.href="perfil.html"; });
+renderHeader();renderFooter();
