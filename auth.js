@@ -50,16 +50,43 @@ form?.addEventListener("submit",async e=>{
       if(name) await updateProfile(credential.user,{displayName:name});
     }else await signInWithEmailAndPassword(auth,email,password);
     location.href="perfil.html";
-  }catch(err){setMessage(humanizeAuthError(err.code),true);}
+  }catch(err){setMessage(humanizeAuthError(err.code, err.message),true);}
 });
-$("#googleLogin")?.addEventListener("click",async()=>{
-  try{await signInWithPopup(auth,new GoogleAuthProvider());location.href="perfil.html";}
-  catch(err){setMessage(humanizeAuthError(err.code),true);}
+$("#googleLogin")?.addEventListener("click", async () => {
+  const button = $("#googleLogin");
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Conectando con Google...";
+  }
+  try {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    await signInWithPopup(auth, provider);
+    window.location.assign("perfil.html");
+  } catch (err) {
+    console.error("Firebase Google Sign-In:", err);
+    setMessage(humanizeAuthError(err.code, err.message), true);
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Continuar con Google";
+    }
+  }
 });
 $("#logoutBtn")?.addEventListener("click",()=>signOut(auth));
-function humanizeAuthError(code){
-  const map={"auth/invalid-credential":"Correo o contraseña incorrectos.","auth/email-already-in-use":"Ese correo ya está registrado.","auth/weak-password":"La contraseña debe tener al menos 6 caracteres.","auth/invalid-email":"El correo electrónico no es válido.","auth/popup-closed-by-user":"La ventana de Google fue cerrada.","auth/popup-blocked":"El navegador bloqueó la ventana de acceso.","auth/too-many-requests":"Demasiados intentos. Espera unos minutos."};
-  return map[code]||"No fue posible completar la autenticación. Revisa la configuración de Firebase.";
+function humanizeAuthError(code, message = "") {
+  const map = {
+    "auth/invalid-credential": "Correo o contraseña incorrectos.",
+    "auth/email-already-in-use": "Ese correo ya está registrado.",
+    "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
+    "auth/invalid-email": "El correo electrónico no es válido.",
+    "auth/popup-closed-by-user": "La ventana de Google fue cerrada.",
+    "auth/popup-blocked": "El navegador bloqueó la ventana de Google.",
+    "auth/unauthorized-domain": "Este dominio no está autorizado en Firebase. Añádelo en Authentication → Settings → Authorized domains.",
+    "auth/operation-not-allowed": "El acceso con Google no está habilitado. Activa Google en Authentication → Sign-in method.",
+    "auth/account-exists-with-different-credential": "Ya existe una cuenta con este correo usando otro método de acceso.",
+    "auth/network-request-failed": "No se pudo conectar con Firebase. Comprueba tu conexión."
+  };
+  return map[code] || `Error de Firebase: ${code || "desconocido"}${message ? ` — ${message}` : ""}`;
 }
 onAuthStateChanged(auth,user=>{ if(user && location.pathname.endsWith("login.html")) location.href="perfil.html"; });
 renderHeader();renderFooter();

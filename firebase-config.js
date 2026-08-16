@@ -1,7 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
-
-const firebaseConfig = {
+// Configuración pública de la Web App Firebase de Prisma Agency.
+export const firebaseConfig = {
   apiKey: "AIzaSyCJp8kxqNLONHFNyUEsg1n09LjJaVG0GY",
   authDomain: "prisma-agency-86c98.firebaseapp.com",
   projectId: "prisma-agency-86c98",
@@ -10,6 +8,3 @@ const firebaseConfig = {
   appId: "1:938361295336:web:91eaedf36823f5d8de945d",
   measurementId: "G-J5LEgved72"
 };
-
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);

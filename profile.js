@@ -2,12 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "REEMPLAZAR_API_KEY",
-  authDomain: "REEMPLAZAR.firebaseapp.com",
-  projectId: "REEMPLAZAR_PROJECT_ID",
-  storageBucket: "REEMPLAZAR.firebasestorage.app",
-  messagingSenderId: "REEMPLAZAR_MESSAGING_SENDER_ID",
-  appId: "REEMPLAZAR_APP_ID"
+  apiKey: "AIzaSyCJp8kxqNLONHFNyUEsg1n09LjJaVG0GY",
+  authDomain: "prisma-agency-86c98.firebaseapp.com",
+  projectId: "prisma-agency-86c98",
+  storageBucket: "prisma-agency-86c98.firebasestorage.app",
+  messagingSenderId: "938361295336",
+  appId: "1:938361295336:web:91eaedf36823f5d8de945d"
 };
 const app=initializeApp(firebaseConfig),auth=getAuth(app);
 const WISHLIST_KEY="prisma_wishlist",QUOTES_KEY="prisma_quotes";
