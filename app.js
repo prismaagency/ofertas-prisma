@@ -261,6 +261,234 @@ function initWhatsAppFloat() {
   document.body.appendChild(link);
 }
 
+
+function initPrismaAssistant() {
+  const root = $("#prismaAssistant");
+  if (!root) return;
+
+  const messages = $("#assistantMessages");
+  const options = $("#assistantOptions");
+  const inputForm = $("#assistantInputForm");
+  const input = $("#assistantTextInput");
+  const progress = $("#assistantProgressBar");
+
+  const state = {
+    step: 0,
+    destination: "",
+    service: "",
+    date: "",
+    travelers: "",
+    origin: "",
+    budget: "",
+    details: ""
+  };
+
+  const steps = [
+    {
+      key: "destination",
+      question: "¿A dónde quieres viajar?",
+      options: ["Estados Unidos", "Europa", "Caribe", "México", "Canadá", "Otro destino"]
+    },
+    {
+      key: "service",
+      question: "Perfecto. ¿Qué necesitas gestionar?",
+      options: ["Visado", "Vuelo", "Vuelo + hotel", "Paquete completo", "Asesoría de viaje"]
+    },
+    {
+      key: "date",
+      question: "¿Cuándo tienes pensado viajar? Puedes escribir una fecha, mes o algo como «diciembre de 2026».",
+      options: ["Próximamente", "En 1–3 meses", "En 4–6 meses", "Aún no lo sé"]
+    },
+    {
+      key: "travelers",
+      question: "¿Cuántas personas viajarán?",
+      options: ["1 persona", "2 personas", "3–4 personas", "5 o más"]
+    },
+    {
+      key: "origin",
+      question: "¿Desde qué ciudad o país viajarías?",
+      options: []
+    },
+    {
+      key: "budget",
+      question: "¿Cuál es tu presupuesto aproximado en USD?",
+      options: ["Menos de $1,000", "$1,000–$2,500", "$2,500–$5,000", "Más de $5,000", "Aún no lo sé"]
+    }
+  ];
+
+  function addMessage(text, who="bot", html=false) {
+    const el = document.createElement("div");
+    el.className = `assistant-msg ${who}`;
+    if (html) el.innerHTML = text; else el.textContent = text;
+    messages.appendChild(el);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function setProgress() {
+    progress.style.width = `${Math.min(100, Math.max(8, (state.step / steps.length) * 100))}%`;
+  }
+
+  function renderOptions(list) {
+    options.innerHTML = "";
+    list.forEach(value => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "assistant-option";
+      button.textContent = value;
+      button.addEventListener("click", () => answer(value));
+      options.appendChild(button);
+    });
+  }
+
+  function askCurrentStep() {
+    const current = steps[state.step];
+    if (!current) return finish();
+    addMessage(current.question);
+    renderOptions(current.options);
+    setProgress();
+    input.placeholder = current.key === "origin"
+      ? "Ej. St. Louis, Missouri"
+      : current.key === "date"
+        ? "Ej. diciembre de 2026"
+        : "Escribe tu respuesta...";
+    input.focus();
+  }
+
+  function answer(value) {
+    const clean = String(value || "").trim();
+    if (!clean) return;
+    addMessage(clean, "user");
+    options.innerHTML = "";
+
+    const key = steps[state.step]?.key;
+    if (key) state[key] = clean;
+    state.step += 1;
+
+    if (state.step < steps.length) {
+      window.setTimeout(askCurrentStep, 220);
+    } else {
+      window.setTimeout(finish, 250);
+    }
+  }
+
+  function buildSummary() {
+    return `
+      <div class="assistant-result">
+        <strong>Tu solicitud está lista</strong>
+        <div class="assistant-result__row"><span>Destino</span><b>${escapeAssistant(state.destination)}</b></div>
+        <div class="assistant-result__row"><span>Servicio</span><b>${escapeAssistant(state.service)}</b></div>
+        <div class="assistant-result__row"><span>Fecha</span><b>${escapeAssistant(state.date)}</b></div>
+        <div class="assistant-result__row"><span>Viajeros</span><b>${escapeAssistant(state.travelers)}</b></div>
+        <div class="assistant-result__row"><span>Origen</span><b>${escapeAssistant(state.origin)}</b></div>
+        <div class="assistant-result__row"><span>Presupuesto</span><b>${escapeAssistant(state.budget)}</b></div>
+        <div class="assistant-actions">
+          <button class="btn btn--primary" type="button" id="assistantUseForm">Pasar al formulario</button>
+          <a class="btn btn--ghost" id="assistantWhatsApp" target="_blank" rel="noopener noreferrer">Enviar por WhatsApp</a>
+        </div>
+      </div>`;
+  }
+
+  function finish() {
+    state.step = steps.length;
+    setProgress();
+    addMessage("Gracias. Ya tengo la información básica. Aquí tienes un resumen de tu solicitud:", "bot");
+    const summary = document.createElement("div");
+    summary.innerHTML = buildSummary();
+    messages.appendChild(summary.firstElementChild);
+    messages.scrollTop = messages.scrollHeight;
+
+    const waText =
+      `Hola Prisma Agency, quiero solicitar una cotización.%0A%0A` +
+      `📍 Destino: ${encodeURIComponent(state.destination)}%0A` +
+      `🧳 Servicio: ${encodeURIComponent(state.service)}%0A` +
+      `📅 Fecha: ${encodeURIComponent(state.date)}%0A` +
+      `👥 Viajeros: ${encodeURIComponent(state.travelers)}%0A` +
+      `📌 Origen: ${encodeURIComponent(state.origin)}%0A` +
+      `💰 Presupuesto: ${encodeURIComponent(state.budget)}`;
+
+    const wa = $("#assistantWhatsApp");
+    if (wa) wa.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+
+    $("#assistantUseForm")?.addEventListener("click", () => fillQuoteForm());
+  }
+
+  function fillQuoteForm() {
+    const form = $("#quoteForm");
+    if (!form) return;
+
+    const name = form.elements.name;
+    const email = form.elements.email;
+    const phone = form.elements.phone;
+    const destination = form.elements.destination;
+    const travelers = form.elements.travelers;
+    const budget = form.elements.budget;
+    const service = form.elements.service;
+    const details = form.elements.details;
+
+    if (destination) {
+      const option = [...destination.options].find(o =>
+        o.value.toLowerCase() === state.destination.toLowerCase()
+      );
+      if (option) destination.value = option.value;
+      else if (state.destination) {
+        const custom = document.createElement("option");
+        custom.value = state.destination;
+        custom.textContent = state.destination;
+        destination.appendChild(custom);
+        destination.value = state.destination;
+      }
+    }
+
+    if (travelers) {
+      const match = state.travelers.match(/\d+/);
+      if (match) travelers.value = state.travelers.includes("5 o más") ? 5 : Number(match[0]);
+    }
+
+    if (budget) {
+      const numeric = state.budget.match(/[\d,]+/);
+      if (numeric) budget.value = numeric[0].replace(/,/g, "");
+    }
+
+    if (service) {
+      const option = [...service.options].find(o =>
+        o.value.toLowerCase() === state.service.toLowerCase()
+      );
+      if (option) service.value = option.value;
+    }
+
+    if (details) {
+      details.value =
+        `Origen: ${state.origin}\n` +
+        `Fecha indicada: ${state.date}\n` +
+        `Presupuesto indicado: ${state.budget}\n` +
+        `Información recopilada por el Asistente Prisma.`;
+    }
+
+    document.querySelector("#cotizacion")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => {
+      if (!name?.value) name?.focus();
+      else if (!email?.value) email?.focus();
+      else if (!phone?.value) phone?.focus();
+    }, 500);
+  }
+
+  function escapeAssistant(value) {
+    return String(value || "").replace(/[&<>"']/g, char => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+    }[char]));
+  }
+
+  inputForm?.addEventListener("submit", event => {
+    event.preventDefault();
+    if (state.step >= steps.length) return;
+    answer(input.value);
+    input.value = "";
+  });
+
+  addMessage("Hola 👋 Soy el Asistente Prisma. Te haré unas preguntas rápidas para preparar tu cotización.");
+  window.setTimeout(askCurrentStep, 250);
+}
+
 function showToast(text) {
   const t=$("#toast"); if(!t)return;
   t.textContent=text;
@@ -280,4 +508,5 @@ initQuoteForm();
 initCountdown();
 initTestimonials();
 initSocial();
+initPrismaAssistant();
 initWhatsAppFloat();

@@ -120,10 +120,36 @@
 
     <section class="section" id="cotizacion">
       <div class="container quote-layout">
-        <div class="section-heading">
-          <span class="eyebrow">Cotización</span>
-          <h2>Cuéntanos qué viaje tienes en mente.</h2>
-          <p>Completa los datos y guardaremos tu solicitud en este navegador. Cuando conectes Firebase, podrás persistirla por usuario.</p>
+        <div class="quote-assistant-wrap">
+          <div class="section-heading section-heading--compact">
+            <span class="eyebrow">Asistente Prisma</span>
+            <h2>Te ayudo a preparar tu cotización.</h2>
+            <p>Responde unas preguntas y te preparo un resumen listo para solicitar atención.</p>
+          </div>
+
+          <section class="prisma-assistant card-surface" id="prismaAssistant" aria-label="Asistente de cotización">
+            <div class="assistant-head">
+              <div class="assistant-avatar" aria-hidden="true">✦</div>
+              <div>
+                <strong>Asistente Prisma</strong>
+                <span>Orientación para tu viaje</span>
+              </div>
+              <span class="assistant-status"><i></i> En línea</span>
+            </div>
+
+            <div class="assistant-progress">
+              <div class="assistant-progress__bar" id="assistantProgressBar"></div>
+            </div>
+
+            <div class="assistant-messages" id="assistantMessages" aria-live="polite"></div>
+            <div class="assistant-options" id="assistantOptions"></div>
+
+            <form class="assistant-input" id="assistantInputForm" autocomplete="off">
+              <input id="assistantTextInput" type="text" maxlength="160" placeholder="Escribe tu respuesta..." aria-label="Respuesta para el asistente">
+              <button class="assistant-send" type="submit" aria-label="Enviar respuesta">➤</button>
+            </form>
+          </section>
+
           <div class="notice"><strong>Importante:</strong> los precios publicados son referencias de servicio y pueden variar según fechas, disponibilidad y documentación.</div>
         </div>
 
