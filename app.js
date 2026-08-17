@@ -110,17 +110,24 @@ function initFilters() {
 function initCountdown() {
   const element = $("#countdown");
   if (!element) return;
-  let target = localStorage.getItem("prisma_flash_deadline");
-  if (!target || Number(target) <= Date.now()) { target = String(Date.now() + 72 * 60 * 60 * 1000); localStorage.setItem("prisma_flash_deadline", target); }
   const flashOffers = $("#flashOffers");
-  let offersVisible = true;
+  let target = localStorage.getItem("prisma_flash_deadline");
+  const hadPreviousDeadline = Boolean(target);
+  let expired = hadPreviousDeadline && Number(target) <= Date.now();
+  if (!target || expired) {
+    target = String(Date.now() + 72 * 60 * 60 * 1000);
+    localStorage.setItem("prisma_flash_deadline", target);
+  }
+  if (flashOffers) flashOffers.classList.toggle("hidden", expired);
+
   const tick = () => {
     let remaining = Number(target) - Date.now();
     if (remaining <= 0) {
       remaining = 0;
-      if (flashOffers && offersVisible) { flashOffers.classList.add("hidden"); offersVisible = false; }
+      if (flashOffers) flashOffers.classList.add("hidden");
       target = String(Date.now() + 72 * 60 * 60 * 1000);
       localStorage.setItem("prisma_flash_deadline", target);
+      expired = true;
     }
     ["days", "hours", "minutes", "seconds"].forEach((unit, index) => {
       const duration = [86400000, 3600000, 60000, 1000][index];
@@ -130,7 +137,6 @@ function initCountdown() {
   };
   tick(); setInterval(tick, 1000);
 }
-
 function initTestimonials() {
   const track = $("#testimonialTrack"), dots = $("#carouselDots");
   if (!track || !dots) return;
