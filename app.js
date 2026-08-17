@@ -25,7 +25,8 @@ function toggleWishlist(id) {
 window.PRISMA_WISHLIST = { getWishlist, toggleWishlist };
 
 function offerWhatsAppUrl(offer) {
-  const text = `Hola Prisma Agency, quiero información sobre la oferta de ${offer.name}.\n\nOferta: ${offer.service}\nPrecio publicado: ${offer.priceLabel}\nOrigen: La Habana, Cuba.`;
+  const publishedPrice = offer.discountPriceLabel || offer.priceLabel;
+  const text = `Hola Prisma Agency, quiero información sobre la oferta de ${offer.name}.\n\nOferta: ${offer.service}\nPrecio publicado: ${publishedPrice}\nOrigen: La Habana, Cuba.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
@@ -81,12 +82,21 @@ function renderDestinations() {
     <article class="destination-card"><div class="destination-card__image" style="background-image:url('${offer.flag}')">
       <button class="heart-btn ${isSaved(offer.id) ? "is-saved" : ""}" data-wishlist="${offer.id}" type="button" aria-label="${isSaved(offer.id) ? "Quitar" : "Guardar"} ${offer.name}">${isSaved(offer.id) ? "♥" : "♡"}</button>
     </div><div class="destination-card__body"><h3>${offer.name}</h3><p>${offer.service} · ${offer.time}</p>
-      <div class="destination-card__footer"><span class="price">${offer.priceLabel}</span><a class="small-link" href="${offerWhatsAppUrl(offer)}" target="_blank" rel="noopener noreferrer">WhatsApp →</a></div>
+      <div class="destination-card__footer"><span class="price">${offer.discountPriceLabel ? `<span class="price__original">${offer.priceLabel}</span><span class="price__discount">${offer.discountPriceLabel}</span><small class="price__deadline">Rebaja hasta mañana</small>` : offer.priceLabel}</span><div class="destination-card__actions"><button class="small-link" data-detail="${offer.id}" type="button">Ver detalles</button><a class="small-link" href="${offerWhatsAppUrl(offer)}" target="_blank" rel="noopener noreferrer">WhatsApp →</a></div></div>
     </div></article>`).join("") : `<div class="card-surface" style="grid-column:1/-1;padding:30px"><p>No hay destinos que coincidan con los filtros.</p></div>`;
   $$('[data-wishlist]', grid).forEach(button => button.addEventListener("click", () => {
     const saved = toggleWishlist(button.dataset.wishlist);
     showToast(saved ? "Oferta guardada en tu wishlist." : "Oferta eliminada de tu wishlist.");
   }));
+  $$('[data-detail]', grid).forEach(button => button.addEventListener("click", () => openDestination(button.dataset.detail)));
+}
+
+function openDestination(id) {
+  const offer = window.PRISMA_DESTINATIONS?.find(item => item.id === id);
+  const root = $("#modalRoot");
+  if (!offer || !root) return;
+  root.innerHTML = `<div class="modal-backdrop" data-close-modal><section class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="modal__hero" style="background-image:url('${offer.flag}')"><button class="modal__close" type="button" data-close-modal aria-label="Cerrar">×</button><div><h2 id="detailTitle">${escapeHtml(offer.name)}</h2><p>${escapeHtml(offer.priceLabel)}</p></div></div><div class="modal__body"><p>${escapeHtml(offer.service)} · ${escapeHtml(offer.time)}</p><div class="detail-grid"><div class="detail-box"><small>Pago</small><strong>50% inicial / saldo según proceso</strong></div><div class="detail-box"><small>Tiempo estimado</small><strong>${escapeHtml(offer.time)}</strong></div></div><h3>Qué incluye</h3><ul class="detail-list">${offer.include.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>${offer.requirements.length ? `<h3 style="margin-top:22px">Requisitos</h3><ul class="detail-list">${offer.requirements.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${offer.note ? `<div class="notice" style="margin-bottom:20px">${escapeHtml(offer.note)}</div>` : ""}<a class="btn btn--primary btn--wide" href="${offerWhatsAppUrl(offer)}" target="_blank" rel="noopener noreferrer">Solicitar información por WhatsApp</a></div></section></div>`;
+  root.querySelectorAll("[data-close-modal]").forEach(element => element.addEventListener("click", event => { if (event.target.matches("[data-close-modal]")) root.innerHTML = ""; }));
 }
 
 function initFilters() {
@@ -117,6 +127,15 @@ function initTestimonials() {
   const track = $("#testimonialTrack"), dots = $("#carouselDots");
   if (!track || !dots) return;
   const testimonials = [["Nos guiaron desde la documentación hasta la reserva. Todo fue mucho más claro de lo que esperaba.", "María G. · Viaje internacional"], ["La atención fue rápida y siempre supimos cuál era el siguiente paso.", "Carlos R. · Gestión de viaje"], ["El acompañamiento hizo la diferencia. Volvería a trabajar con Prisma Agency.", "Daniela P. · Servicio personalizado"]];
+  let index = 0;
+  const render = () => { const item = testimonials[index]; track.innerHTML = `<article class="testimonial"><blockquote>“${item[0]}”</blockquote><footer>${item[1]}</footer></article>`; dots.innerHTML = testimonials.map((_, i) => `<button class="dot ${i === index ? "is-active" : ""}" data-index="${i}" aria-label="Testimonio ${i + 1}"></button>`).join(""); $$(".dot", dots).forEach(dot => dot.onclick = () => { index = Number(dot.dataset.index); render(); }); };
+  $(".carousel-btn--prev")?.addEventListener("click", () => { index = (index - 1 + testimonials.length) % testimonials.length; render(); });
+  $(".carousel-btn--next")?.addEventListener("click", () => { index = (index + 1) % testimonials.length; render(); });
+  render();
+}
+
+function initSocial() {
+  const grid = $("#socialGrid"); if (!grid) return;
   const reels = [
     "https://www.instagram.com/reel/DcHUQcakcoM/",
     "https://www.instagram.com/reel/DcB26qlE5IJ/",
@@ -131,43 +150,6 @@ function initTestimonials() {
   const processEmbeds = () => window.instgrm?.Embeds?.process?.();
   const instagramScript = document.querySelector('script[src*="instagram.com/embed.js"]');
   if (window.instgrm?.Embeds) processEmbeds(); else instagramScript?.addEventListener("load", processEmbeds, { once: true });
-  return;
-  let index = 0;
-  const render = () => { const item = testimonials[index]; track.innerHTML = `<article class="testimonial"><blockquote>“${item[0]}”</blockquote><footer>${item[1]}</footer></article>`; dots.innerHTML = testimonials.map((_, i) => `<button class="dot ${i === index ? "is-active" : ""}" data-index="${i}" aria-label="Testimonio ${i + 1}"></button>`).join(""); $$(".dot", dots).forEach(dot => dot.onclick = () => { index = Number(dot.dataset.index); render(); }); };
-  $(".carousel-btn--prev")?.addEventListener("click", () => { index = (index - 1 + testimonials.length) % testimonials.length; render(); });
-  $(".carousel-btn--next")?.addEventListener("click", () => { index = (index + 1) % testimonials.length; render(); });
-  render();
-}
-
-function initSocial() {
-  const grid = $("#socialGrid"); if (!grid) return;
-  const images = ["https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80", "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=700&q=80", "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=700&q=80"];
-  let index = 0;
-  grid.innerHTML = `
-    <div class="social-carousel" aria-label="Galería de Instagram">
-      <div class="social-carousel__viewport"><div class="social-carousel__track">${images.map((src, itemIndex) => `<article class="social-tile"><img src="${src}" alt="Inspiración de viaje ${itemIndex + 1}" loading="lazy"><span>#PrismaAgency</span></article>`).join("")}</div></div>
-      <div class="social-carousel__controls"><button type="button" class="social-carousel__button" data-social-prev aria-label="Publicación anterior">←</button><div class="social-carousel__dots" aria-label="Seleccionar publicación">${images.map((_, itemIndex) => `<button type="button" class="social-carousel__dot ${itemIndex === 0 ? "is-active" : ""}" data-social-index="${itemIndex}" aria-label="Ir a publicación ${itemIndex + 1}"></button>`).join("")}</div><button type="button" class="social-carousel__button" data-social-next aria-label="Siguiente publicación">→</button></div>
-    </div>`;
-  const track = $(".social-carousel__track", grid);
-  const dots = $$("[data-social-index]", grid);
-  const render = () => {
-    if (!track) return;
-    track.style.transform = `translateX(-${index * 100}%)`;
-    dots.forEach(dot => dot.classList.toggle("is-active", Number(dot.dataset.socialIndex) === index));
-  };
-  $("[data-social-prev]", grid)?.addEventListener("click", () => { index = (index - 1 + images.length) % images.length; render(); });
-  $("[data-social-next]", grid)?.addEventListener("click", () => { index = (index + 1) % images.length; render(); });
-  dots.forEach(dot => dot.addEventListener("click", () => { index = Number(dot.dataset.socialIndex); render(); }));
-  let touchStartX = null;
-  track?.addEventListener("touchstart", event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
-  track?.addEventListener("touchend", event => {
-    if (touchStartX === null) return;
-    const difference = event.changedTouches[0].clientX - touchStartX;
-    touchStartX = null;
-    if (Math.abs(difference) < 40) return;
-    index = difference > 0 ? (index - 1 + images.length) % images.length : (index + 1) % images.length;
-    render();
-  }, { passive: true });
 }
 
 function escapeHtml(value) { return String(value || "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char])); }
@@ -189,9 +171,10 @@ function initPrismaAssistant() {
     const finish = () => {
       state.step = 4; setProgress(); options.innerHTML = "";
       const offer = state.destination;
-      const text = `Hola Prisma Agency, quiero información sobre mi viaje.\n\nOrigen: La Habana, Cuba\nDestino: ${offer.name}\nOferta: ${offer.service}\nServicio de interés: ${state.service}\nFecha: ${state.date}\nViajeros: ${state.travelers}\nPrecio publicado: ${offer.priceLabel}`;
+      const publishedPrice = offer.discountPriceLabel || offer.priceLabel;
+      const text = `Hola Prisma Agency, quiero información sobre mi viaje.\n\nOrigen: La Habana, Cuba\nDestino: ${offer.name}\nOferta: ${offer.service}\nServicio de interés: ${state.service}\nFecha: ${state.date}\nViajeros: ${state.travelers}\nPrecio publicado: ${publishedPrice}`;
       const result = document.createElement("div"); result.className = "assistant-msg bot";
-      result.innerHTML = `<div class="assistant-result"><strong>Tu viaje está listo para consultar</strong><div class="assistant-result__row"><span>Origen</span><b>La Habana, Cuba</b></div><div class="assistant-result__row"><span>Destino</span><b>${escapeHtml(offer.name)}</b></div><div class="assistant-result__row"><span>Oferta</span><b>${escapeHtml(offer.service)}</b></div><div class="assistant-result__row"><span>Fecha</span><b>${escapeHtml(state.date)}</b></div><div class="assistant-result__row"><span>Viajeros</span><b>${escapeHtml(state.travelers)}</b></div><div class="assistant-result__row"><span>Precio de la oferta</span><b>${escapeHtml(offer.priceLabel)}</b></div><div class="assistant-actions"><a class="btn btn--primary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener noreferrer">Continuar por WhatsApp</a></div></div>`;
+      result.innerHTML = `<div class="assistant-result"><strong>Tu viaje está listo para consultar</strong><div class="assistant-result__row"><span>Origen</span><b>La Habana, Cuba</b></div><div class="assistant-result__row"><span>Destino</span><b>${escapeHtml(offer.name)}</b></div><div class="assistant-result__row"><span>Oferta</span><b>${escapeHtml(offer.service)}</b></div><div class="assistant-result__row"><span>Fecha</span><b>${escapeHtml(state.date)}</b></div><div class="assistant-result__row"><span>Viajeros</span><b>${escapeHtml(state.travelers)}</b></div><div class="assistant-result__row"><span>Precio de la oferta</span><b>${escapeHtml(offer.discountPriceLabel || offer.priceLabel)}</b></div><div class="assistant-actions"><a class="btn btn--primary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener noreferrer">Continuar por WhatsApp</a></div></div>`;
       messages.appendChild(result); messages.scrollTop = messages.scrollHeight;
     };
     const answer = item => { options.innerHTML = ""; if (state.step === 0) { state.destination = item.value; addMessage(item.label, "user"); setTimeout(askService, 160); } else if (state.step === 1) { state.service = item.value; addMessage(item.label, "user"); setTimeout(askDate, 160); } else if (state.step === 2) { state.date = item.value; addMessage(item.label, "user"); setTimeout(askTravelers, 160); } else if (state.step === 3) { state.travelers = item.value; addMessage(item.label, "user"); setTimeout(finish, 160); } };

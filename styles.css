@@ -65,3 +65,10 @@ button{cursor:pointer}.container{width:min(var(--max),92%);margin:auto}
 /* Videos reales de Instagram */
 .social-grid{grid-template-columns:repeat(auto-fit,minmax(330px,1fr));align-items:start}.social-tile--instagram{aspect-ratio:auto;min-height:0;display:flex;justify-content:center;background:transparent;overflow:visible}.social-tile--instagram .instagram-media{width:100%!important;min-width:0!important;margin:0!important;background:var(--surface)!important;border-color:var(--border)!important;border-radius:12px!important}.social-tile--instagram a{color:var(--gold)}
 @media(max-width:420px){.social-grid{grid-template-columns:minmax(0,1fr)}.social-tile--instagram .instagram-media{min-width:0!important}}
+
+/* Acciones y ventana de detalles de destinos */
+.destination-card__actions{display:flex;align-items:center;justify-content:flex-end;gap:12px}.destination-card__actions .small-link{white-space:nowrap}
+@media(max-width:600px){.destination-card__footer{align-items:flex-start;gap:10px}.destination-card__actions{flex-wrap:wrap;justify-content:flex-end;gap:8px}.destination-card__actions .small-link{font-size:.78rem}}
+
+/* Precios promocionales */
+.price__original{display:block;text-decoration:line-through;opacity:.55;font-size:.82em}.price__discount{display:block}.price__deadline{display:block;margin-top:3px;font-size:.72em;opacity:.8}
