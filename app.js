@@ -112,8 +112,16 @@ function initCountdown() {
   if (!element) return;
   let target = localStorage.getItem("prisma_flash_deadline");
   if (!target || Number(target) <= Date.now()) { target = String(Date.now() + 72 * 60 * 60 * 1000); localStorage.setItem("prisma_flash_deadline", target); }
+  const flashOffers = $("#flashOffers");
+  let offersVisible = true;
   const tick = () => {
-    let remaining = Math.max(0, Number(target) - Date.now());
+    let remaining = Number(target) - Date.now();
+    if (remaining <= 0) {
+      remaining = 0;
+      if (flashOffers && offersVisible) { flashOffers.classList.add("hidden"); offersVisible = false; }
+      target = String(Date.now() + 72 * 60 * 60 * 1000);
+      localStorage.setItem("prisma_flash_deadline", target);
+    }
     ["days", "hours", "minutes", "seconds"].forEach((unit, index) => {
       const duration = [86400000, 3600000, 60000, 1000][index];
       const value = Math.floor(remaining / duration); remaining %= duration;
