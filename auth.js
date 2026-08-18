@@ -2,8 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
 import {
   getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence,
   signInWithEmailAndPassword, createUserWithEmailAndPassword,
-  updateProfile, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
-  getRedirectResult, signOut
+  updateProfile, GoogleAuthProvider, signInWithPopup, signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import { firebaseConfig } from "./firebase-config.js";
@@ -11,12 +10,6 @@ import { firebaseConfig } from "./firebase-config.js";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence).catch(console.error);
-
-const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-getRedirectResult(auth).then(result => {
-  if (result?.user) location.href = "perfil.html";
-}).catch(err => setMessage(humanizeAuthError(err.code), true));
 
 const $ = s => document.querySelector(s);
 const form=$("#authForm"), message=$("#authMessage"), toggle=$("#toggleMode"), submit=$("#authSubmit"), title=$("#authTitle"), subtitle=$("#authSubtitle"), nameField=$("#nameField");
@@ -53,20 +46,13 @@ form?.addEventListener("submit",async e=>{
   }catch(err){setMessage(humanizeAuthError(err.code),true);}
 });
 $("#googleLogin")?.addEventListener("click",async()=>{
-  try{
-    const provider = new GoogleAuthProvider();
-    if (isMobileDevice) {
-      await signInWithRedirect(auth, provider);
-      return;
-    }
-    await signInWithPopup(auth, provider);
-    location.href="perfil.html";
-  } catch(err){setMessage(humanizeAuthError(err.code),true);}
+  try{await signInWithPopup(auth,new GoogleAuthProvider());location.href="perfil.html";}
+  catch(err){setMessage(humanizeAuthError(err.code),true);}
 });
 $("#logoutBtn")?.addEventListener("click",()=>signOut(auth));
 function humanizeAuthError(code){
   const map={"auth/invalid-credential":"Correo o contraseña incorrectos.","auth/email-already-in-use":"Ese correo ya está registrado.","auth/weak-password":"La contraseña debe tener al menos 6 caracteres.","auth/invalid-email":"El correo electrónico no es válido.","auth/popup-closed-by-user":"La ventana de Google fue cerrada.","auth/popup-blocked":"El navegador bloqueó la ventana de acceso.","auth/too-many-requests":"Demasiados intentos. Espera unos minutos."};
-  return map[code]||"No fue posible completar la autenticación. Si estás en un teléfono, verifica que el dominio de la página esté autorizado en Firebase Authentication.";
+  return map[code]||"No fue posible completar la autenticación. Revisa la configuración de Firebase.";
 }
 onAuthStateChanged(auth,user=>{ if(user && location.pathname.endsWith("login.html")) location.href="perfil.html"; });
 renderHeader();renderFooter();
