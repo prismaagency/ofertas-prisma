@@ -1,9 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getFirestore, collection, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+let flashOffers = [];
+let flashSettingsDeadline = null;
 const WISHLIST_KEY = "prisma_wishlist";
 const WHATSAPP_NUMBER = "13144013488";
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -25,7 +29,8 @@ function toggleWishlist(id) {
 window.PRISMA_WISHLIST = { getWishlist, toggleWishlist };
 
 function offerWhatsAppUrl(offer) {
-  const publishedPrice = offer.discountPriceLabel || offer.priceLabel;
+  const flash = getFlashOfferForDestination(offer);
+  const publishedPrice = flash?.price || offer.priceLabel;
   const text = `Hola Prisma Agency, quiero información sobre la oferta de ${offer.name}.\n\nOferta: ${offer.service}\nPrecio publicado: ${publishedPrice}\nOrigen: La Habana, Cuba.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
@@ -65,6 +70,27 @@ function renderFooter() {
   if (host) host.innerHTML = `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} Prisma Agency</span><span>Viajes · Visados · Hoteles · Asistencia</span></div></footer>`;
 }
 
+function getFlashOfferForDestination(destination) {
+  const name = String(destination?.name || "").trim().toLowerCase();
+  return flashOffers.find(offer => offer.active !== false && String(offer.destination || "").trim().toLowerCase() === name) || null;
+}
+
+function renderFlashOffers() {
+  const box = $("#flashOffers");
+  if (!box) return;
+  const now = Date.now();
+  const active = flashOffers.filter(offer => offer.active !== false && (!offer.endsAt || new Date(offer.endsAt).getTime() > now));
+  box.innerHTML = active.length ? active.map(offer => `<article class="flash-offer"><strong>${escapeHtml(offer.destination)}</strong><span>${escapeHtml(offer.price)}</span><small>Oferta activa mientras el contador esté en marcha</small></article>`).join("") : `<small>No hay ofertas flash activas.</small>`;
+}
+
+function initFlashOffers() {
+  onSnapshot(collection(db, "flashOffers"), snap => {
+    flashOffers = snap.docs.map(item => ({ id: item.id, ...item.data() }));
+    renderFlashOffers();
+    renderDestinations();
+  }, error => console.warn("Ofertas Flash: no se pudieron leer de Firestore.", error));
+}
+
 function renderDestinations() {
   const grid = $("#destinationGrid");
   if (!grid || !Array.isArray(window.PRISMA_DESTINATIONS)) return;
@@ -82,7 +108,7 @@ function renderDestinations() {
     <article class="destination-card"><div class="destination-card__image" style="background-image:url('${offer.flag}')">
       <button class="heart-btn ${isSaved(offer.id) ? "is-saved" : ""}" data-wishlist="${offer.id}" type="button" aria-label="${isSaved(offer.id) ? "Quitar" : "Guardar"} ${offer.name}">${isSaved(offer.id) ? "♥" : "♡"}</button>
     </div><div class="destination-card__body"><h3>${offer.name}</h3><p>${offer.service} · ${offer.time}</p>
-      <div class="destination-card__footer"><span class="price">${offer.discountPriceLabel ? `<span class="price__original">${offer.priceLabel}</span><span class="price__discount">${offer.discountPriceLabel}</span><small class="price__deadline">Rebaja hasta mañana</small>` : offer.priceLabel}</span><div class="destination-card__actions"><button class="small-link" data-detail="${offer.id}" type="button">Ver detalles</button><a class="small-link" href="${offerWhatsAppUrl(offer)}" target="_blank" rel="noopener noreferrer">WhatsApp →</a></div></div>
+      <div class="destination-card__footer"><span class="price">${(() => { const flash = getFlashOfferForDestination(offer); return flash ? `<span class="price__original">${escapeHtml(offer.priceLabel)}</span><span class="price__discount">${escapeHtml(flash.price)}</span><small class="price__deadline">Rebaja hasta que termine el contador</small>` : escapeHtml(offer.priceLabel); })()}</span><div class="destination-card__actions"><button class="small-link" data-detail="${offer.id}" type="button">Ver detalles</button><a class="small-link" href="${offerWhatsAppUrl(offer)}" target="_blank" rel="noopener noreferrer">WhatsApp →</a></div></div>
     </div></article>`).join("") : `<div class="card-surface" style="grid-column:1/-1;padding:30px"><p>No hay destinos que coincidan con los filtros.</p></div>`;
   $$('[data-wishlist]', grid).forEach(button => button.addEventListener("click", () => {
     const saved = toggleWishlist(button.dataset.wishlist);
@@ -124,12 +150,14 @@ function initCountdown() {
     const deadline = snap.exists() ? snap.data().deadline : null;
     if (deadline) {
       usingFirestoreDeadline = true;
+      flashSettingsDeadline = deadline;
       target = String(new Date(deadline).getTime());
       localStorage.setItem("prisma_flash_deadline", target);
       expired = Number(target) <= Date.now();
       if (banner) banner.classList.toggle("hidden", expired);
     } else {
       usingFirestoreDeadline = false;
+      flashSettingsDeadline = null;
       if (banner) banner.classList.remove("hidden");
     }
   }, error => {
@@ -143,6 +171,7 @@ function initCountdown() {
       remaining = 0;
       expired = true;
       if (banner) banner.classList.add("hidden");
+      renderFlashOffers();
       if (!usingFirestoreDeadline) {
         target = String(Date.now() + 72 * 60 * 60 * 1000);
         localStorage.setItem("prisma_flash_deadline", target);
@@ -150,6 +179,7 @@ function initCountdown() {
     } else if (expired) {
       expired = false;
       if (banner) banner.classList.remove("hidden");
+      renderFlashOffers();
     }
 
     ["days", "hours", "minutes", "seconds"].forEach((unit, index) => {
@@ -231,4 +261,4 @@ function initWhatsAppFloat() {
 
 function showToast(text) { const toast = $("#toast"); if (!toast) return; toast.textContent = text; toast.classList.add("is-visible"); setTimeout(() => toast.classList.remove("is-visible"), 2500); }
 
-renderHeader(); renderFooter(); renderDestinations(); initFilters(); initCountdown(); initTestimonials(); initSocial(); initPrismaAssistant(); initWhatsAppFloat();
+renderHeader(); renderFooter(); renderDestinations(); initFlashOffers(); initFilters(); initCountdown(); initTestimonials(); initSocial(); initPrismaAssistant(); initWhatsAppFloat();
