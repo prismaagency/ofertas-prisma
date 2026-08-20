@@ -1,11 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
-const db = getFirestore(firebaseApp);
 const WISHLIST_KEY = "prisma_wishlist";
 const WHATSAPP_NUMBER = "13144013488";
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -109,28 +107,62 @@ function initFilters() {
   });
 }
 
-async function getFlashData(){
-  try{
-    const settings=await getDoc(doc(db,"flashSettings","main"));
-    const deadline=settings.exists()?settings.data().deadline:null;
-    const snap=await getDocs(collection(db,"flashOffers"));
-    const offers=snap.docs.map(d=>({id:d.id,...d.data()})).filter(o=>o.active!==false && (!o.endsAt || new Date(o.endsAt).getTime()>Date.now()));
-    return {deadline,offers};
-  }catch{return {deadline:null,offers:null};}
-}
-async function initCountdown(){
-  const element=$("#countdown"); if(!element)return;
-  const flashOffers=$("#flashOffers");
-  let target=null, cloudOffers=null;
-  const data=await getFlashData();
-  cloudOffers=data.offers;
-  if(data.deadline && new Date(data.deadline).getTime()>Date.now()) target=new Date(data.deadline).getTime();
-  else { let saved=localStorage.getItem("prisma_flash_deadline"); if(!saved||Number(saved)<=Date.now()){saved=String(Date.now()+72*60*60*1000);localStorage.setItem("prisma_flash_deadline",saved)} target=Number(saved); }
-  const renderOffers=(visible)=>{if(!flashOffers)return; if(!visible){flashOffers.classList.add("hidden");return} flashOffers.classList.remove("hidden"); if(cloudOffers){flashOffers.innerHTML=cloudOffers.map(o=>`<article class="flash-offer"><strong>${escapeHtml(o.destination||"")}</strong><span>${escapeHtml(o.price||"")}</span><small>Oferta activa mientras el contador esté en marcha</small></article>`).join("")} };
-  renderOffers(true);
-  const tick=()=>{let remaining=target-Date.now();if(remaining<=0){renderOffers(false);target=Date.now()+72*60*60*1000;localStorage.setItem("prisma_flash_deadline",String(target));setTimeout(()=>renderOffers(true),50);remaining=target-Date.now()}
-    ["days","hours","minutes","seconds"].forEach((unit,index)=>{const duration=[86400000,3600000,60000,1000][index];const value=Math.floor(remaining/duration);remaining%=duration;const field=$(`[data-unit="${unit}"]`,element);if(field)field.textContent=String(value).padStart(2,"0")});};
-  tick();setInterval(tick,1000);
+function initCountdown() {
+  const element = $("#countdown");
+  if (!element) return;
+  const banner = element.closest(".flash-banner");
+  let target = localStorage.getItem("prisma_flash_deadline");
+  let usingFirestoreDeadline = false;
+  let expired = false;
+
+  if (!target || Number(target) <= Date.now()) {
+    target = String(Date.now() + 72 * 60 * 60 * 1000);
+    localStorage.setItem("prisma_flash_deadline", target);
+  }
+
+  onSnapshot(doc(db, "flashSettings", "main"), snap => {
+    const deadline = snap.exists() ? snap.data().deadline : null;
+    if (deadline) {
+      usingFirestoreDeadline = true;
+      target = String(new Date(deadline).getTime());
+      localStorage.setItem("prisma_flash_deadline", target);
+      expired = Number(target) <= Date.now();
+      if (banner) banner.classList.toggle("hidden", expired);
+    } else {
+      usingFirestoreDeadline = false;
+      if (banner) banner.classList.remove("hidden");
+    }
+  }, error => {
+    console.warn("Contador Flash: usando contador local.", error);
+    usingFirestoreDeadline = false;
+  });
+
+  const tick = () => {
+    let remaining = Number(target) - Date.now();
+    if (remaining <= 0) {
+      remaining = 0;
+      expired = true;
+      if (banner) banner.classList.add("hidden");
+      if (!usingFirestoreDeadline) {
+        target = String(Date.now() + 72 * 60 * 60 * 1000);
+        localStorage.setItem("prisma_flash_deadline", target);
+      }
+    } else if (expired) {
+      expired = false;
+      if (banner) banner.classList.remove("hidden");
+    }
+
+    ["days", "hours", "minutes", "seconds"].forEach((unit, index) => {
+      const duration = [86400000, 3600000, 60000, 1000][index];
+      const value = Math.floor(remaining / duration);
+      remaining %= duration;
+      const field = $(`[data-unit="${unit}"]`, element);
+      if (field) field.textContent = String(value).padStart(2, "0");
+    });
+  };
+
+  tick();
+  setInterval(tick, 1000);
 }
 
 function initTestimonials() {
